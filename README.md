@@ -7,7 +7,6 @@
 [![Ollama](https://img.shields.io/badge/Ollama-llama3.1-black.svg?style=flat&logo=ollama&logoColor=white)](https://ollama.ai)
 [![FFmpeg](https://img.shields.io/badge/FFmpeg-5.0+-007808.svg?style=flat&logo=ffmpeg&logoColor=white)](https://ffmpeg.org)
 
-> **[Demo Video]** &nbsp;|&nbsp; **[Documentation]** &nbsp;|&nbsp; **[GitHub]**
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
