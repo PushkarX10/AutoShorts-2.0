@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoShorts 2.0 — Local AI YouTube Shorts Automation Studio</title>
+  <meta name="description" content="Fully automated local AI YouTube Shorts generator creating funny texting conversations over parkour gameplay footage.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <h1 class="brand-title">AutoShorts 2.0</h1>
+        <div class="brand-subtitle">AI YouTube Shorts Factory</div>
+      </div>
+    </div>
+
+    <div class="header-status-group">
+      <div class="status-badge" id="badge-ollama">
+        <span class="status-dot" id="status-ollama-dot"></span>
+        <span id="status-ollama-text">Checking Ollama…</span>
+      </div>
+      <div class="status-badge" id="badge-ffmpeg">
+        <span class="status-dot" id="status-ffmpeg-dot"></span>
+        <span id="status-ffmpeg-text">Checking FFmpeg…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Studio Main Layout -->
+  <main class="studio-container">
+
+    <!-- Column 1: Video Input & Story Setup -->
+    <section class="panel-card" id="panel-input-setup">
+      <div class="panel-header">
+        <h2 class="panel-title"><span>🎮</span> 1. Gameplay Footage</h2>
+        <span class="panel-badge">Vertical 9:16</span>
+      </div>
+
+      <!-- Dropzone -->
+      <div class="dropzone-container" id="dropzone">
+        <div class="dropzone-icon">📥</div>
+        <div class="dropzone-text">Drop gameplay clip here</div>
+        <div class="dropzone-hint">MP4, MOV, MKV up to 500MB</div>
+        <input type="file" id="file-input" accept="video/*" style="display:none;">
+      </div>
+
+      <button type="button" class="btn-secondary" id="btn-sample-video">
+        <span>🎮</span> Generate Sample Parkour Clip
+      </button>
+
+      <!-- Video Selector List -->
+      <div class="form-group">
+        <label class="form-label">Available Clips in /input</label>
+        <div class="video-list" id="video-list"></div>
+      </div>
+
+      <!-- Humor Style Selector -->
+      <div class="panel-header" style="margin-top:10px;">
+        <h2 class="panel-title"><span>🎭</span> 2. Comedy Style</h2>
+      </div>
+
+      <div class="style-grid" id="style-selector-grid">
+        <div class="style-card selected" data-style="wholesome" id="style-wholesome">
+          <div class="style-emoji">🥰</div>
+          <div class="style-label">Wholesome</div>
+          <div class="style-desc">Warm & playful</div>
+        </div>
+        <div class="style-card" data-style="sarcastic" id="style-sarcastic">
+          <div class="style-emoji">😏</div>
+          <div class="style-label">Sarcastic</div>
+          <div class="style-desc">Dry, witty banter</div>
+        </div>
+        <div class="style-card" data-style="chaotic" id="style-chaotic">
+          <div class="style-emoji">🔥</div>
+          <div class="style-label">Chaotic</div>
+          <div class="style-desc">Absurd escalation</div>
+        </div>
+        <div class="style-card" data-style="awkward" id="style-awkward">
+          <div class="style-emoji">😬</div>
+          <div class="style-label">Awkward</div>
+          <div class="style-desc">Cringe moments</div>
+        </div>
+        <div class="style-card" data-style="dark" id="style-dark" style="grid-column: span 2;">
+          <div class="style-emoji">💀</div>
+          <div class="style-label">Dark Humor</div>
+          <div class="style-desc">Twisted & unexpected turns</div>
+        </div>
+      </div>
+
+      <!-- Custom Prompt / Theme -->
+      <div class="form-group">
+        <label for="input-custom-theme" class="form-label">Story Prompt / Topic (Optional)</label>
+        <input type="text" id="input-custom-theme" class="form-input" placeholder="e.g. Accidental text to mom at 2AM">
+      </div>
+    </section>
+
+    <!-- Column 2: Generator & Live Pipeline Tracker -->
+    <section class="panel-card" id="panel-pipeline">
+      <div class="panel-header">
+        <h2 class="panel-title"><span>⚙️</span> Automation Pipeline</h2>
+        <span class="panel-badge">Local Offline Engine</span>
+      </div>
+
+      <!-- Action Button -->
+      <button type="button" class="btn-generate" id="btn-generate">
+        <span>🚀</span> Generate YouTube Short
+      </button>
+
+      <!-- Multi-Stage Progress Visualizer -->
+      <div class="pipeline-tracker" id="pipeline-tracker">
+        <div class="progress-header">
+          <span id="progress-stage-name">Ready for Generation</span>
+          <span id="progress-pct" style="color:var(--accent-cyan);">0%</span>
+        </div>
+
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+
+        <div class="pipeline-stages">
+          <div class="stage-pill" id="stage-inspecting"><span>1.</span> Ingest Video</div>
+          <div class="stage-pill" id="stage-generating_conversation"><span>2.</span> LLM Script</div>
+          <div class="stage-pill" id="stage-generating_voices"><span>3.</span> TTS Voices</div>
+          <div class="stage-pill" id="stage-building_timeline"><span>4.</span> Timeline</div>
+          <div class="stage-pill" id="stage-compositing"><span>5.</span> Audio Mix</div>
+          <div class="stage-pill" id="stage-encoding"><span>6.</span> Composite</div>
+          <div class="stage-pill" id="stage-validating"><span>7.</span> QA Check</div>
+          <div class="stage-pill" id="stage-generating_metadata"><span>8.</span> YouTube SEO</div>
+          <div class="stage-pill" id="stage-completed"><span>9.</span> Export Done</div>
+        </div>
+      </div>
+
+      <!-- Real-time Terminal Log Stream -->
+      <div class="form-group">
+        <label class="form-label">Live Pipeline Output Logs</label>
+        <div class="terminal-box" id="terminal-logs">
+          <div class="log-line">
+            <span class="log-time">[Ready]</span>
+            <span class="log-info">AutoShorts 2.0 Studio initialized. Waiting for task.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Column 3: Vertical Smartphone Preview & SEO Copier -->
+    <section class="panel-card preview-column" id="panel-preview">
+      <div class="panel-header">
+        <h2 class="panel-title"><span>📱</span> Short Preview & SEO</h2>
+        <span class="panel-badge">1080×1920</span>
+      </div>
+
+      <!-- Phone Mockup Frame -->
+      <div class="phone-wrapper" id="phone-wrapper">
+        <div class="phone-notch"></div>
+        <video id="preview-video" class="preview-video" controls playsinline loop></video>
+        <div class="preview-placeholder" id="preview-placeholder">
+          <div class="preview-placeholder-icon">🎬</div>
+          <div style="font-weight:700;font-size:15px;color:var(--text-primary);">Video Preview</div>
+          <div style="font-size:12px;margin-top:6px;">Your finished YouTube Short will appear and play here.</div>
+        </div>
+      </div>
+
+      <!-- YouTube SEO / Metadata Card -->
+      <div class="seo-card" id="seo-card" style="display:none;">
+        <div class="seo-field">
+          <div class="seo-label-row">
+            <span class="seo-label">YouTube Title</span>
+            <button type="button" class="btn-copy" onclick="copyToClipboard('seo-title', 'Title')">Copy</button>
+          </div>
+          <div class="seo-value-box" id="seo-title"></div>
+        </div>
+
+        <div class="seo-field">
+          <div class="seo-label-row">
+            <span class="seo-label">Description</span>
+            <button type="button" class="btn-copy" onclick="copyToClipboard('seo-desc', 'Description')">Copy</button>
+          </div>
+          <div class="seo-value-box" id="seo-desc"></div>
+        </div>
+
+        <div class="seo-field">
+          <div class="seo-label-row">
+            <span class="seo-label">Hashtags & Tags</span>
+            <button type="button" class="btn-copy" onclick="copyToClipboard('seo-hashtags', 'Hashtags')">Copy</button>
+          </div>
+          <div class="seo-value-box" id="seo-hashtags"></div>
+        </div>
+
+        <div class="seo-field">
+          <div class="seo-label-row">
+            <span class="seo-label">Pinned Comment</span>
+            <button type="button" class="btn-copy" onclick="copyToClipboard('seo-pinned', 'Pinned Comment')">Copy</button>
+          </div>
+          <div class="seo-value-box" id="seo-pinned"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Gallery / Library Section -->
+  <section class="library-section">
+    <div class="panel-header">
+      <h2 class="panel-title"><span>📂</span> Generated Shorts Library</h2>
+      <span class="panel-badge">Local Vault</span>
+    </div>
+    <div class="library-grid" id="library-grid"></div>
+  </section>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast-notification">
+    <span id="toast-icon">✓</span>
+    <span id="toast-message">Action successful!</span>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
