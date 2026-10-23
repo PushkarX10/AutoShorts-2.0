@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments & secrets
+.env
+.env.local
+.venv/
+env/
+venv/
+ENV/
+
+# AutoShorts 2.0 Temporary & Intermediate Media (Prevents 100MB+ push limits)
+temp/
+logs/
+*.log
+
+# Video / Audio build caches and generated content
+output/*
+!output/.gitkeep
+input/*.mp4
+!input/.gitkeep
+
+# External references
+buzz/
+scratch/
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

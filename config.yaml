@@ -1,0 +1,186 @@
+# ============================================================================
+# AutoShorts 2.0 — Configuration
+# ============================================================================
+
+project:
+  name: "AutoShorts 2.0"
+  output_dir: "output"
+  input_dir: "input"
+  temp_dir: "temp"
+  log_level: "INFO"
+
+# ── Video Output Settings ───────────────────────────────────────────────────
+video:
+  width: 1080
+  height: 1920
+  fps: 30
+  codec: "libx264"
+  audio_codec: "aac"
+  audio_bitrate: "192k"
+  pixel_format: "yuv420p"
+  crf: 18
+  preset: "medium"
+  target_duration_min: 35
+  target_duration_max: 55
+  background_darken: 0.3          # 0.0 = no darkening, 1.0 = fully black
+  loop_crossfade_sec: 1.0         # crossfade duration when looping footage
+  fit_mode: "crop"                # "crop" = center-crop horizontal to vertical 9:16; "blur_fill" = blurred background fill
+
+# ── LLM Settings ───────────────────────────────────────────────────────────
+llm:
+  provider: "ollama"
+  model: "llama3.1:latest"
+  base_url: "http://localhost:11434"
+  temperature: 0.85
+  max_retries: 3
+  retry_delay: 2
+  timeout: 120
+  context_length: 4096
+
+# ── TTS Settings ───────────────────────────────────────────────────────────
+tts:
+  engine: "edge-tts"
+  output_format: "wav"
+  sample_rate: 24000
+  voices:
+    female_01:
+      id: "en-CA-ClaraNeural"
+      label: "Clara (calm, smooth female)"
+      rate: "+0%"
+      pitch: "+0Hz"
+      volume: "+0%"
+    female_02:
+      id: "en-US-AriaNeural"
+      label: "Aria (expressive)"
+      rate: "+5%"
+      pitch: "+2Hz"
+      volume: "+0%"
+    female_03:
+      id: "en-US-SaraNeural"
+      label: "Sara (young, energetic)"
+      rate: "+8%"
+      pitch: "+4Hz"
+      volume: "+0%"
+    male_01:
+      id: "en-US-SteffanNeural"
+      label: "Steffan (gentle, smooth)"
+      rate: "+0%"
+      pitch: "+0Hz"
+      volume: "+0%"
+    male_02:
+      id: "en-US-BrianNeural"
+      label: "Brian (relatable, warm)"
+      rate: "+0%"
+      pitch: "+0Hz"
+      volume: "+0%"
+    male_03:
+      id: "en-US-EricNeural"
+      label: "Eric (young, upbeat)"
+      rate: "+5%"
+      pitch: "+3Hz"
+      volume: "+0%"
+
+    brian:
+      id: "en-US-BrianNeural"
+      label: "Brian (relatable, warm)"
+      rate: "+0%"
+      pitch: "+0Hz"
+      volume: "+0%"
+    steffan:
+      id: "en-US-SteffanNeural"
+      label: "Steffan (gentle, smooth)"
+      rate: "+0%"
+      pitch: "+0Hz"
+      volume: "+0%"
+    clara:
+      id: "en-CA-ClaraNeural"
+      label: "Clara (calm, smooth female)"
+      rate: "+0%"
+      pitch: "+0Hz"
+      volume: "+0%"
+
+# ── Chat UI Rendering ─────────────────────────────────────────────────────
+chat:
+  theme: "imessage_panel"         # matches reference YouTube Short style
+  draw_panel: true                # dark rounded container
+  draw_header: true               # header with avatar + name + icons
+  canvas_margin_top: 12           # top padding inside panel
+  panel_width: 920                # panel container width
+  panel_margin_top: 100           # space from top of canvas
+  panel_margin_x: 80
+  panel_height_max: 560           # compact panel height (~top third of screen)
+  panel_corner_radius: 28
+  panel_bg_color: [18, 18, 20, 235]             # near-black panel background
+  header_bg_color: [30, 30, 32, 255]            # slightly lighter header
+  header_text_color: [255, 255, 255]
+  header_height: 90
+  bubble_incoming_color: [48, 48, 52, 245]       # Dark gray (reference style)
+  bubble_outgoing_color: [0, 122, 255, 255]      # iOS iMessage blue
+  bubble_incoming_text_color: [255, 255, 255]
+  bubble_outgoing_text_color: [255, 255, 255]
+  text_font_size: 28
+  emoji_font_size: 28
+  font_family: "Segoe UI"
+  font_bold: "Segoe UI Bold"
+  avatar_size: 44
+  avatar_margin_x: 20
+  avatar_colors: [[150, 150, 155]]              # gray avatar circle like reference
+  bubble_corner_radius: 18
+  bubble_max_width: 640
+  message_padding_x: 18
+  message_padding_y: 10
+  bubble_spacing_same: 4
+  bubble_spacing_diff: 12
+  bubble_spacing: 6
+  bubble_margin_x: 20
+  typing_dot_size: 8
+  typing_dot_spacing: 6
+  typing_indicator_duration_ms: 600
+  message_appear_duration_ms: 180
+  scroll_pixels_per_frame: 10
+
+# ── Audio Mixing ──────────────────────────────────────────────────────────
+audio:
+  voice_volume: 1.0
+  music_volume: 0.12
+  sfx_volume: 0.25
+  normalize_loudness: true
+  target_loudness_lufs: -14
+  pause_between_messages_ms: 350
+  pause_before_punchline_ms: 700
+  pause_after_punchline_ms: 1200
+  min_pause_ms: 200
+  max_pause_ms: 1000
+
+# ── Comedy / Content Settings ─────────────────────────────────────────────
+comedy:
+  humor_style: "wholesome"        # wholesome | sarcastic | chaotic | awkward | dark
+  num_characters: 2
+  min_messages: 10
+  max_messages: 18
+  language: "en"
+  avoid_topics:
+    - "politics"
+    - "religion"
+    - "real_people"
+    - "violence"
+
+# ── Subtitles ──────────────────────────────────────────────────────────────
+subtitles:
+  enabled: false
+  font_size: 28
+  font_color: "white"
+  outline_color: "black"
+  outline_width: 2
+  position: "bottom"             # bottom | below_chat
+  margin_bottom: 120
+
+# ── Quality Assurance ─────────────────────────────────────────────────────
+qa:
+  max_render_retries: 2
+  check_black_frames: true
+  check_audio_levels: true
+  check_resolution: true
+  check_duration: true
+  min_audio_level_db: -40
+  sample_frame_count: 10          # number of frames to sample for QA

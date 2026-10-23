@@ -1,0 +1,30 @@
+# AutoShorts 2.0 — Python Dependencies
+# Install: pip install -r requirements.txt
+
+# Core
+pydantic>=2.0,<3.0
+pydantic-settings>=2.0,<3.0
+pyyaml>=6.0
+python-dotenv>=1.0
+rich>=13.0
+click>=8.0
+
+# Media Processing
+Pillow>=10.0
+opencv-python>=4.8
+numpy>=1.24
+
+# AI / LLM
+httpx>=0.25
+edge-tts>=6.1
+
+# Web Dashboard
+fastapi>=0.100
+uvicorn>=0.20
+aiofiles>=23.0
+
+# Audio
+pyloudnorm>=0.1
+
+# Utilities
+typing-extensions>=4.5
