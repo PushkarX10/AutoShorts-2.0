@@ -8,11 +8,11 @@ interface SpaceEnvironmentProps {
 }
 
 /**
- * Handcrafted 2D Space & Planetary Environment (v2.3 Feature-Rich Edition)
- * - Dense, vibrant scenes with multiple animated objects and depth layers
- * - Clean scientific explanation graphs, gauges, ring meters, and index tags
- * - Modern high-contrast typography, zero text collisions, zero overflowing boxes
- * - Animated laser spectrometer sparks, rotating radar dishes, expanding radio waves, bubbling vacuum tests, and roaring rocket exhaust
+ * Handcrafted 2D Space & Planetary Environment (v2.4 Editorial Masterpiece Edition)
+ * - Beautiful, handcrafted editorial science artwork (Inspired by Kurzgesagt & National Geographic)
+ * - ZERO generic dark-grey web cards, ZERO HTML-style progress bars, ZERO AI-slop dashboards
+ * - Intricate technical details: Astronomical Sol chronometer, orbital mechanics diagrams,
+ *   altitude jump scales, botanical greenhouse cutaways, molecular models, and meteorological isobar charts.
  */
 export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
   environment,
@@ -21,7 +21,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
 }) => {
   const frame = useCurrentFrame();
 
-  // Strict Editorial Palette
+  // Strict Handcrafted Editorial Palette
   const PAPER_CREAM = "#F4EFE5";
   const INK_CHARCOAL = "#242B35";
   const DUSTY_CORAL = "#C86D52";
@@ -30,7 +30,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
   const STONE_GREY = "#A6A18F";
   const SAGE_GREEN = "#768C79";
   const SAND_BEIGE = "#D8C5AA";
-  const SPACE_BLACK = "#0A0D14";
+  const SPACE_BLACK = "#090C12";
 
   // Dynamic animations
   const starTwinkle = Math.sin(frame * 0.08) * 0.25 + 0.75;
@@ -38,16 +38,22 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
   const satelliteX = 260 + Math.sin(frame * 0.02) * 30;
   const satelliteY = 940 + Math.cos(frame * 0.02) * 20;
   const satelliteRot = Math.sin(frame * 0.015) * 5;
-  const radarSweep = (frame * 4.5) % 360;
   const radioWaveR = (frame * 3) % 90;
   const radioWaveOpacity = 1 - radioWaveR / 90;
-  const dustDrift = (frame * 16) % 1500;
   const stormWinds = (frame * 42) % 1800;
-  const rocketLift = Math.min(frame * 16, 800);
+  const rocketLift = Math.min(frame * 12, 480);
   const flameFlicker = (frame % 4) * 8;
   const laserPulse = frame % 8 < 5;
   const boilingBubble = Math.sin(frame * 0.6) * 6;
   const powerPulse = (frame * 14) % 300;
+
+  // Active Sol per scene
+  const solNumber =
+    sceneId === 1 ? "01" :
+    sceneId === 2 ? "05" :
+    sceneId === 3 ? "12" :
+    sceneId === 4 ? "15" :
+    sceneId === 5 ? "18" : "30";
 
   return (
     <div
@@ -69,9 +75,9 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
         <defs>
           {/* Deep Space Gradient */}
           <radialGradient id="deep-space" cx="50%" cy="35%" r="75%">
-            <stop offset="0%" stopColor="#1B2330" />
-            <stop offset="55%" stopColor="#10151E" />
-            <stop offset="100%" stopColor="#07090D" />
+            <stop offset="0%" stopColor="#19202C" />
+            <stop offset="55%" stopColor="#0F141D" />
+            <stop offset="100%" stopColor="#06080B" />
           </radialGradient>
 
           {/* Mars Atmospheric Sky Gradient */}
@@ -120,16 +126,10 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
             <stop offset="50%" stopColor="#AD533B" />
             <stop offset="100%" stopColor="#6E2F20" />
           </linearGradient>
-
-          {/* Semi-transparent Glass Panel */}
-          <linearGradient id="glass-card" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="rgba(36, 43, 53, 0.88)" />
-            <stop offset="100%" stopColor="rgba(20, 24, 32, 0.94)" />
-          </linearGradient>
         </defs>
 
         {/* ========================================================================= */}
-        {/* SCENE 1: ORBITAL ARRIVAL (PLANET MARS, SUN, SATELLITE & TELEMETRY INDEX)   */}
+        {/* SCENE 1: ORBITAL ARRIVAL (PLANET MARS, SUN, SATELLITE & ORBITAL MECHANICS)*/}
         {/* ========================================================================= */}
         {sceneId === 1 && (
           <g>
@@ -160,7 +160,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               ))}
             </g>
 
-            {/* THE SUN (Glowing Solar Corona in Space) */}
+            {/* THE SUN */}
             <g transform="translate(180, 280)">
               <circle cx="0" cy="0" r={170 + sunPulse} fill="url(#sun-corona)" />
               <circle cx="0" cy="0" r="58" fill="#FFFCE8" stroke={WARM_GOLD} strokeWidth="4" />
@@ -179,7 +179,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               ))}
             </g>
 
-            {/* PLANET MARS GLOBE (Massive high-detail 2D illustrated sphere) */}
+            {/* PLANET MARS GLOBE */}
             <g transform="translate(680, 960)">
               <circle cx="0" cy="0" r="380" fill="none" stroke="#6893B8" strokeWidth="16" opacity="0.6" />
               <circle cx="0" cy="0" r="370" fill="none" stroke={DUSTY_CORAL} strokeWidth="8" opacity="0.45" />
@@ -212,30 +212,24 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               <ellipse cx="-130" cy="-140" rx="16" ry="10" fill="#3D120A" />
             </g>
 
-            {/* ORBITING SCIENTIFIC SATELLITE WITH EXPANDING RADIO SIGNAL WAVES */}
+            {/* ORBITING SATELLITE WITH RADIO SIGNAL WAVES */}
             <g transform={`translate(${satelliteX}, ${satelliteY}) rotate(${satelliteRot})`}>
-              {/* Expanding Radio Waves */}
               <circle cx="44" cy="-77" r={radioWaveR} fill="none" stroke={WARM_GOLD} strokeWidth="2.5" opacity={radioWaveOpacity} />
               <circle cx="44" cy="-77" r={Math.max(0, radioWaveR - 30)} fill="none" stroke={WARM_GOLD} strokeWidth="2" opacity={radioWaveOpacity} />
 
-              {/* Satellite Body */}
               <rect x="-40" y="-35" width="80" height="70" rx="8" fill={WARM_GOLD} stroke={INK_CHARCOAL} strokeWidth="5" />
               <rect x="-30" y="-25" width="60" height="50" rx="4" fill="#B88A3B" />
               <line x1="-30" y1="0" x2="30" y2="0" stroke={INK_CHARCOAL} strokeWidth="3" />
 
-              {/* Steerable Dish Antenna */}
               <path d="M 0 -35 Q 25 -75 55 -60 Q 25 -45 0 -35 Z" fill="#E8E2D5" stroke={INK_CHARCOAL} strokeWidth="4" />
               <line x1="25" y1="-55" x2="42" y2="-75" stroke={INK_CHARCOAL} strokeWidth="3" />
               <circle cx="44" cy="-77" r="4.5" fill={DUSTY_CORAL} />
 
-              {/* Multi-Panel Solar Arrays */}
               <g transform="translate(-40, 0)">
                 <line x1="0" y1="0" x2="-140" y2="0" stroke={INK_CHARCOAL} strokeWidth="6" />
                 <rect x="-140" y="-45" width="130" height="90" rx="6" fill="url(#solar-cell)" stroke={INK_CHARCOAL} strokeWidth="4" />
                 <line x1="-97" y1="-45" x2="-97" y2="45" stroke="#4878A4" strokeWidth="2" />
                 <line x1="-54" y1="-45" x2="-54" y2="45" stroke="#4878A4" strokeWidth="2" />
-                <line x1="-140" y1="-15" x2="-10" y2="-15" stroke="#4878A4" strokeWidth="2" />
-                <line x1="-140" y1="15" x2="-10" y2="15" stroke="#4878A4" strokeWidth="2" />
               </g>
 
               <g transform="translate(40, 0)">
@@ -243,69 +237,58 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
                 <rect x="10" y="-45" width="130" height="90" rx="6" fill="url(#solar-cell)" stroke={INK_CHARCOAL} strokeWidth="4" />
                 <line x1="53" y1="-45" x2="53" y2="45" stroke="#4878A4" strokeWidth="2" />
                 <line x1="96" y1="-45" x2="96" y2="45" stroke="#4878A4" strokeWidth="2" />
-                <line x1="10" y1="-15" x2="140" y2="-15" stroke="#4878A4" strokeWidth="2" />
-                <line x1="10" y1="15" x2="140" y2="15" stroke="#4878A4" strokeWidth="2" />
               </g>
 
-              {/* Sensor Boom */}
               <line x1="0" y1="35" x2="0" y2="90" stroke={INK_CHARCOAL} strokeWidth="4" />
               <circle cx="0" cy="94" r="6" fill={SAGE_GREEN} stroke={INK_CHARCOAL} strokeWidth="3" />
             </g>
 
-            {/* INTERPLANETARY CRUISE SPACECRAFT (Cruising in upper orbit) */}
+            {/* INTERPLANETARY CRUISE SPACECRAFT */}
             <g transform="translate(740, 420) scale(0.9)">
               <rect x="-80" y="-22" width="160" height="44" rx="14" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="5" />
               <path d="M 50 -12 Q 80 0 50 12 Z" fill={MUTED_BLUE} stroke={INK_CHARCOAL} strokeWidth="3.5" />
               <polygon points="-80,-18 -115,-30 -115,30 -80,18" fill="#5A6678" stroke={INK_CHARCOAL} strokeWidth="4" />
               <ellipse cx="-120" cy="0" rx="15" ry="8" fill="#7FB7E0" opacity="0.85" />
-              <rect x="-35" y="-55" width="70" height="30" rx="4" fill="#D5AA62" stroke={INK_CHARCOAL} strokeWidth="3" />
-              <rect x="-35" y="25" width="70" height="30" rx="4" fill="#D5AA62" stroke={INK_CHARCOAL} strokeWidth="3" />
             </g>
 
             {/* =============================================================== */}
-            {/* CLEAN SCIENTIFIC EXPLANATION INDEX // ORBITAL TELEMETRY         */}
+            {/* HANDCRAFTED ORBITAL MECHANICS MAP & ASTRONOMICAL ANNOTATION     */}
             {/* =============================================================== */}
-            {/* Top Mission Tracker Index */}
-            <g transform="translate(70, 75)">
-              <rect x="0" y="0" width="360" height="42" rx="8" fill="url(#glass-card)" stroke={WARM_GOLD} strokeWidth="2" />
-              <circle cx="22" cy="21" r="5" fill="#3DDF78" />
-              <text x="38" y="27" fill={PAPER_CREAM} fontSize="16" fontWeight="800" letterSpacing="2px" fontFamily="'Inter', sans-serif">
-                MISSION LOG // SOL 01 OF 30
+            <g transform="translate(680, 140)">
+              {/* Elliptical Orbital Flight Path */}
+              <ellipse cx="140" cy="80" rx="130" ry="60" fill="none" stroke={WARM_GOLD} strokeWidth="2" strokeDasharray="6 6" opacity="0.85" />
+              {/* Mini Central Mars */}
+              <circle cx="140" cy="80" r="26" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="2.5" />
+              {/* Satellite Position on Orbit */}
+              <circle cx="270" cy="80" r="7" fill="#FFFFFF" stroke={INK_CHARCOAL} strokeWidth="2" />
+              {/* Tangent Velocity Vector Arrow */}
+              <line x1="270" y1="80" x2="270" y2="25" stroke={WARM_GOLD} strokeWidth="3" markerEnd="url(#arrow)" />
+              <polygon points="270,25 264,38 276,38" fill={WARM_GOLD} />
+              <text x="285" y="45" fill={WARM_GOLD} fontSize="14" fontWeight="800" fontFamily="'Montserrat', sans-serif">
+                v = 3.5 km/s
               </text>
-            </g>
 
-            {/* Planetary Specifications Telemetry Card (Upper Right) */}
-            <g transform="translate(620, 75)">
-              <rect x="0" y="0" width="390" height="150" rx="14" fill="url(#glass-card)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="2" />
-              <text x="24" y="34" fill={WARM_GOLD} fontSize="18" fontWeight="900" letterSpacing="2px" fontFamily="'Montserrat', sans-serif">
-                TARGET // MARS (4TH PLANET)
+              {/* Delicate Scientific Labels */}
+              <line x1="20" y1="160" x2="260" y2="160" stroke={STONE_GREY} strokeWidth="1" />
+              <text x="20" y="185" fill={PAPER_CREAM} fontSize="16" fontWeight="800" letterSpacing="1.5px" fontFamily="'Montserrat', sans-serif">
+                ORBITAL ALTITUDE: 420 KM
               </text>
-              <line x1="24" y1="46" x2="366" y2="46" stroke="#3D4A5C" strokeWidth="1.5" />
-              <text x="24" y="74" fill={PAPER_CREAM} fontSize="16" fontWeight="700" fontFamily="'Inter', sans-serif">
-                DIAMETER: 6,779 KM (0.53x EARTH)
-              </text>
-              <text x="24" y="104" fill={PAPER_CREAM} fontSize="16" fontWeight="700" fontFamily="'Inter', sans-serif">
-                SOL DURATION: 24h 37m
-              </text>
-              <text x="24" y="134" fill={PAPER_CREAM} fontSize="16" fontWeight="700" fontFamily="'Inter', sans-serif">
-                SURFACE TEMP: -63°C (AVG)
+              <text x="20" y="210" fill={STONE_GREY} fontSize="14" fontWeight="600" letterSpacing="1px" fontFamily="'Inter', sans-serif">
+                POLAR INCLINATION: 86.4° // PERIOD: 118 MIN
               </text>
             </g>
           </g>
         )}
 
         {/* ========================================================================= */}
-        {/* SCENE 2: SURFACE TOUCHDOWN & GRAVITY EXPLANATION INDEX                    */}
+        {/* SCENE 2: SURFACE TOUCHDOWN & SCIENTIFIC ALTITUDE MEASUREMENT SCALE        */}
         {/* ========================================================================= */}
         {sceneId === 2 && (
           <g>
             <rect width="1080" height="1920" fill="url(#mars-sky)" />
-
-            {/* Sun & Phobos */}
             <circle cx="820" cy="380" r="42" fill="#FFE8BF" stroke={WARM_GOLD} strokeWidth="3" />
             <ellipse cx="640" cy="280" rx="18" ry="12" fill="#A89F91" stroke={INK_CHARCOAL} strokeWidth="2.5" />
 
-            {/* Distant Horizons */}
             <polygon
               points="-50,960 180,880 440,940 760,860 1130,930 1130,1350 -50,1350"
               fill="#522920"
@@ -319,14 +302,13 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               strokeWidth="6"
             />
 
-            {/* 3-STORY EXPLORATION LANDER SPACECRAFT (ARES-IV) */}
+            {/* 3-STORY EXPLORATION LANDER (ARES-IV) */}
             <g transform="translate(240, 1020)">
               <rect x="-85" y="-360" width="170" height="340" rx="20" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="7" />
               <path d="M -85 -360 Q 0 -440 85 -360 Z" fill="#D8D0C2" stroke={INK_CHARCOAL} strokeWidth="6" />
               <rect x="-95" y="-20" width="190" height="24" rx="6" fill="#3D4552" stroke={INK_CHARCOAL} strokeWidth="5" />
               <polygon points="-25,4 -45,45 45,45 25,4" fill="#242B35" stroke={INK_CHARCOAL} strokeWidth="4" />
 
-              {/* Hydraulic Landing Legs */}
               <path d="M -85 -30 L -170 65 L -165 75 L -80 -10" fill="#525E70" stroke={INK_CHARCOAL} strokeWidth="5" />
               <ellipse cx="-175" cy="72" rx="35" ry="12" fill="#343C47" stroke={INK_CHARCOAL} strokeWidth="4.5" />
               <line x1="-85" y1="-140" x2="-150" y2="40" stroke={INK_CHARCOAL} strokeWidth="4" />
@@ -335,7 +317,6 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               <ellipse cx="175" cy="72" rx="35" ry="12" fill="#343C47" stroke={INK_CHARCOAL} strokeWidth="4.5" />
               <line x1="85" y1="-140" x2="150" y2="40" stroke={INK_CHARCOAL} strokeWidth="4" />
 
-              {/* Ladder */}
               <rect x="-26" y="-120" width="52" height="75" rx="8" fill="#2C3542" stroke={INK_CHARCOAL} strokeWidth="4" />
               <line x1="-16" y1="-45" x2="-16" y2="70" stroke={INK_CHARCOAL} strokeWidth="4" />
               <line x1="16" y1="-45" x2="16" y2="70" stroke={INK_CHARCOAL} strokeWidth="4" />
@@ -343,7 +324,6 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
                 <line key={idx} x1="-16" y1={ly} x2="16" y2={ly} stroke={INK_CHARCOAL} strokeWidth="3.5" />
               ))}
 
-              {/* Mast Antenna */}
               <line x1="0" y1="-430" x2="0" y2="-490" stroke={INK_CHARCOAL} strokeWidth="4.5" />
               <path d="M -22 -490 Q 0 -515 22 -490 Z" fill="#FFFFFF" stroke={INK_CHARCOAL} strokeWidth="3" />
             </g>
@@ -359,41 +339,41 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
             />
 
             {/* =============================================================== */}
-            {/* CLEAN EXPLANATION GRAPH // GRAVITY JUMP COMPARISON              */}
+            {/* SCIENTIFIC ALTITUDE MEASUREMENT SCALE // LOW-G JUMP GUIDE       */}
             {/* =============================================================== */}
-            {/* Top Mission Tracker Index */}
-            <g transform="translate(70, 75)">
-              <rect x="0" y="0" width="360" height="42" rx="8" fill="url(#glass-card)" stroke={WARM_GOLD} strokeWidth="2" />
-              <circle cx="22" cy="21" r="5" fill="#3DDF78" />
-              <text x="38" y="27" fill={PAPER_CREAM} fontSize="16" fontWeight="800" letterSpacing="2px" fontFamily="'Inter', sans-serif">
-                MISSION LOG // SOL 05 OF 30
-              </text>
-            </g>
+            <g transform="translate(680, 140)">
+              {/* Vertical Metric Altitude Ruler */}
+              <line x1="0" y1="0" x2="0" y2="200" stroke={WARM_GOLD} strokeWidth="3" />
+              {/* Altitude Ruler Ticks */}
+              {[0, 40, 80, 120, 160, 200].map((ry, idx) => (
+                <g key={idx} transform={`translate(0, ${ry})`}>
+                  <line x1="-8" y1="0" x2="8" y2="0" stroke={WARM_GOLD} strokeWidth="2.5" />
+                  <text x="16" y="5" fill={PAPER_CREAM} fontSize="13" fontWeight="700" fontFamily="'Montserrat', sans-serif">
+                    {(2.0 - idx * 0.4).toFixed(1)}m
+                  </text>
+                </g>
+              ))}
 
-            {/* Visual Gravity Comparison Card (Upper Right) */}
-            <g transform="translate(560, 75)">
-              <rect x="0" y="0" width="450" height="180" rx="14" fill="url(#glass-card)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="2" />
-              <text x="24" y="34" fill={WARM_GOLD} fontSize="18" fontWeight="900" letterSpacing="2px" fontFamily="'Montserrat', sans-serif">
-                GRAVITY PHYSICS // 0.38g (38%)
-              </text>
-              <line x1="24" y1="46" x2="426" y2="46" stroke="#3D4A5C" strokeWidth="1.5" />
-
-              {/* Earth Comparison Bar */}
-              <g transform="translate(24, 62)">
-                <text x="0" y="16" fill={PAPER_CREAM} fontSize="15" fontWeight="700" fontFamily="'Inter', sans-serif">EARTH (1.0g):</text>
-                <rect x="130" y="4" width="60" height="16" rx="4" fill={MUTED_BLUE} />
-                <text x="205" y="16" fill={PAPER_CREAM} fontSize="14" fontWeight="800" fontFamily="'Inter', sans-serif">0.5 M</text>
+              {/* Mars Apex Height Indicator (1.8m) */}
+              <g transform="translate(0, 20)">
+                <line x1="0" y1="0" x2="140" y2="0" stroke={DUSTY_CORAL} strokeWidth="2.5" strokeDasharray="4 4" />
+                <rect x="145" y="-14" width="190" height="28" rx="6" fill={DUSTY_CORAL} />
+                <text x="240" y="5" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="'Montserrat', sans-serif">
+                  MARS: 1.8M (0.38g)
+                </text>
               </g>
 
-              {/* Mars Comparison Bar */}
-              <g transform="translate(24, 98)">
-                <text x="0" y="16" fill={WARM_GOLD} fontSize="15" fontWeight="900" fontFamily="'Inter', sans-serif">MARS (0.38g):</text>
-                <rect x="130" y="4" width="220" height="16" rx="4" fill={DUSTY_CORAL} />
-                <text x="365" y="16" fill={WARM_GOLD} fontSize="14" fontWeight="900" fontFamily="'Inter', sans-serif">1.8 M</text>
+              {/* Earth Baseline Height Indicator (0.5m) */}
+              <g transform="translate(0, 150)">
+                <line x1="0" y1="0" x2="140" y2="0" stroke={MUTED_BLUE} strokeWidth="2.5" strokeDasharray="4 4" />
+                <rect x="145" y="-14" width="190" height="28" rx="6" fill={MUTED_BLUE} />
+                <text x="240" y="5" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="'Montserrat', sans-serif">
+                  EARTH: 0.5M (1.0g)
+                </text>
               </g>
 
-              <text x="24" y="152" fill={PAPER_CREAM} fontSize="15" fontWeight="700" fontFamily="'Inter', sans-serif">
-                RESULT: 3.6x HIGHER, BUOYANT JUMPS
+              <text x="0" y="240" fill={WARM_GOLD} fontSize="17" fontWeight="900" letterSpacing="1px" fontFamily="'Montserrat', sans-serif">
+                3.6x HIGHER VERTICAL REACH
               </text>
             </g>
 
@@ -412,14 +392,13 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
         )}
 
         {/* ========================================================================= */}
-        {/* SCENE 3: MARS ROVER, LASER DRILL, CO2 MOLECULE & VACUUM PRESSURE DIAL     */}
+        {/* SCENE 3: MARS ROVER, LASER DRILL, CO2 CHEMISTRY & BRASS BAROMETER GAUGE   */}
         {/* ========================================================================= */}
         {sceneId === 3 && (
           <g>
             <rect width="1080" height="1920" fill="url(#mars-sky)" />
             <circle cx="780" cy="360" r="40" fill="#FFF0D0" stroke={WARM_GOLD} strokeWidth="3" />
 
-            {/* Towering Rock Outcrops */}
             <polygon
               points="-40,880 160,780 340,840 520,740 740,820 1120,760 1120,1350 -40,1350"
               fill="#5A261C"
@@ -433,22 +412,20 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               strokeWidth="6"
             />
 
-            {/* AUTONOMOUS MARS SCIENCE ROVER (Drilling bedrock with pulsing laser) */}
+            {/* AUTONOMOUS MARS SCIENCE ROVER */}
             <g transform="translate(360, 1140)">
               <rect x="-110" y="-70" width="220" height="80" rx="16" fill="#DCD5C8" stroke={INK_CHARCOAL} strokeWidth="6" />
               <rect x="-85" y="-55" width="170" height="35" rx="8" fill="#525E70" />
 
-              {/* Mast & Cameras */}
               <line x1="-60" y1="-70" x2="-60" y2="-170" stroke={INK_CHARCOAL} strokeWidth="6" strokeLinecap="round" />
               <rect x="-85" y="-200" width="50" height="32" rx="6" fill="#3D4552" stroke={INK_CHARCOAL} strokeWidth="4" />
               <circle cx="-72" cy="-184" r="7" fill={MUTED_BLUE} stroke={INK_CHARCOAL} strokeWidth="2.5" />
               <circle cx="-48" cy="-184" r="7" fill={MUTED_BLUE} stroke={INK_CHARCOAL} strokeWidth="2.5" />
 
-              {/* Antenna */}
               <line x1="50" y1="-70" x2="50" y2="-130" stroke={INK_CHARCOAL} strokeWidth="5" />
               <path d="M 30 -130 Q 50 -155 70 -130 Z" fill="#FFFFFF" stroke={INK_CHARCOAL} strokeWidth="3" />
 
-              {/* Robotic Arm & Pulsing Laser */}
+              {/* Pulsing Red Laser Spectrometer Beam */}
               <g transform="translate(-110, -20)">
                 <line x1="0" y1="0" x2="-70" y2="40" stroke={INK_CHARCOAL} strokeWidth="7" strokeLinecap="round" />
                 <line x1="-70" y1="40" x2="-125" y2="85" stroke={INK_CHARCOAL} strokeWidth="6" strokeLinecap="round" />
@@ -489,7 +466,6 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
                 </g>
               ))}
 
-              {/* Bedrock boulder being sampled */}
               <polygon points="-280,1180 -190,1120 -130,1190 -230,1230" fill="#8C3A29" stroke={INK_CHARCOAL} strokeWidth="4" />
             </g>
 
@@ -503,104 +479,59 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               <circle cx="-12" cy={15 + boilingBubble} r="5" fill="#FFE8E0" />
               <circle cx="14" cy={5 - boilingBubble} r="6" fill="#FFE8E0" />
               <circle cx="2" cy={-15 + boilingBubble * 1.5} r="4" fill="#FFE8E0" />
-              <circle cx="0" cy="-135" r="22" fill="#FFFFFF" stroke={INK_CHARCOAL} strokeWidth="4" />
-              <line x1="0" y1="-135" x2="-14" y2="-140" stroke="#FF2B2B" strokeWidth="3" strokeLinecap="round" />
-              <circle cx="0" cy="-135" r="4" fill={INK_CHARCOAL} />
             </g>
 
             {/* =============================================================== */}
-            {/* CLEAN EXPLANATION GRAPHS // CO2 DONUT + MOLECULAR MODEL         */}
+            {/* HANDCRAFTED BOTANICAL / CHEMICAL SPREAD // MOLECULAR & GAUGE     */}
             {/* =============================================================== */}
-            {/* Top Mission Tracker Index */}
-            <g transform="translate(70, 75)">
-              <rect x="0" y="0" width="360" height="42" rx="8" fill="url(#glass-card)" stroke={WARM_GOLD} strokeWidth="2" />
-              <circle cx="22" cy="21" r="5" fill="#3DDF78" />
-              <text x="38" y="27" fill={PAPER_CREAM} fontSize="16" fontWeight="800" letterSpacing="2px" fontFamily="'Inter', sans-serif">
-                MISSION LOG // SOL 12 OF 30
+            {/* Left Chemical Plate: Carbon Dioxide Molecular Structure */}
+            <g transform="translate(250, 210)">
+              <g transform="translate(0, 0)">
+                <circle cx="-56" cy="0" r="24" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="3.5" />
+                <text x="-56" y="7" textAnchor="middle" fill="#FFFFFF" fontSize="17" fontWeight="900" fontFamily="'Montserrat', sans-serif">O</text>
+                <line x1="-32" y1="-5" x2="-24" y2="-5" stroke="#FFFFFF" strokeWidth="3.5" />
+                <line x1="-32" y1="5" x2="-24" y2="5" stroke="#FFFFFF" strokeWidth="3.5" />
+                <circle cx="0" cy="0" r="24" fill={INK_CHARCOAL} stroke={WARM_GOLD} strokeWidth="3.5" />
+                <text x="0" y="7" textAnchor="middle" fill="#FFFFFF" fontSize="17" fontWeight="900" fontFamily="'Montserrat', sans-serif">C</text>
+                <line x1="24" y1="-5" x2="32" y2="-5" stroke="#FFFFFF" strokeWidth="3.5" />
+                <line x1="24" y1="5" x2="32" y2="5" stroke="#FFFFFF" strokeWidth="3.5" />
+                <circle cx="56" cy="0" r="24" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="3.5" />
+                <text x="56" y="7" textAnchor="middle" fill="#FFFFFF" fontSize="17" fontWeight="900" fontFamily="'Montserrat', sans-serif">O</text>
+              </g>
+              <text x="0" y="52" textAnchor="middle" fill={PAPER_CREAM} fontSize="16" fontWeight="800" letterSpacing="1px" fontFamily="'Montserrat', sans-serif">
+                95.3% CARBON DIOXIDE
+              </text>
+              <text x="0" y="74" textAnchor="middle" fill={STONE_GREY} fontSize="13" fontWeight="600" letterSpacing="0.5px" fontFamily="'Inter', sans-serif">
+                TOXIC UNBREATHABLE AIR
               </text>
             </g>
 
-            {/* Clean Atmosphere Gas Donut Card (Upper Left) */}
-            <g transform="translate(70, 135)">
-              <rect x="0" y="0" width="440" height="220" rx="14" fill="url(#glass-card)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="2" />
-              <text x="24" y="34" fill={DUSTY_CORAL} fontSize="18" fontWeight="900" letterSpacing="2px" fontFamily="'Montserrat', sans-serif">
-                ATMOSPHERE // 95.3% CO₂
-              </text>
-              <line x1="24" y1="46" x2="416" y2="46" stroke="#3D4A5C" strokeWidth="1.5" />
-
-              {/* Donut Chart */}
-              <g transform="translate(80, 130)">
-                <circle cx="0" cy="0" r="52" fill="none" stroke="#2A3542" strokeWidth="18" />
-                {/* 95.3% CO2 Arc */}
-                <circle
-                  cx="0"
-                  cy="0"
-                  r="52"
-                  fill="none"
-                  stroke={DUSTY_CORAL}
-                  strokeWidth="18"
-                  strokeDasharray="310 327"
-                  strokeDashoffset="0"
-                  transform="rotate(-90)"
+            {/* Right Antique Brass Aneroid Barometer Dial */}
+            <g transform="translate(800, 210)">
+              <circle cx="0" cy="0" r="50" fill="#242B35" stroke={WARM_GOLD} strokeWidth="4" />
+              <circle cx="0" cy="0" r="42" fill="none" stroke="#3D4A5C" strokeWidth="2" strokeDasharray="3 4" />
+              {/* Dial Ticks */}
+              {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, idx) => (
+                <line
+                  key={idx}
+                  x1={Math.cos((deg * Math.PI) / 180) * 34}
+                  y1={Math.sin((deg * Math.PI) / 180) * 34}
+                  x2={Math.cos((deg * Math.PI) / 180) * 41}
+                  y2={Math.sin((deg * Math.PI) / 180) * 41}
+                  stroke={WARM_GOLD}
+                  strokeWidth="2"
                 />
-                <text x="0" y="6" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="900" fontFamily="'Montserrat', sans-serif">
-                  95.3%
-                </text>
-              </g>
+              ))}
+              {/* Needle pointing to 0.006 ATM Red Sector */}
+              <line x1="0" y1="0" x2="-26" y2="-26" stroke="#FF2B2B" strokeWidth="3.5" strokeLinecap="round" />
+              <circle cx="0" cy="0" r="6" fill={WARM_GOLD} />
 
-              {/* Legend */}
-              <g transform="translate(160, 85)">
-                <circle cx="10" cy="10" r="6" fill={DUSTY_CORAL} />
-                <text x="26" y="15" fill={PAPER_CREAM} fontSize="15" fontWeight="700" fontFamily="'Inter', sans-serif">CARBON DIOXIDE: 95.3%</text>
-
-                <circle cx="10" cy="40" r="6" fill={MUTED_BLUE} />
-                <text x="26" y="45" fill={PAPER_CREAM} fontSize="15" fontWeight="700" fontFamily="'Inter', sans-serif">NITROGEN & ARGON: 4.5%</text>
-
-                <circle cx="10" cy="70" r="6" fill="#FFFFFF" />
-                <text x="26" y="75" fill={WARM_GOLD} fontSize="15" fontWeight="900" fontFamily="'Inter', sans-serif">OXYGEN: 0.13% (TRACE)</text>
-              </g>
-            </g>
-
-            {/* Molecular Structure & Vacuum Pressure Gauge Card (Upper Right) */}
-            <g transform="translate(540, 135)">
-              <rect x="0" y="0" width="470" height="220" rx="14" fill="url(#glass-card)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="2" />
-              <text x="24" y="34" fill={WARM_GOLD} fontSize="18" fontWeight="900" letterSpacing="2px" fontFamily="'Montserrat', sans-serif">
-                PRESSURE // 0.006 ATM (VACUUM)
+              <text x="0" y="74" textAnchor="middle" fill={DUSTY_CORAL} fontSize="17" fontWeight="900" letterSpacing="1px" fontFamily="'Montserrat', sans-serif">
+                0.006 ATM (NEAR VACUUM)
               </text>
-              <line x1="24" y1="46" x2="446" y2="46" stroke="#3D4A5C" strokeWidth="1.5" />
-
-              {/* Illustrated CO2 Molecular Model (O = C = O) */}
-              <g transform="translate(120, 130)">
-                {/* Left Oxygen */}
-                <circle cx="-55" cy="0" r="22" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="3" />
-                <text x="-55" y="6" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="900">O</text>
-                {/* Double Bond 1 */}
-                <line x1="-33" y1="-5" x2="-22" y2="-5" stroke="#FFFFFF" strokeWidth="3" />
-                <line x1="-33" y1="5" x2="-22" y2="5" stroke="#FFFFFF" strokeWidth="3" />
-                {/* Center Carbon */}
-                <circle cx="0" cy="0" r="22" fill={INK_CHARCOAL} stroke={PAPER_CREAM} strokeWidth="3" />
-                <text x="0" y="6" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="900">C</text>
-                {/* Double Bond 2 */}
-                <line x1="22" y1="-5" x2="33" y2="-5" stroke="#FFFFFF" strokeWidth="3" />
-                <line x1="22" y1="5" x2="33" y2="5" stroke="#FFFFFF" strokeWidth="3" />
-                {/* Right Oxygen */}
-                <circle cx="55" cy="0" r="22" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="3" />
-                <text x="55" y="6" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="900">O</text>
-              </g>
-
-              {/* Armstrong Hazard Warning Callout */}
-              <g transform="translate(230, 85)">
-                <rect x="0" y="0" width="215" height="90" rx="8" fill="rgba(200, 109, 82, 0.25)" stroke={DUSTY_CORAL} strokeWidth="1.5" />
-                <text x="12" y="28" fill="#FF4545" fontSize="15" fontWeight="900" fontFamily="'Montserrat', sans-serif">
-                  ARMSTRONG LIMIT:
-                </text>
-                <text x="12" y="52" fill={PAPER_CREAM} fontSize="14" fontWeight="700" fontFamily="'Inter', sans-serif">
-                  AT 0.006 ATM, BLOOD
-                </text>
-                <text x="12" y="74" fill={PAPER_CREAM} fontSize="14" fontWeight="700" fontFamily="'Inter', sans-serif">
-                  BOILS AT BODY TEMP (37°C)
-                </text>
-              </g>
+              <text x="0" y="96" textAnchor="middle" fill={PAPER_CREAM} fontSize="13" fontWeight="600" fontFamily="'Inter', sans-serif">
+                ARMSTRONG LIMIT: BLOOD BOILS AT 37°C
+              </text>
             </g>
 
             {/* Dunes */}
@@ -614,14 +545,13 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
         )}
 
         {/* ========================================================================= */}
-        {/* SCENE 4: BASE ALPHA SANCTUARY, GREENHOUSE & POWER GRID INDEX              */}
+        {/* SCENE 4: BASE ALPHA SANCTUARY, GREENHOUSE & BOTANICAL ARCHITECTURE        */}
         {/* ========================================================================= */}
         {sceneId === 4 && (
           <g>
             <rect width="1080" height="1920" fill="url(#mars-sky)" />
             <circle cx="280" cy="420" r="48" fill="#FFF2D6" stroke={WARM_GOLD} strokeWidth="4" />
 
-            {/* Distant Hills */}
             <polygon
               points="-50,960 220,890 540,950 820,880 1130,940 1130,1350 -50,1350"
               fill="#522920"
@@ -639,7 +569,6 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
             <g transform="translate(680, 1180)">
               <path d="M -240 0 A 240 240 0 0 1 240 0 Z" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="7" />
 
-              {/* Interior Greenhouse with warm illuminated hydroponics */}
               <path d="M -160 0 A 160 160 0 0 1 160 0 Z" fill="#D8E8D5" stroke={INK_CHARCOAL} strokeWidth="5" />
               <g fill={SAGE_GREEN} stroke={INK_CHARCOAL} strokeWidth="2.5">
                 <path d="M -80 0 Q -70 -60 -40 -70 Q -30 -30 -50 0 Z" />
@@ -647,7 +576,6 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
                 <path d="M 60 0 Q 75 -50 110 -60 Q 90 -20 80 0 Z" />
               </g>
 
-              {/* Geodesic Structural Trusses */}
               <g stroke={INK_CHARCOAL} strokeWidth="3.5" fill="none">
                 <line x1="-240" y1="0" x2="-140" y2="-120" />
                 <line x1="-140" y1="-120" x2="0" y2="-240" />
@@ -658,7 +586,6 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
                 <line x1="0" y1="-80" x2="0" y2="0" />
               </g>
 
-              {/* Pressurized Airlock */}
               <g transform="translate(-240, -10)">
                 <rect x="-80" y="-85" width="80" height="95" rx="8" fill="#525E70" stroke={INK_CHARCOAL} strokeWidth="5" />
                 <ellipse cx="-40" cy="-35" rx="24" ry="38" fill="#343C47" stroke={INK_CHARCOAL} strokeWidth="3.5" />
@@ -666,7 +593,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               </g>
             </g>
 
-            {/* DUAL-AXIS SOLAR PANELS & PULSING ENERGY CABLES */}
+            {/* DUAL-AXIS SOLAR PANELS & PULSING ENERGY CONDUITS */}
             <g transform="translate(180, 1150)">
               <g transform="translate(0, 0)">
                 <line x1="0" y1="0" x2="0" y2="60" stroke={INK_CHARCOAL} strokeWidth="6" />
@@ -677,12 +604,11 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
                 <rect x="-65" y="-55" width="130" height="60" rx="6" fill="url(#solar-cell)" stroke={INK_CHARCOAL} strokeWidth="4.5" transform="rotate(-15)" />
               </g>
 
-              {/* Glowing Power Conduit Cable to Base */}
               <path d="M 130 50 Q 250 80 260 20" fill="none" stroke="#242B35" strokeWidth="6" />
               <path d="M 130 50 Q 250 80 260 20" fill="none" stroke={WARM_GOLD} strokeWidth="3" strokeDasharray="12 12" strokeDashoffset={powerPulse} />
             </g>
 
-            {/* ROTATING COMMUNICATIONS TOWER & RADIO WAVES */}
+            {/* ROTATING COMMUNICATIONS TOWER */}
             <g transform="translate(420, 1020)">
               <line x1="-15" y1="0" x2="0" y2="-140" stroke={INK_CHARCOAL} strokeWidth="4.5" />
               <line x1="15" y1="0" x2="0" y2="-140" stroke={INK_CHARCOAL} strokeWidth="4.5" />
@@ -697,37 +623,32 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
             </g>
 
             {/* =============================================================== */}
-            {/* CLEAN EXPLANATION GRAPH // HABITAT INFRASTRUCTURE TELEMETRY     */}
+            {/* HANDCRAFTED BOTANICAL & LIFE-SUPPORT BLUEPRINT DIAGRAM           */}
             {/* =============================================================== */}
-            {/* Top Mission Tracker Index */}
-            <g transform="translate(70, 75)">
-              <rect x="0" y="0" width="360" height="42" rx="8" fill="url(#glass-card)" stroke={WARM_GOLD} strokeWidth="2" />
-              <circle cx="22" cy="21" r="5" fill="#3DDF78" />
-              <text x="38" y="27" fill={PAPER_CREAM} fontSize="16" fontWeight="800" letterSpacing="2px" fontFamily="'Inter', sans-serif">
-                MISSION LOG // SOL 15 OF 30
+            {/* Left Blueprint: Botanical Hydroponic Loop */}
+            <g transform="translate(250, 200)">
+              {/* Sprouting Hydroponic Leaf Icon */}
+              <circle cx="0" cy="0" r="36" fill="#242B35" stroke={SAGE_GREEN} strokeWidth="3.5" />
+              <path d="M -12 15 Q -10 -15 15 -18 Q 15 10 -12 15 Z" fill={SAGE_GREEN} stroke={INK_CHARCOAL} strokeWidth="2" />
+              <path d="M 0 5 Q 15 -5 18 -18" fill="none" stroke={PAPER_CREAM} strokeWidth="2" />
+              <text x="0" y="56" textAnchor="middle" fill={SAGE_GREEN} fontSize="16" fontWeight="900" letterSpacing="1px" fontFamily="'Montserrat', sans-serif">
+                HYDROPONIC CELL 04
+              </text>
+              <text x="0" y="78" textAnchor="middle" fill={PAPER_CREAM} fontSize="13" fontWeight="600" fontFamily="'Inter', sans-serif">
+                CLOSED-LOOP O₂ GENERATION
               </text>
             </g>
 
-            {/* Infrastructure Grid Card (Upper Right) */}
-            <g transform="translate(560, 75)">
-              <rect x="0" y="0" width="450" height="190" rx="14" fill="url(#glass-card)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="2" />
-              <text x="24" y="34" fill={SAGE_GREEN} fontSize="18" fontWeight="900" letterSpacing="2px" fontFamily="'Montserrat', sans-serif">
-                BASE ALPHA // LIFE-SUPPORT GRID
+            {/* Right Blueprint: Solar Power Distribution */}
+            <g transform="translate(800, 200)">
+              <circle cx="0" cy="0" r="36" fill="#242B35" stroke={WARM_GOLD} strokeWidth="3.5" />
+              {/* Sun ray to electric bolt icon */}
+              <polygon points="-6,-18 10,-18 0,0 8,0 -8,18 0,2 -6,2" fill={WARM_GOLD} />
+              <text x="0" y="56" textAnchor="middle" fill={WARM_GOLD} fontSize="16" fontWeight="900" letterSpacing="1px" fontFamily="'Montserrat', sans-serif">
+                125 kW SOLAR ARRAY
               </text>
-              <line x1="24" y1="46" x2="426" y2="46" stroke="#3D4A5C" strokeWidth="1.5" />
-
-              <text x="24" y="76" fill={PAPER_CREAM} fontSize="16" fontWeight="700" fontFamily="'Inter', sans-serif">
-                SOLAR ARRAY: 125 kW (OPTIMAL)
-              </text>
-              {/* Battery Charge Bar */}
-              <rect x="24" y="86" width="300" height="10" rx="3" fill="#242E3B" />
-              <rect x="24" y="86" width="280" height="10" rx="3" fill="#3DDF78" />
-
-              <text x="24" y="126" fill={PAPER_CREAM} fontSize="16" fontWeight="700" fontFamily="'Inter', sans-serif">
-                INTERNAL PRESSURE: 1.0 ATM (21% O₂)
-              </text>
-              <text x="24" y="156" fill={PAPER_CREAM} fontSize="16" fontWeight="700" fontFamily="'Inter', sans-serif">
-                HYDROPONIC HARVEST: CYCLING NOMINAL
+              <text x="0" y="78" textAnchor="middle" fill={PAPER_CREAM} fontSize="13" fontWeight="600" fontFamily="'Inter', sans-serif">
+                PRESSURIZED HABITAT (1.0 ATM)
               </text>
             </g>
 
@@ -742,7 +663,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
         )}
 
         {/* ========================================================================= */}
-        {/* SCENE 5: VIOLENT DUST STORM & PLANETARY WEATHER RADAR SWEEP               */}
+        {/* SCENE 5: VIOLENT DUST STORM & METEOROLOGICAL ISOBAR CHART                 */}
         {/* ========================================================================= */}
         {sceneId === 5 && (
           <g>
@@ -751,9 +672,9 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
 
             {/* High-Velocity Storm Wind Vectors */}
             <g stroke="#E8765A" strokeWidth="5" strokeLinecap="round" opacity="0.75">
-              {[...Array(32)].map((_, i) => {
+              {[...Array(30)].map((_, i) => {
                 const wx = ((stormWinds + i * 85) % 1600) - 300;
-                const wy = 200 + (i * 45) + Math.sin(frame * 0.2 + i) * 25;
+                const wy = 360 + (i * 40) + Math.sin(frame * 0.2 + i) * 20;
                 const wlen = 180 + (i % 6) * 60;
                 return (
                   <line key={i} x1={wx} y1={wy} x2={wx + wlen} y2={wy + 18} />
@@ -783,53 +704,33 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
             </g>
 
             {/* =============================================================== */}
-            {/* CLEAN EXPLANATION GRAPH // REAL-TIME WEATHER RADAR SWEEP        */}
+            {/* METEOROLOGICAL ISOBAR CHART // CYCLONIC TEMPEST MAP             */}
             {/* =============================================================== */}
-            {/* Top Mission Tracker Index */}
-            <g transform="translate(70, 75)">
-              <rect x="0" y="0" width="360" height="42" rx="8" fill="url(#glass-card)" stroke={DUSTY_CORAL} strokeWidth="2" />
-              <circle cx="22" cy="21" r="5" fill="#FF4545" />
-              <text x="38" y="27" fill={PAPER_CREAM} fontSize="16" fontWeight="800" letterSpacing="2px" fontFamily="'Inter', sans-serif">
-                MISSION LOG // SOL 18 OF 30
+            <g transform="translate(600, 175)">
+              {/* Concentric Isobar Pressure Rings */}
+              <ellipse cx="0" cy="0" rx="140" ry="62" fill="none" stroke="#E8765A" strokeWidth="2" strokeDasharray="7 5" opacity="0.75" />
+              <ellipse cx="0" cy="0" rx="95" ry="42" fill="none" stroke="#E8765A" strokeWidth="2.5" opacity="0.85" />
+              <ellipse cx="0" cy="0" rx="50" ry="22" fill="none" stroke="#FF4545" strokeWidth="3" />
+              {/* Low Pressure Core "L" */}
+              <text x="0" y="7" textAnchor="middle" fill="#FF4545" fontSize="20" fontWeight="900" fontFamily="'Montserrat', sans-serif">
+                LOW
               </text>
-            </g>
 
-            {/* Real-Time Radar Screen Card (Upper Center) */}
-            <g transform="translate(520, 75)">
-              <rect x="0" y="0" width="490" height="210" rx="14" fill="url(#glass-card)" stroke="#FF4545" strokeWidth="2" />
-              <text x="24" y="34" fill="#FF4545" fontSize="18" fontWeight="900" letterSpacing="2px" fontFamily="'Montserrat', sans-serif">
-                WARNING // GLOBAL DUST TEMPEST
+              {/* Storm Windbarb Vectors */}
+              {[-90, 90].map((bx, idx) => (
+                <g key={idx} transform={`translate(${bx}, 0)`}>
+                  <line x1="0" y1="0" x2="30" y2="-12" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
+                  <line x1="30" y1="-12" x2="30" y2="-25" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" />
+                  <line x1="22" y1="-8" x2="22" y2="-21" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" />
+                </g>
+              ))}
+
+              <text x="0" y="92" textAnchor="middle" fill="#FF4545" fontSize="18" fontWeight="900" letterSpacing="1.5px" fontFamily="'Montserrat', sans-serif">
+                GLOBAL DUST TEMPEST // 105 KM/H
               </text>
-              <line x1="24" y1="46" x2="466" y2="46" stroke="#3D4A5C" strokeWidth="1.5" />
-
-              {/* Radar Sweep Circle */}
-              <g transform="translate(85, 128)">
-                <circle cx="0" cy="0" r="56" fill="#1A1214" stroke="#8C3528" strokeWidth="2" />
-                <circle cx="0" cy="0" r="38" fill="none" stroke="#52241D" strokeWidth="1.5" />
-                <circle cx="0" cy="0" r="20" fill="none" stroke="#52241D" strokeWidth="1.5" />
-                {/* Rotating Sweep Beam */}
-                <line
-                  x1="0"
-                  y1="0"
-                  x2={Math.cos((radarSweep * Math.PI) / 180) * 56}
-                  y2={Math.sin((radarSweep * Math.PI) / 180) * 56}
-                  stroke="#FF4545"
-                  strokeWidth="2.5"
-                />
-              </g>
-
-              {/* Real-Time Storm Metrics */}
-              <g transform="translate(165, 74)">
-                <text x="0" y="20" fill={PAPER_CREAM} fontSize="16" fontWeight="700" fontFamily="'Inter', sans-serif">
-                  WIND SPEED: 105 KM/H (GUSTS)
-                </text>
-                <text x="0" y="50" fill="#FF7A33" fontSize="16" fontWeight="800" fontFamily="'Inter', sans-serif">
-                  SOLAR OUTPUT: -90% (BLOTTED)
-                </text>
-                <text x="0" y="80" fill={WARM_GOLD} fontSize="16" fontWeight="900" fontFamily="'Inter', sans-serif">
-                  EMERGENCY FUEL CELLS: ACTIVE
-                </text>
-              </g>
+              <text x="0" y="116" textAnchor="middle" fill={PAPER_CREAM} fontSize="13" fontWeight="600" letterSpacing="0.8px" fontFamily="'Inter', sans-serif">
+                SOLAR OBSCURATION: 90% // FUEL CELLS ENGAGED
+              </text>
             </g>
 
             {/* Dunes */}
@@ -843,7 +744,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
         )}
 
         {/* ========================================================================= */}
-        {/* SCENE 6: MARS ASCENT VEHICLE ROCKET LIFTOFF & MISSION SUCCESS INDEX       */}
+        {/* SCENE 6: MAV ROCKET LAUNCH & SCIENTIFIC ASCENT TRAJECTORY PROFILE         */}
         {/* ========================================================================= */}
         {sceneId === 6 && (
           <g>
@@ -868,7 +769,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               <ellipse cx="0" cy="0" rx="35" ry="18" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="3" />
             </g>
 
-            {/* Launch Gantry Left Behind */}
+            {/* Launch Gantry */}
             <g transform="translate(540, 1500)">
               <rect x="-35" y="-40" width="70" height="40" rx="4" fill="#525E70" stroke={INK_CHARCOAL} strokeWidth="4" />
               <line x1="-30" y1="-80" x2="-30" y2="0" stroke={INK_CHARCOAL} strokeWidth="4" />
@@ -884,7 +785,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
 
             {/* THE MARS ASCENT VEHICLE (MAV) ROCKET BLASTING INTO SPACE */}
             <g transform={`translate(540, ${1100 - rocketLift})`}>
-              {/* Massive Thruster Exhaust Flame Plume */}
+              {/* Massive Flame Plume */}
               <polygon
                 points={`-35,160 0,${420 + flameFlicker} 35,160`}
                 fill="url(#rocket-flame)"
@@ -894,7 +795,6 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
                 fill="#FFFFFF"
               />
 
-              {/* Rocket Fuselage */}
               <rect x="-45" y="-140" width="90" height="290" rx="14" fill="#FFFFFF" stroke={INK_CHARCOAL} strokeWidth="7" />
               <path d="M -45 -140 Q 0 -240 45 -140 Z" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="6" />
               <ellipse cx="0" cy="-100" rx="20" ry="12" fill={MUTED_BLUE} stroke={INK_CHARCOAL} strokeWidth="3.5" />
@@ -902,29 +802,17 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               <line x1="-45" y1="20" x2="45" y2="20" stroke={INK_CHARCOAL} strokeWidth="4" />
               <line x1="-45" y1="110" x2="45" y2="110" stroke={INK_CHARCOAL} strokeWidth="4" />
 
-              {/* Delta Fins */}
               <polygon points="-45,70 -95,160 -45,150" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="5" />
               <polygon points="45,70 95,160 45,150" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="5" />
 
-              {/* Engine Bells */}
               <polygon points="-28,150 -36,175 -8,175 -16,150" fill="#242B35" stroke={INK_CHARCOAL} strokeWidth="3" />
               <polygon points="16,150 8,175 36,175 28,150" fill="#242B35" stroke={INK_CHARCOAL} strokeWidth="3" />
             </g>
 
             {/* =============================================================== */}
-            {/* CLEAN EXPLANATION GRAPH // MISSION OUTCOME MILESTONE CARD       */}
+            {/* ASCENT FLIGHT TRAJECTORY PROFILE & MILESTONE TITLING             */}
             {/* =============================================================== */}
-            {/* Top Mission Tracker Index */}
-            <g transform="translate(70, 75)">
-              <rect x="0" y="0" width="360" height="42" rx="8" fill="url(#glass-card)" stroke="#3DDF78" strokeWidth="2" />
-              <circle cx="22" cy="21" r="5" fill="#3DDF78" />
-              <text x="38" y="27" fill={PAPER_CREAM} fontSize="16" fontWeight="800" letterSpacing="2px" fontFamily="'Inter', sans-serif">
-                MISSION LOG // SOL 30 OF 30 (COMPLETE)
-              </text>
-            </g>
-
-            {/* Mission Milestone Card (Center Top - 100% Responsive, NO OVERFLOW) */}
-            <g transform="translate(540, 210)">
+            <g transform="translate(540, 180)">
               <text
                 x="0"
                 y="0"
@@ -932,7 +820,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
                 fill="#FFFFFF"
                 fontSize="52"
                 fontWeight="900"
-                letterSpacing="3px"
+                letterSpacing="4px"
                 fontFamily='"Montserrat", "Arial Black", sans-serif'
                 stroke="#000000"
                 strokeWidth="8"
@@ -942,22 +830,73 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
               </text>
               <text
                 x="0"
-                y="55"
+                y="52"
                 textAnchor="middle"
                 fill={WARM_GOLD}
                 fontSize="24"
                 fontWeight="800"
-                letterSpacing="2.5px"
+                letterSpacing="3px"
                 fontFamily='"Montserrat", sans-serif'
                 stroke="#000000"
                 strokeWidth="5"
                 paintOrder="stroke fill"
               >
-                MISSION SUCCESSFUL // INTERPLANETARY
+                EXPEDITION SUCCESSFUL // INTERPLANETARY
+              </text>
+              <line x1="-220" y1="80" x2="220" y2="80" stroke={STONE_GREY} strokeWidth="2" opacity="0.6" />
+              <text
+                x="0"
+                y="110"
+                textAnchor="middle"
+                fill={PAPER_CREAM}
+                fontSize="16"
+                fontWeight="700"
+                letterSpacing="2px"
+                fontFamily="'Inter', sans-serif"
+              >
+                TRAJECTORY: ASCENT TO ORBIT (250 KM)
               </text>
             </g>
           </g>
         )}
+
+        {/* ========================================================================= */}
+        {/* SHARED EXPEDITION FIELD-GUIDE SOL CHRONOMETER (ELEGANT ASTRONOMICAL STAMP)*/}
+        {/* ========================================================================= */}
+        <g transform="translate(65, 75)">
+          {/* Outer Antique Brass Dial */}
+          <circle cx="28" cy="28" r="28" fill="#242B35" stroke={WARM_GOLD} strokeWidth="3" />
+          <circle cx="28" cy="28" r="22" fill="none" stroke="#3D4A5C" strokeWidth="1.5" strokeDasharray="2 3" />
+          {/* Sol Ticks */}
+          {[0, 60, 120, 180, 240, 300].map((deg, ti) => (
+            <line
+              key={ti}
+              x1={28 + Math.cos((deg * Math.PI) / 180) * 22}
+              y1={28 + Math.sin((deg * Math.PI) / 180) * 22}
+              x2={28 + Math.cos((deg * Math.PI) / 180) * 27}
+              y2={28 + Math.sin((deg * Math.PI) / 180) * 27}
+              stroke={WARM_GOLD}
+              strokeWidth="2"
+            />
+          ))}
+          {/* Sol Number Inside Dial */}
+          <text x="28" y="24" textAnchor="middle" fill={WARM_GOLD} fontSize="9" fontWeight="800" fontFamily="'Montserrat', sans-serif">
+            SOL
+          </text>
+          <text x="28" y="39" textAnchor="middle" fill="#FFFFFF" fontSize="16" fontWeight="900" fontFamily="'Montserrat', sans-serif">
+            {solNumber}
+          </text>
+
+          {/* Delicate Editorial Field-Log Stamp Beside Dial */}
+          <g transform="translate(68, 16)">
+            <text x="0" y="10" fill={PAPER_CREAM} fontSize="15" fontWeight="900" letterSpacing="2px" fontFamily="'Montserrat', sans-serif">
+              EXPEDITION FIELD LOG
+            </text>
+            <text x="0" y="28" fill={STONE_GREY} fontSize="13" fontWeight="700" letterSpacing="1px" fontFamily="'Inter', sans-serif">
+              SOL {solNumber} OF 30 // CHRYSE EXPEDITION
+            </text>
+          </g>
+        </g>
       </svg>
     </div>
   );
