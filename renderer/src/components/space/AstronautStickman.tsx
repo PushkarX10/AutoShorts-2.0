@@ -570,7 +570,7 @@ export const AstronautStickman: React.FC<AstronautProps> = ({
             strokeWidth="6"
           />
 
-          {/* Distinctive Bubble Visor Window */}
+          {/* Distinctive Sleek Bubble Visor (Clean reflective shield - no facial cartoon features) */}
           <ellipse
             cx="14"
             cy="2"
@@ -581,85 +581,20 @@ export const AstronautStickman: React.FC<AstronautProps> = ({
             strokeWidth="4.5"
           />
 
-          {/* Visor Sunlight Highlight Crescent */}
+          {/* Visor Sunlight Highlight Crescent & Specular Reflections */}
           <path
             d="M -15 -20 Q 14 -32 40 -12 Q 18 -22 -15 -20 Z"
             fill="url(#visor-glint)"
             transform={`translate(${visorShimmer * 0.4}, 0)`}
           />
-
-          {/* --- EXPRESSIVE MASCOT FACE VISIBLE THROUGH VISOR --- */}
-          <g transform="translate(18, 4)">
-            {/* Expression: FOCUSED / DETERMINED */}
-            {expression === "focused" && (
-              <>
-                {/* Eyebrows angled inward */}
-                <line x1="-16" y1="-14" x2="-2" y2="-10" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
-                <line x1="8" y1="-10" x2="22" y2="-14" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
-                {/* Expressive black dots with white highlight catchlight */}
-                <circle cx="-9" cy="-3" r="5" fill="#FFFFFF" />
-                <circle cx="-8" cy="-4" r="2" fill={INK_CHARCOAL} />
-                <circle cx="15" cy="-3" r="5" fill="#FFFFFF" />
-                <circle cx="16" cy="-4" r="2" fill={INK_CHARCOAL} />
-                {/* Determined smile */}
-                <path d="M -4 14 Q 4 19 12 14" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
-              </>
-            )}
-
-            {/* Expression: CURIOUS (Scene 1 Martian Horizon) */}
-            {expression === "curious" && (
-              <>
-                {/* Eyebrows raised */}
-                <path d="M -18 -15 Q -10 -22 -2 -15" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
-                <path d="M 6 -15 Q 14 -22 22 -15" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
-                {/* Wide curious eyes */}
-                <circle cx="-10" cy="-4" r="6" fill="#FFFFFF" />
-                <circle cx="-9" cy="-4" r="3" fill={INK_CHARCOAL} />
-                <circle cx="14" cy="-4" r="6" fill="#FFFFFF" />
-                <circle cx="15" cy="-4" r="3" fill={INK_CHARCOAL} />
-                {/* Small curious 'o' mouth */}
-                <ellipse cx="2" cy="15" rx="4" ry="5" fill="#FFFFFF" />
-              </>
-            )}
-
-            {/* Expression: ALERT (Scene 2 Low Gravity Jump) */}
-            {expression === "alert" && (
-              <>
-                <circle cx="-10" cy="-4" r="6.5" fill="#FFFFFF" />
-                <circle cx="-9" cy="-4" r="3.5" fill={INK_CHARCOAL} />
-                <circle cx="14" cy="-4" r="6.5" fill="#FFFFFF" />
-                <circle cx="15" cy="-4" r="3.5" fill={INK_CHARCOAL} />
-                <path d="M -6 12 Q 2 20 10 12" fill="none" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
-              </>
-            )}
-
-            {/* Expression: SHOCK (Scene 5 Dust Storm Panic) */}
-            {expression === "shock" && (
-              <>
-                {/* Angled shock brows */}
-                <line x1="-16" y1="-18" x2="-4" y2="-12" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" />
-                <line x1="6" y1="-12" x2="18" y2="-18" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" />
-                {/* Wide eyes */}
-                <circle cx="-10" cy="-3" r="7" fill="#FFFFFF" />
-                <circle cx="-10" cy="-3" r="3" fill={INK_CHARCOAL} />
-                <circle cx="14" cy="-3" r="7" fill="#FFFFFF" />
-                <circle cx="14" cy="-3" r="3" fill={INK_CHARCOAL} />
-                {/* Open gasping mouth */}
-                <ellipse cx="2" cy="15" rx="6" ry="8" fill={DUSTY_CORAL} stroke="#FFFFFF" strokeWidth="2.5" />
-              </>
-            )}
-
-            {/* Expression: RELIEF (Scene 4 Reaching Base Alpha Airlock) */}
-            {expression === "relief" && (
-              <>
-                {/* Contented curved eyes (happy arcs ^ ^) */}
-                <path d="M -16 -4 Q -10 -12 -4 -4" fill="none" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
-                <path d="M 8 -4 Q 14 -12 20 -4" fill="none" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
-                {/* Warm relaxed smile */}
-                <path d="M -5 12 Q 3 20 11 12" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
-              </>
-            )}
-          </g>
+          <path
+            d="M -8 -8 Q 18 -16 38 4"
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.45)"
+            strokeWidth="3.5"
+            strokeLinecap="round"
+          />
+          <ellipse cx="28" cy="-6" rx="6" ry="3" fill="rgba(255, 255, 255, 0.6)" transform="rotate(-20 28 -6)" />
 
           {/* Helmet Radio Antenna with Brass Warm Gold Tip */}
           <line x1="-45" y1="-25" x2="-68" y2="-65" stroke={INK_CHARCOAL} strokeWidth="4.5" strokeLinecap="round" />

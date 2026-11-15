@@ -8,12 +8,14 @@ interface SpaceEnvironmentProps {
 }
 
 /**
- * Premium Handcrafted 2D Editorial Space Environment
- * Version 2.0 Aesthetic:
- * - Natural editorial science-journal illustration
- * - Organic, slightly hand-inked linework and etched terrain contours
- * - Authentic 9-color palette: Paper Cream, Ink Charcoal, Dusty Coral, Muted Blue, Warm Gold, Stone Grey, Sage Green, Sand Beige
- * - Textural depth, layered atmospheric plains, and custom architectural/scientific diagrams
+ * Handcrafted 2D Space & Planetary Environment (v2.1)
+ * Rich visual storytelling with distinct scenes and authentic assets:
+ * - Scene 1: Planet Mars globe from space, burning Sun, orbiting science satellite & spacecraft
+ * - Scene 2: 3-story exploration lander spacecraft on Martian dunes, parabolic low-g flight arc
+ * - Scene 3: Mars scientific rover with robotic drill, Earth vs Mars atmospheric pressure infographic
+ * - Scene 4: Base Alpha geodesic habitat dome, dual-axis solar panel farm, communications tower & docked rover
+ * - Scene 5: Violent 100 km/h global dust storm, swirling sand devils, orbital weather satellite inset
+ * - Scene 6: Mars Ascent Vehicle (MAV) rocket launch with roaring fire plume, exhaust clouds, mission success badge
  */
 export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
   environment,
@@ -22,7 +24,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
 }) => {
   const frame = useCurrentFrame();
 
-  // Strict Version 2.0 Palette
+  // Strict Handcrafted Editorial Palette
   const PAPER_CREAM = "#F4EFE5";
   const INK_CHARCOAL = "#242B35";
   const DUSTY_CORAL = "#C86D52";
@@ -31,13 +33,17 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
   const STONE_GREY = "#A6A18F";
   const SAGE_GREEN = "#768C79";
   const SAND_BEIGE = "#D8C5AA";
-  const MUTED_BURGUNDY = "#8B5360";
+  const SPACE_BLACK = "#0D1117";
 
-  // Dynamic subtle motion
+  // Dynamic animations
   const starTwinkle = Math.sin(frame * 0.08) * 0.25 + 0.75;
   const sunPulse = Math.sin(frame * 0.04) * 4;
-  const dustDrift = (frame * 12) % 1200;
-  const stormFront = (frame * 28) % 1400;
+  const satelliteDrift = Math.sin(frame * 0.03) * 12;
+  const roverArmMove = Math.sin(frame * 0.06) * 6;
+  const dustDrift = (frame * 18) % 1400;
+  const stormWinds = (frame * 36) % 1600;
+  const rocketLift = Math.min(frame * 14, 550);
+  const flameFlicker = (frame % 3) * 6;
 
   return (
     <div
@@ -47,7 +53,7 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
         left: 0,
         width: "100%",
         height: "100%",
-        backgroundColor: INK_CHARCOAL,
+        backgroundColor: SPACE_BLACK,
         overflow: "hidden",
       }}
     >
@@ -57,581 +63,729 @@ export const SpaceEnvironment: React.FC<SpaceEnvironmentProps> = ({
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
-          {/* Paper Texture Filter (Handcrafted Editorial Feel) */}
-          <filter id="paper-grain" x="0%" y="0%" width="100%" height="100%">
+          {/* Subtle paper grain */}
+          <filter id="env-grain" x="0%" y="0%" width="100%" height="100%">
             <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-            <feColorMatrix
-              type="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.05 0"
-            />
+            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.05 0" />
             <feBlend mode="multiply" in="SourceGraphic" />
           </filter>
 
-          {/* Mars Atmospheric Sky Gradient: Deep Ink Zenith to Coral Horizon */}
+          {/* Deep Space Gradient */}
+          <radialGradient id="deep-space" cx="50%" cy="40%" r="70%">
+            <stop offset="0%" stopColor="#1E2633" />
+            <stop offset="60%" stopColor="#121720" />
+            <stop offset="100%" stopColor="#080B0F" />
+          </radialGradient>
+
+          {/* Mars Atmospheric Sky Gradient */}
           <linearGradient id="mars-sky" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#1A2028" />
-            <stop offset="40%" stopColor="#2A3442" />
+            <stop offset="0%" stopColor="#161C24" />
+            <stop offset="40%" stopColor="#2A3340" />
             <stop offset="70%" stopColor="#5B4845" />
             <stop offset="100%" stopColor="#8C4E3D" />
           </linearGradient>
 
-          {/* Handcrafted Mars Dunes Gradient */}
+          {/* Mars Planet Sphere Gradient */}
+          <radialGradient id="mars-globe" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stopColor="#E27457" />
+            <stop offset="50%" stopColor="#BD5338" />
+            <stop offset="85%" stopColor="#7E2C1E" />
+            <stop offset="100%" stopColor="#3A110B" />
+          </radialGradient>
+
+          {/* Sun Glow */}
+          <radialGradient id="sun-corona" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
+            <stop offset="30%" stopColor="#FFF2D1" stopOpacity="0.95" />
+            <stop offset="60%" stopColor={WARM_GOLD} stopOpacity="0.6" />
+            <stop offset="85%" stopColor={DUSTY_CORAL} stopOpacity="0.2" />
+            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+          </radialGradient>
+
+          {/* Rocket Exhaust Plume */}
+          <linearGradient id="rocket-flame" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="25%" stopColor="#FFF1B8" />
+            <stop offset="60%" stopColor="#FF7A33" />
+            <stop offset="90%" stopColor={DUSTY_CORAL} />
+            <stop offset="100%" stopColor="transparent" />
+          </linearGradient>
+
+          {/* Solar Panel Texture */}
+          <linearGradient id="solar-cell" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#2D4D6B" />
+            <stop offset="100%" stopColor="#17283B" />
+          </linearGradient>
+
+          {/* Martian Dunes Gradient */}
           <linearGradient id="dunes-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor={DUSTY_CORAL} />
             <stop offset="50%" stopColor="#AD533B" />
             <stop offset="100%" stopColor="#6E2F20" />
           </linearGradient>
-
-          {/* Distant Ridge Gradient */}
-          <linearGradient id="mountains-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#5C3B34" />
-            <stop offset="100%" stopColor="#2A1E20" />
-          </linearGradient>
-
-          {/* Warm Sun Corona */}
-          <radialGradient id="sun-corona" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#FFFDF8" stopOpacity="1" />
-            <stop offset="35%" stopColor={WARM_GOLD} stopOpacity="0.75" />
-            <stop offset="70%" stopColor={DUSTY_CORAL} stopOpacity="0.25" />
-            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
-          </radialGradient>
-
-          {/* Geodesic Dome Warm Greenhouse Glow */}
-          <radialGradient id="habitat-glow" cx="50%" cy="70%" r="60%">
-            <stop offset="0%" stopColor={WARM_GOLD} stopOpacity="0.65" />
-            <stop offset="45%" stopColor={SAGE_GREEN} stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#1E252F" stopOpacity="0.9" />
-          </radialGradient>
         </defs>
 
         {/* ========================================================================= */}
-        {/* SCENE 1 & 2: MARTIAN LANDSCAPE & LOW GRAVITY HORIZON                      */}
+        {/* SCENE 1: ORBITAL ARRIVAL (PLANET MARS, SUN, SATELLITE & SPACECRAFT)      */}
         {/* ========================================================================= */}
-        {(environment === "mars_surface" || environment === "mars_arrival") && (
-          <>
-            {/* Sky */}
-            <rect x="0" y="0" width="1080" height="1920" fill="url(#mars-sky)" />
+        {sceneId === 1 && (
+          <g>
+            {/* Deep Starry Cosmos */}
+            <rect width="1080" height="1920" fill="url(#deep-space)" />
 
-            {/* Hand-drawn Soft Stars in Upper Atmosphere */}
-            <g opacity={starTwinkle}>
+            {/* Stars */}
+            <g fill="#FFFFFF">
               {[
-                [110, 160, 2], [220, 85, 2.5], [380, 200, 1.8], [580, 130, 2],
-                [820, 90, 3], [970, 210, 2], [80, 340, 1.8], [310, 420, 2.2],
-                [730, 380, 2], [940, 460, 2.5], [510, 280, 2.8], [170, 540, 2],
+                [120, 180, 2], [280, 110, 1.5], [450, 240, 2.5], [780, 160, 2],
+                [920, 290, 1.5], [140, 420, 2], [320, 580, 1.5], [90, 890, 2.5],
+                [210, 1200, 1.5], [890, 1340, 2], [970, 950, 2.5], [840, 680, 1.5],
+                [520, 1480, 2], [340, 1680, 1.5], [780, 1720, 2.5], [150, 1550, 2]
               ].map(([sx, sy, sr], i) => (
-                <circle key={i} cx={sx} cy={sy} r={sr} fill={PAPER_CREAM} />
+                <circle
+                  key={i}
+                  cx={sx}
+                  cy={sy}
+                  r={sr}
+                  opacity={(i % 2 === 0 ? starTwinkle : 0.85)}
+                />
               ))}
             </g>
 
-            {/* Distant Sun (Appears smaller on Mars: 68% size of Earth Sun) */}
-            <g transform="translate(840, 240)">
-              <circle cx="0" cy="0" r={45 + sunPulse} fill="url(#sun-corona)" />
-              <circle cx="0" cy="0" r="14" fill={PAPER_CREAM} stroke={WARM_GOLD} strokeWidth="3" />
+            {/* THE SUN (Glowing Solar Corona in Deep Space) */}
+            <g transform="translate(180, 280)">
+              <circle cx="0" cy="0" r={160 + sunPulse} fill="url(#sun-corona)" />
+              <circle cx="0" cy="0" r="54" fill="#FFFBE8" stroke={WARM_GOLD} strokeWidth="4" />
+              {/* Sun Flare Rays */}
+              {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, idx) => (
+                <line
+                  key={idx}
+                  x1="0"
+                  y1="0"
+                  x2={Math.cos((deg * Math.PI) / 180) * 90}
+                  y2={Math.sin((deg * Math.PI) / 180) * 90}
+                  stroke={WARM_GOLD}
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  opacity="0.75"
+                />
+              ))}
             </g>
 
-            {/* Handcrafted Phobos Moon (Potato Silhouette with Impact Crater) */}
-            <g transform="translate(230, 300) rotate(-20)">
-              <ellipse cx="0" cy="0" rx="20" ry="14" fill={STONE_GREY} stroke={INK_CHARCOAL} strokeWidth="3.5" />
-              <circle cx="-5" cy="-2" r="4" fill="#8C8775" />
-              <circle cx="7" cy="4" r="3" fill="#8C8775" />
-              <circle cx="-1" cy="6" r="2" fill="#8C8775" />
+            {/* PLANET MARS GLOBE (Massive high-detail 2D illustrated sphere) */}
+            <g transform="translate(680, 980)">
+              {/* Atmospheric Limb Glow */}
+              <circle cx="0" cy="0" r="375" fill="none" stroke="#6893B8" strokeWidth="12" opacity="0.6" />
+              <circle cx="0" cy="0" r="370" fill="none" stroke={DUSTY_CORAL} strokeWidth="6" opacity="0.4" />
+
+              {/* Main Planet Sphere */}
+              <circle
+                cx="0"
+                cy="0"
+                r="360"
+                fill="url(#mars-globe)"
+                stroke={INK_CHARCOAL}
+                strokeWidth="7"
+              />
+
+              {/* North Polar Ice Cap (Planum Boreum) */}
+              <path
+                d="M -110 -310 Q 0 -360 110 -310 Q 60 -270 -30 -280 Q -90 -290 -110 -310 Z"
+                fill="#F8F6F0"
+                stroke={INK_CHARCOAL}
+                strokeWidth="3.5"
+              />
+
+              {/* Valles Marineris Canyon & Dark Volcanic Regolith Basins */}
+              <path
+                d="M -160 -40 Q -40 20 140 -20 Q 220 10 260 -5 Q 210 25 130 15 Q -60 45 -160 -40 Z"
+                fill="#541B13"
+                stroke={INK_CHARCOAL}
+                strokeWidth="4"
+              />
+              <path
+                d="M -220 80 Q -140 140 -60 110 Q 20 170 -40 210 Q -180 230 -220 80 Z"
+                fill="#4D1A13"
+                stroke={INK_CHARCOAL}
+                strokeWidth="3"
+              />
+
+              {/* Olympus Mons Volcano Shield Silhouette */}
+              <ellipse cx="-130" cy="-140" rx="48" ry="32" fill="#782E20" stroke={INK_CHARCOAL} strokeWidth="3" />
+              <ellipse cx="-130" cy="-140" rx="16" ry="10" fill="#441710" />
             </g>
 
-            {/* Distant Olympus Mons Silhouette with Hand-drawn Topo Lines */}
-            <path
-              d="M -40 920 Q 260 810 540 790 Q 820 810 1120 920 L 1120 1300 L -40 1300 Z"
-              fill="url(#mountains-gradient)"
+            {/* ORBITING SCIENTIFIC SATELLITE (Detailed Telemetry Orbiter) */}
+            <g transform={`translate(${280 + satelliteDrift}, ${1020 - satelliteDrift * 0.5})`}>
+              {/* Satellite Body (Gold-foil bus) */}
+              <rect x="-40" y="-35" width="80" height="70" rx="8" fill={WARM_GOLD} stroke={INK_CHARCOAL} strokeWidth="5" />
+              <rect x="-30" y="-25" width="60" height="50" rx="4" fill="#B88A3B" />
+              {/* Thermal radiator ribs */}
+              <line x1="-30" y1="0" x2="30" y2="0" stroke={INK_CHARCOAL} strokeWidth="3" />
+
+              {/* High-Gain Parabolic Dish Antenna */}
+              <path d="M 0 -35 Q 25 -75 55 -60 Q 25 -45 0 -35 Z" fill="#E8E2D5" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <line x1="25" y1="-55" x2="42" y2="-75" stroke={INK_CHARCOAL} strokeWidth="3" />
+              <circle cx="44" cy="-77" r="4" fill={DUSTY_CORAL} />
+
+              {/* Left Solar Panel Wing */}
+              <g transform="translate(-40, 0)">
+                <line x1="0" y1="0" x2="-140" y2="0" stroke={INK_CHARCOAL} strokeWidth="6" />
+                <rect x="-140" y="-45" width="130" height="90" rx="6" fill="url(#solar-cell)" stroke={INK_CHARCOAL} strokeWidth="4" />
+                {/* Solar Cell Grid Lines */}
+                <line x1="-97" y1="-45" x2="-97" y2="45" stroke="#4878A4" strokeWidth="2" />
+                <line x1="-54" y1="-45" x2="-54" y2="45" stroke="#4878A4" strokeWidth="2" />
+                <line x1="-140" y1="-15" x2="-10" y2="-15" stroke="#4878A4" strokeWidth="2" />
+                <line x1="-140" y1="15" x2="-10" y2="15" stroke="#4878A4" strokeWidth="2" />
+              </g>
+
+              {/* Right Solar Panel Wing */}
+              <g transform="translate(40, 0)">
+                <line x1="0" y1="0" x2="140" y2="0" stroke={INK_CHARCOAL} strokeWidth="6" />
+                <rect x="10" y="-45" width="130" height="90" rx="6" fill="url(#solar-cell)" stroke={INK_CHARCOAL} strokeWidth="4" />
+                {/* Solar Cell Grid Lines */}
+                <line x1="53" y1="-45" x2="53" y2="45" stroke="#4878A4" strokeWidth="2" />
+                <line x1="96" y1="-45" x2="96" y2="45" stroke="#4878A4" strokeWidth="2" />
+                <line x1="10" y1="-15" x2="140" y2="-15" stroke="#4878A4" strokeWidth="2" />
+                <line x1="10" y1="15" x2="140" y2="15" stroke="#4878A4" strokeWidth="2" />
+              </g>
+
+              {/* Telemetry Boom */}
+              <line x1="0" y1="35" x2="0" y2="90" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <circle cx="0" cy="94" r="6" fill={SAGE_GREEN} stroke={INK_CHARCOAL} strokeWidth="3" />
+            </g>
+
+            {/* INTERPLANETARY CRUISE SPACECRAFT (Cruising in high orbit) */}
+            <g transform="translate(680, 460) scale(0.85)">
+              {/* Fuselage */}
+              <rect x="-80" y="-22" width="160" height="44" rx="14" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="5" />
+              {/* Cockpit Window Visor */}
+              <path d="M 50 -12 Q 80 0 50 12 Z" fill={MUTED_BLUE} stroke={INK_CHARCOAL} strokeWidth="3.5" />
+              {/* Main Thruster Bell */}
+              <polygon points="-80,-18 -115,-30 -115,30 -80,18" fill="#5A6678" stroke={INK_CHARCOAL} strokeWidth="4" />
+              {/* Thruster exhaust glow */}
+              <ellipse cx="-120" cy="0" rx="15" ry="8" fill="#7FB7E0" opacity="0.8" />
+              {/* Radiator Panels */}
+              <rect x="-35" y="-55" width="70" height="30" rx="4" fill="#D5AA62" stroke={INK_CHARCOAL} strokeWidth="3" />
+              <rect x="-35" y="25" width="70" height="30" rx="4" fill="#D5AA62" stroke={INK_CHARCOAL} strokeWidth="3" />
+            </g>
+          </g>
+        )}
+
+        {/* ========================================================================= */}
+        {/* SCENE 2: SURFACE LANDER & LOW-G PHYSICS (TOUCHDOWN AT CHRYSE PLANITIA)    */}
+        {/* ========================================================================= */}
+        {sceneId === 2 && (
+          <g>
+            {/* Martian Sky */}
+            <rect width="1080" height="1920" fill="url(#mars-sky)" />
+
+            {/* Distant Sun & Phobos */}
+            <circle cx="820" cy="380" r="42" fill="#FFE8BF" stroke={WARM_GOLD} strokeWidth="3" />
+            {/* Phobos moon */}
+            <ellipse cx="620" cy="290" rx="18" ry="12" fill="#A89F91" stroke={INK_CHARCOAL} strokeWidth="2.5" />
+
+            {/* Distant Mountains & Olympus Mons Horizon */}
+            <polygon
+              points="-50,960 180,880 440,940 760,860 1130,930 1130,1300 -50,1300"
+              fill="#522920"
               stroke={INK_CHARCOAL}
               strokeWidth="5"
             />
-            {/* Mountain Ridgeline Contours */}
-            <path d="M 120 880 Q 320 840 540 830 Q 760 840 960 880" fill="none" stroke="#6E443B" strokeWidth="2.5" />
-            <path d="M 280 845 Q 540 820 800 845" fill="none" stroke="#6E443B" strokeWidth="2" strokeDasharray="6 4" />
 
-            {/* Midground Layer: Rocky Crags & Crater Ridges */}
-            <polygon
-              points="-40,1110 160,1035 340,1085 610,1015 860,1075 1120,1025 1120,1400 -40,1400"
-              fill="#7A392B"
+            {/* Midground Dunes */}
+            <path
+              d="M -40 1120 Q 280 1060 620 1130 Q 920 1180 1120 1100 L 1120 1450 L -40 1450 Z"
+              fill="#853C2C"
               stroke={INK_CHARCOAL}
               strokeWidth="6"
             />
-            {/* Crater Rim in Midground */}
-            <ellipse cx="440" cy="1065" rx="90" ry="18" fill="#5E2A1E" stroke={INK_CHARCOAL} strokeWidth="3.5" />
-            <ellipse cx="440" cy="1065" rx="75" ry="12" fill="#4A1E14" />
 
-            {/* =================================================================== */}
-            {/* SCENE 2 SPECIFIC: LOW GRAVITY PHYSICS DIAGRAM OVERLAY              */}
-            {/* =================================================================== */}
-            {sceneId === 2 && (
-              <g transform="translate(0, 0)">
-                {/* Parabolic Jump Trajectory (Gold Dotted Arc) */}
-                <path
-                  d="M 220 1280 Q 480 820 740 1280"
-                  fill="none"
-                  stroke={WARM_GOLD}
-                  strokeWidth="6"
-                  strokeDasharray="14 10"
-                />
+            {/* =============================================================== */}
+            {/* 3-STORY EXPLORATION LANDER SPACECRAFT (Towers beside astronaut) */}
+            {/* =============================================================== */}
+            <g transform="translate(240, 1020)">
+              {/* Lander Main Cylindrical Body */}
+              <rect x="-85" y="-360" width="170" height="340" rx="20" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="7" />
+              {/* Nosecone Dome */}
+              <path d="M -85 -360 Q 0 -440 85 -360 Z" fill="#D8D0C2" stroke={INK_CHARCOAL} strokeWidth="6" />
 
-                {/* Takeoff Launch Rings on Dune */}
-                <ellipse cx="220" cy="1280" rx="35" ry="12" fill="none" stroke={WARM_GOLD} strokeWidth="3.5" />
-                <ellipse cx="220" cy="1280" rx="20" ry="7" fill="none" stroke={WARM_GOLD} strokeWidth="2.5" opacity="0.6" />
+              {/* Heat Shield Base */}
+              <rect x="-95" y="-20" width="190" height="24" rx="6" fill="#3D4552" stroke={INK_CHARCOAL} strokeWidth="5" />
 
-                {/* Velocity Vector Arrow at Launch */}
-                <line x1="220" y1="1280" x2="280" y2="1160" stroke={DUSTY_CORAL} strokeWidth="4" />
-                <polygon points="280,1160 268,1176 288,1172" fill={DUSTY_CORAL} />
-                <text x="300" y="1180" fill={PAPER_CREAM} fontSize="20" fontWeight="800" fontFamily="monospace">v₀ = 4.2 m/s</text>
+              {/* Center Thruster Engine Bell */}
+              <polygon points="-25,4 -45,45 45,45 25,4" fill="#242B35" stroke={INK_CHARCOAL} strokeWidth="4" />
 
-                {/* Apex Annotation Tag */}
-                <g transform="translate(480, 880)">
-                  <rect x="-140" y="-35" width="280" height="48" rx="10" fill={INK_CHARCOAL} stroke={WARM_GOLD} strokeWidth="3" />
-                  <text x="0" y="-3" textAnchor="middle" fill={WARM_GOLD} fontSize="20" fontWeight="900" fontFamily="sans-serif">
-                    GRAVITY: 0.38g (BOUYANT)
-                  </text>
-                  <line x1="0" y1="13" x2="0" y2="35" stroke={WARM_GOLD} strokeWidth="3" />
-                  <polygon points="0,35 -5,25 5,25" fill={WARM_GOLD} />
-                </g>
-              </g>
-            )}
+              {/* Left Hydraulic Landing Leg */}
+              <path d="M -85 -30 L -170 65 L -165 75 L -80 -10" fill="#525E70" stroke={INK_CHARCOAL} strokeWidth="5" />
+              {/* Footpad */}
+              <ellipse cx="-175" cy="72" rx="35" ry="12" fill="#343C47" stroke={INK_CHARCOAL} strokeWidth="4.5" />
+              <line x1="-85" y1="-140" x2="-150" y2="40" stroke={INK_CHARCOAL} strokeWidth="4" />
 
-            {/* Foreground Mars Red Sand Dunes (Textured Layer) */}
+              {/* Right Hydraulic Landing Leg */}
+              <path d="M 85 -30 L 170 65 L 165 75 L 80 -10" fill="#525E70" stroke={INK_CHARCOAL} strokeWidth="5" />
+              {/* Footpad */}
+              <ellipse cx="175" cy="72" rx="35" ry="12" fill="#343C47" stroke={INK_CHARCOAL} strokeWidth="4.5" />
+              <line x1="85" y1="-140" x2="150" y2="40" stroke={INK_CHARCOAL} strokeWidth="4" />
+
+              {/* Crew Exit Airlock & Deployed Ladder */}
+              <rect x="-26" y="-120" width="52" height="75" rx="8" fill="#2C3542" stroke={INK_CHARCOAL} strokeWidth="4" />
+              {/* Ladder Rails */}
+              <line x1="-16" y1="-45" x2="-16" y2="70" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <line x1="16" y1="-45" x2="16" y2="70" stroke={INK_CHARCOAL} strokeWidth="4" />
+              {/* Ladder Rungs */}
+              {[-30, -10, 10, 30, 50].map((ly, idx) => (
+                <line key={idx} x1="-16" y1={ly} x2="16" y2={ly} stroke={INK_CHARCOAL} strokeWidth="3.5" />
+              ))}
+
+              {/* Mission Decal Flag */}
+              <rect x="-55" y="-310" width="35" height="24" fill={WARM_GOLD} stroke={INK_CHARCOAL} strokeWidth="2.5" />
+              <text x="25" y="-292" fill={INK_CHARCOAL} fontSize="17" fontWeight="900" fontFamily="sans-serif">
+                ARES-IV
+              </text>
+
+              {/* Communication Dish Mast */}
+              <line x1="0" y1="-430" x2="0" y2="-490" stroke={INK_CHARCOAL} strokeWidth="4.5" />
+              <path d="M -22 -490 Q 0 -515 22 -490 Z" fill="#FFFFFF" stroke={INK_CHARCOAL} strokeWidth="3" />
+            </g>
+
+            {/* Parabolic Jump Trajectory Arc (Gold Dotted Physics) */}
             <path
-              d="M -40 1250 Q 260 1195 540 1260 Q 820 1315 1120 1245 L 1120 1920 L -40 1920 Z"
+              d="M 380 1240 Q 640 820 890 1240"
+              fill="none"
+              stroke={WARM_GOLD}
+              strokeWidth="5"
+              strokeDasharray="14 10"
+            />
+            {/* Velocity Vectors & Annotation */}
+            <g transform="translate(640, 890)">
+              <rect x="-125" y="-34" width="250" height="48" rx="10" fill={INK_CHARCOAL} stroke={WARM_GOLD} strokeWidth="2.5" />
+              <text x="0" y="-3" textAnchor="middle" fill={WARM_GOLD} fontSize="19" fontWeight="900" fontFamily="sans-serif">
+                GRAVITY: 0.38g (LOW-G)
+              </text>
+            </g>
+
+            {/* Foreground Dunes */}
+            <path
+              d="M -40 1220 Q 280 1160 580 1230 Q 860 1290 1120 1210 L 1120 1920 L -40 1920 Z"
               fill="url(#dunes-gradient)"
               stroke={INK_CHARCOAL}
               strokeWidth="9"
             />
 
-            {/* Dune Ridge Shading (Cross-hatched organic strokes) */}
-            <g stroke="#91412E" strokeWidth="3" strokeLinecap="round">
-              {[...Array(12)].map((_, i) => (
-                <line
-                  key={i}
-                  x1={120 + i * 75}
-                  y1={1240 + (i % 3) * 12}
-                  x2={100 + i * 75}
-                  y2={1275 + (i % 3) * 12}
-                />
+            {/* Regolith Rocks */}
+            <g fill="#4A1E15" stroke={INK_CHARCOAL} strokeWidth="5" strokeLinejoin="round">
+              <ellipse cx="490" cy="1260" rx="34" ry="16" />
+              <ellipse cx="940" cy="1280" rx="44" ry="20" />
+            </g>
+          </g>
+        )}
+
+        {/* ========================================================================= */}
+        {/* SCENE 3: PLANET SCIENCE ROVER & ATMOSPHERIC INFOGRAPHIC                   */}
+        {/* ========================================================================= */}
+        {sceneId === 3 && (
+          <g>
+            {/* Clean Science Journal Canvas */}
+            <rect width="1080" height="1920" fill={PAPER_CREAM} />
+
+            {/* Editorial Outer Border */}
+            <rect x="40" y="80" width="1000" height="1260" rx="20" fill="none" stroke={INK_CHARCOAL} strokeWidth="4" />
+
+            {/* Header Banner */}
+            <g transform="translate(80, 120)">
+              <rect x="0" y="0" width="920" height="65" rx="12" fill={INK_CHARCOAL} />
+              <text x="460" y="42" textAnchor="middle" fill={PAPER_CREAM} fontSize="25" fontWeight="900" letterSpacing="3px" fontFamily="sans-serif">
+                ATMOSPHERIC HAZARD // MARS VS EARTH
+              </text>
+            </g>
+
+            {/* Infographic Comparison Columns */}
+            {/* Column 1: EARTH */}
+            <g transform="translate(80, 210)">
+              <rect x="0" y="0" width="440" height="420" rx="14" fill="#E8E2D5" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <rect x="20" y="16" width="400" height="45" rx="8" fill={MUTED_BLUE} />
+              <text x="220" y="47" textAnchor="middle" fill="#FFFFFF" fontSize="22" fontWeight="900" fontFamily="sans-serif">
+                EARTH (HABITABLE)
+              </text>
+              <g transform="translate(25, 80)">
+                <text x="0" y="30" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">PRESSURE: 1013 hPa (1 ATM)</text>
+                <text x="0" y="70" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">OXYGEN: 21%</text>
+                <text x="0" y="110" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">CARBON DIOXIDE: 0.04%</text>
+                <text x="0" y="150" fill={SAGE_GREEN} fontSize="20" fontWeight="900" fontFamily="sans-serif">STATUS: BREATHABLE OASIS</text>
+              </g>
+            </g>
+
+            {/* Column 2: MARS */}
+            <g transform="translate(560, 210)">
+              <rect x="0" y="0" width="440" height="420" rx="14" fill="#F4DDD6" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <rect x="20" y="16" width="400" height="45" rx="8" fill={DUSTY_CORAL} />
+              <text x="220" y="47" textAnchor="middle" fill="#FFFFFF" fontSize="22" fontWeight="900" fontFamily="sans-serif">
+                MARS (LETHAL HAZARD)
+              </text>
+              <g transform="translate(25, 80)">
+                <text x="0" y="30" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">PRESSURE: 6 hPa (0.006 ATM)</text>
+                <text x="0" y="70" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">OXYGEN: 0.13%</text>
+                <text x="0" y="110" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">CARBON DIOXIDE: 95.3%</text>
+                <text x="0" y="150" fill={DUSTY_CORAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">STATUS: BLOOD BOILS IN 15s</text>
+              </g>
+            </g>
+
+            {/* Armstrong Limit Warning Box */}
+            <g transform="translate(80, 655)">
+              <rect x="0" y="0" width="920" height="90" rx="14" fill={INK_CHARCOAL} stroke={DUSTY_CORAL} strokeWidth="3" />
+              <polygon points="40,24 64,68 16,68" fill={DUSTY_CORAL} stroke={PAPER_CREAM} strokeWidth="2.5" />
+              <text x="40" y="62" textAnchor="middle" fill={PAPER_CREAM} fontSize="24" fontWeight="900">!</text>
+              <text x="80" y="42" fill={WARM_GOLD} fontSize="21" fontWeight="900" fontFamily="sans-serif">
+                THE ARMSTRONG LIMIT (0.006 ATM):
+              </text>
+              <text x="80" y="68" fill={PAPER_CREAM} fontSize="18" fontWeight="700" fontFamily="sans-serif">
+                At Mars pressure, water and body fluids vaporize at human body temperature (37°C).
+              </text>
+            </g>
+
+            {/* =============================================================== */}
+            {/* THE AUTONOMOUS MARS SCIENCE ROVER (Drilling bedrock in field)    */}
+            {/* =============================================================== */}
+            <g transform="translate(320, 1070)">
+              {/* Rover Chassis */}
+              <rect x="-110" y="-70" width="220" height="80" rx="16" fill="#DCD5C8" stroke={INK_CHARCOAL} strokeWidth="6" />
+              <rect x="-85" y="-55" width="170" height="35" rx="8" fill="#525E70" />
+
+              {/* Mast & Stereo Cameras */}
+              <line x1="-60" y1="-70" x2="-60" y2="-170" stroke={INK_CHARCOAL} strokeWidth="6" strokeLinecap="round" />
+              {/* Pan-Cam Head */}
+              <rect x="-85" y="-200" width="50" height="32" rx="6" fill="#3D4552" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <circle cx="-72" cy="-184" r="7" fill={MUTED_BLUE} stroke={INK_CHARCOAL} strokeWidth="2.5" />
+              <circle cx="-48" cy="-184" r="7" fill={MUTED_BLUE} stroke={INK_CHARCOAL} strokeWidth="2.5" />
+
+              {/* High Gain Dish Antenna */}
+              <line x1="50" y1="-70" x2="50" y2="-130" stroke={INK_CHARCOAL} strokeWidth="5" />
+              <path d="M 30 -130 Q 50 -155 70 -130 Z" fill="#FFFFFF" stroke={INK_CHARCOAL} strokeWidth="3" />
+
+              {/* Robotic Arm with Core Drill */}
+              <g transform="translate(-110, -20)">
+                <line x1="0" y1="0" x2={-60 - roverArmMove} y2="40" stroke={INK_CHARCOAL} strokeWidth="7" strokeLinecap="round" />
+                <line x1={-60 - roverArmMove} y1="40" x2={-110 - roverArmMove} y2="85" stroke={INK_CHARCOAL} strokeWidth="6" strokeLinecap="round" />
+                {/* Drill Head */}
+                <rect x={-125 - roverArmMove} y="80" width="30" height="20" rx="4" fill="#6E7B8B" stroke={INK_CHARCOAL} strokeWidth="3" />
+                <line x1={-110 - roverArmMove} y1="100" x2={-110 - roverArmMove} y2="125" stroke={WARM_GOLD} strokeWidth="4" />
+              </g>
+
+              {/* Rocker-Bogie Suspension & 6 Wheels */}
+              {/* Bogie Struts */}
+              <line x1="-80" y1="10" x2="-120" y2="70" stroke={INK_CHARCOAL} strokeWidth="6" />
+              <line x1="0" y1="10" x2="0" y2="70" stroke={INK_CHARCOAL} strokeWidth="6" />
+              <line x1="80" y1="10" x2="120" y2="70" stroke={INK_CHARCOAL} strokeWidth="6" />
+
+              {/* 6 Cleated All-Terrain Wheels */}
+              {[-120, 0, 120].map((wx, widx) => (
+                <g key={widx} transform={`translate(${wx}, 85)`}>
+                  <circle cx="0" cy="0" r="28" fill="#3D4552" stroke={INK_CHARCOAL} strokeWidth="5" />
+                  <circle cx="0" cy="0" r="14" fill="#A89F91" stroke={INK_CHARCOAL} strokeWidth="3" />
+                  {/* Wheel treads */}
+                  {[0, 60, 120, 180, 240, 300].map((deg, ti) => (
+                    <line
+                      key={ti}
+                      x1={Math.cos((deg * Math.PI) / 180) * 14}
+                      y1={Math.sin((deg * Math.PI) / 180) * 14}
+                      x2={Math.cos((deg * Math.PI) / 180) * 28}
+                      y2={Math.sin((deg * Math.PI) / 180) * 28}
+                      stroke={INK_CHARCOAL}
+                      strokeWidth="3"
+                    />
+                  ))}
+                </g>
+              ))}
+
+              {/* Drilled Martian Bedrock Core */}
+              <polygon points="-260,1180 -180,1130 -120,1190 -220,1230" fill="#8C3A29" stroke={INK_CHARCOAL} strokeWidth="4" />
+            </g>
+          </g>
+        )}
+
+        {/* ========================================================================= */}
+        {/* SCENE 4: BASE ALPHA HABITAT, SOLAR FARM, COMMS TOWER & GREENHOUSE         */}
+        {/* ========================================================================= */}
+        {sceneId === 4 && (
+          <g>
+            {/* Martian Sky */}
+            <rect width="1080" height="1920" fill="url(#mars-sky)" />
+
+            {/* Sun */}
+            <circle cx="280" cy="420" r="48" fill="#FFF2D6" stroke={WARM_GOLD} strokeWidth="4" />
+
+            {/* Distant Hills */}
+            <polygon
+              points="-50,960 220,890 540,950 820,880 1130,940 1130,1350 -50,1350"
+              fill="#522920"
+              stroke={INK_CHARCOAL}
+              strokeWidth="5"
+            />
+
+            {/* Midground Dunes */}
+            <path
+              d="M -40 1120 Q 280 1060 620 1130 Q 920 1180 1120 1100 L 1120 1450 L -40 1450 Z"
+              fill="#853C2C"
+              stroke={INK_CHARCOAL}
+              strokeWidth="6"
+            />
+
+            {/* =============================================================== */}
+            {/* BASE ALPHA GEODESIC DOME SANCTUARY                             */}
+            {/* =============================================================== */}
+            <g transform="translate(680, 1180)">
+              {/* Geodesic Dome Outer Frame */}
+              <path
+                d="M -240 0 A 240 240 0 0 1 240 0 Z"
+                fill="#EAE4D8"
+                stroke={INK_CHARCOAL}
+                strokeWidth="7"
+              />
+
+              {/* Interior Greenhouse Window Bay (Illuminated Hydroponic Plants) */}
+              <path
+                d="M -160 0 A 160 160 0 0 1 160 0 Z"
+                fill="#D8E8D5"
+                stroke={INK_CHARCOAL}
+                strokeWidth="5"
+              />
+              {/* Hydroponic Plant Silhouettes inside Dome */}
+              <g fill={SAGE_GREEN} stroke={INK_CHARCOAL} strokeWidth="2.5">
+                <path d="M -80 0 Q -70 -60 -40 -70 Q -30 -30 -50 0 Z" />
+                <path d="M -10 0 Q 0 -80 30 -90 Q 40 -40 15 0 Z" />
+                <path d="M 60 0 Q 75 -50 110 -60 Q 90 -20 80 0 Z" />
+              </g>
+
+              {/* Geodesic Structural Trusses */}
+              <g stroke={INK_CHARCOAL} strokeWidth="3.5" fill="none">
+                <line x1="-240" y1="0" x2="-140" y2="-120" />
+                <line x1="-140" y1="-120" x2="0" y2="-240" />
+                <line x1="0" y1="-240" x2="140" y2="-120" />
+                <line x1="140" y1="-120" x2="240" y2="0" />
+                <line x1="-140" y1="-120" x2="0" y2="-80" />
+                <line x1="140" y1="-120" x2="0" y2="-80" />
+                <line x1="0" y1="-80" x2="0" y2="0" />
+              </g>
+
+              {/* Pressurized Airlock Module */}
+              <g transform="translate(-240, -10)">
+                <rect x="-80" y="-85" width="80" height="95" rx="8" fill="#525E70" stroke={INK_CHARCOAL} strokeWidth="5" />
+                {/* Airlock Door */}
+                <ellipse cx="-40" cy="-35" rx="24" ry="38" fill="#343C47" stroke={INK_CHARCOAL} strokeWidth="3.5" />
+                {/* Status Indicator (Green Light: Pressurized) */}
+                <circle cx="-40" cy="-65" r="5" fill="#3DDF78" stroke={INK_CHARCOAL} strokeWidth="2" />
+              </g>
+            </g>
+
+            {/* DUAL-AXIS SOLAR COLLECTOR PANEL FARM (Left foreground) */}
+            <g transform="translate(180, 1150)">
+              {/* Solar Array 1 */}
+              <g transform="translate(0, 0)">
+                <line x1="0" y1="0" x2="0" y2="60" stroke={INK_CHARCOAL} strokeWidth="6" />
+                <rect x="-65" y="-55" width="130" height="60" rx="6" fill="url(#solar-cell)" stroke={INK_CHARCOAL} strokeWidth="4.5" transform="rotate(-15)" />
+              </g>
+              {/* Solar Array 2 */}
+              <g transform="translate(130, 20)">
+                <line x1="0" y1="0" x2="0" y2="60" stroke={INK_CHARCOAL} strokeWidth="6" />
+                <rect x="-65" y="-55" width="130" height="60" rx="6" fill="url(#solar-cell)" stroke={INK_CHARCOAL} strokeWidth="4.5" transform="rotate(-15)" />
+              </g>
+            </g>
+
+            {/* COMMUNICATIONS DISH TOWER */}
+            <g transform="translate(420, 1020)">
+              {/* Steel Lattice Mast */}
+              <line x1="-15" y1="0" x2="0" y2="-140" stroke={INK_CHARCOAL} strokeWidth="4.5" />
+              <line x1="15" y1="0" x2="0" y2="-140" stroke={INK_CHARCOAL} strokeWidth="4.5" />
+              <line x1="-10" y1="-50" x2="10" y2="-50" stroke={INK_CHARCOAL} strokeWidth="3" />
+              <line x1="-6" y1="-100" x2="6" y2="-100" stroke={INK_CHARCOAL} strokeWidth="3" />
+              {/* Parabolic Dish Antenna */}
+              <path d="M -30 -140 Q 0 -175 30 -140 Z" fill="#FFFFFF" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <line x1="0" y1="-155" x2="0" y2="-175" stroke={INK_CHARCOAL} strokeWidth="3" />
+              <circle cx="0" cy="-178" r="4" fill={WARM_GOLD} />
+            </g>
+
+            {/* Foreground Dunes */}
+            <path
+              d="M -40 1220 Q 280 1160 580 1230 Q 860 1290 1120 1210 L 1120 1920 L -40 1920 Z"
+              fill="url(#dunes-gradient)"
+              stroke={INK_CHARCOAL}
+              strokeWidth="9"
+            />
+          </g>
+        )}
+
+        {/* ========================================================================= */}
+        {/* SCENE 5: GLOBAL DUST STORM & ORBITAL SATELLITE TRACKING                   */}
+        {/* ========================================================================= */}
+        {sceneId === 5 && (
+          <g>
+            {/* Storm Red Sky */}
+            <rect width="1080" height="1920" fill="#5E271E" />
+
+            {/* Blotted Out Dim Orange Sun */}
+            <circle cx="340" cy="400" r="38" fill="#AA4E3A" stroke="#843424" strokeWidth="3" opacity="0.4" />
+
+            {/* Violent Swirling Storm Front Particles & Wind Streaks */}
+            <g stroke="#E8765A" strokeWidth="5" strokeLinecap="round" opacity="0.65">
+              {[...Array(24)].map((_, i) => {
+                const wx = ((stormWinds + i * 110) % 1500) - 200;
+                const wy = 450 + (i * 45) + Math.sin(frame * 0.2 + i) * 20;
+                const wlen = 160 + (i % 5) * 50;
+                return (
+                  <line key={i} x1={wx} y1={wy} x2={wx + wlen} y2={wy + 15} />
+                );
+              })}
+            </g>
+
+            {/* Swirling Mini Tornado / Dust Devil */}
+            <g transform={`translate(${680 - (frame * 4) % 300}, 950)`} opacity="0.55">
+              <ellipse cx="0" cy="-180" rx="80" ry="22" fill="#AD4E38" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <ellipse cx="0" cy="-110" rx="55" ry="16" fill="#AD4E38" stroke={INK_CHARCOAL} strokeWidth="3.5" />
+              <ellipse cx="0" cy="-40" rx="30" ry="10" fill="#AD4E38" stroke={INK_CHARCOAL} strokeWidth="3" />
+              <ellipse cx="0" cy="20" rx="12" ry="5" fill="#AD4E38" stroke={INK_CHARCOAL} strokeWidth="2.5" />
+            </g>
+
+            {/* Base Alpha Covered in Dust with Red Flashing Alarms */}
+            <g transform="translate(340, 1180)">
+              <path d="M -180 0 A 180 180 0 0 1 180 0 Z" fill="#753528" stroke={INK_CHARCOAL} strokeWidth="6" />
+              {/* Emergency Beacon (Flashing Red) */}
+              <circle
+                cx="0"
+                cy="-185"
+                r="10"
+                fill={frame % 12 < 6 ? "#FF2A2A" : "#601414"}
+                stroke={INK_CHARCOAL}
+                strokeWidth="3.5"
+              />
+            </g>
+
+            {/* ORBITAL SATELLITE WEATHER TRACKING INSET (Upper Right Inset Monitor) */}
+            <g transform="translate(620, 160)">
+              {/* Monitor Frame */}
+              <rect x="0" y="0" width="400" height="340" rx="14" fill={INK_CHARCOAL} stroke={PAPER_CREAM} strokeWidth="4" />
+              {/* Monitor Screen */}
+              <rect x="15" y="15" width="370" height="310" rx="8" fill="#131B26" />
+
+              {/* Title Bar */}
+              <text x="30" y="44" fill={WARM_GOLD} fontSize="17" fontWeight="900" fontFamily="sans-serif">
+                ORBITAL TELEMETRY // SAT-09
+              </text>
+              <circle cx="360" cy="38" r="6" fill="#FF4545" />
+
+              {/* Hemisphere Storm Map */}
+              <circle cx="200" cy="180" r="100" fill="#BD5338" stroke="#FFFFFF" strokeWidth="2.5" />
+              {/* Swirling Yellow Storm Vortex sweeping over globe */}
+              <path
+                d="M 120 160 Q 200 110 280 170 Q 260 250 160 230 Z"
+                fill="#E8A34A"
+                opacity="0.8"
+                stroke="#FFFFFF"
+                strokeWidth="2"
+              />
+              <text x="200" y="305" textAnchor="middle" fill="#FFFFFF" fontSize="15" fontWeight="900" fontFamily="monospace">
+                STORM VELOCITY: 100 KM/H
+              </text>
+            </g>
+
+            {/* Foreground Dunes Engulfed by Storm */}
+            <path
+              d="M -40 1200 Q 280 1140 580 1210 Q 860 1270 1120 1190 L 1120 1920 L -40 1920 Z"
+              fill="#742A1D"
+              stroke={INK_CHARCOAL}
+              strokeWidth="9"
+            />
+          </g>
+        )}
+
+        {/* ========================================================================= */}
+        {/* SCENE 6: MARS ASCENT VEHICLE ROCKET LAUNCH & MISSION COMPLETE FINALE      */}
+        {/* ========================================================================= */}
+        {sceneId === 6 && (
+          <g>
+            {/* Night Sky opening up as rocket ascends */}
+            <rect width="1080" height="1920" fill="url(#deep-space)" />
+
+            {/* Distant Stars */}
+            <g fill="#FFFFFF">
+              {[
+                [150, 120], [350, 90], [750, 140], [920, 100],
+                [180, 320], [840, 280], [120, 520], [940, 480]
+              ].map(([sx, sy], i) => (
+                <circle key={i} cx={sx} cy={sy} r="2" opacity={starTwinkle} />
               ))}
             </g>
 
-            {/* Hand-drawn Martian Boulders & Regolith Rocks */}
-            <g fill="#4A1E15" stroke={INK_CHARCOAL} strokeWidth="5" strokeLinejoin="round">
-              <ellipse cx="140" cy="1280" rx="36" ry="18" />
-              <ellipse cx="880" cy="1290" rx="46" ry="22" />
-              <ellipse cx="680" cy="1315" rx="24" ry="12" />
-              <ellipse cx="380" cy="1330" rx="18" ry="9" />
+            {/* Curving Martian Horizon Below */}
+            <ellipse cx="540" cy="1780" rx="720" ry="340" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="8" />
+
+            {/* Tiny Base Alpha on Horizon Below */}
+            <g transform="translate(320, 1520)">
+              <ellipse cx="0" cy="0" rx="35" ry="18" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="3" />
             </g>
 
-            {/* Swirling Martian Dust Devil Particles */}
-            <g opacity="0.5">
-              {[...Array(14)].map((_, i) => {
-                const px = ((dustDrift + i * 90) % 1150) - 50;
-                const py = 1200 + Math.sin(frame * 0.1 + i) * 30 + (i % 4) * 25;
-                return (
-                  <ellipse key={i} cx={px} cy={py} rx={14 + i * 2} ry="4" fill={SAND_BEIGE} />
-                );
-              })}
-            </g>
-          </>
-        )}
-
-        {/* ========================================================================= */}
-        {/* SCENE 3: EDITORIAL SCIENCE JOURNAL SPREAD (EARTH VS MARS COMPARISON)     */}
-        {/* ========================================================================= */}
-        {environment === "planet_comparison" && (
-          <>
-            {/* Authentic Paper Cream Journal Background */}
-            <rect x="0" y="0" width="1080" height="1920" fill={PAPER_CREAM} />
-
-            {/* Subtle Journal Outer Margin Inset */}
-            <rect x="40" y="240" width="1000" height="1140" rx="18" fill="none" stroke={INK_CHARCOAL} strokeWidth="4" />
-            <rect x="48" y="248" width="984" height="1124" rx="14" fill="none" stroke={STONE_GREY} strokeWidth="1.5" />
-
-            {/* Editorial Title Banner Plate */}
-            <g transform="translate(100, 275)">
-              <rect x="0" y="0" width="880" height="70" rx="12" fill={INK_CHARCOAL} />
-              <text x="440" y="44" textAnchor="middle" fill={PAPER_CREAM} fontSize="26" fontWeight="900" letterSpacing="4px" fontFamily="'Outfit', sans-serif">
-                COMPARATIVE PLANETARY TELEMETRY
-              </text>
+            {/* Launch Pad Gantry left behind on surface */}
+            <g transform="translate(540, 1500)">
+              <rect x="-35" y="-40" width="70" height="40" rx="4" fill="#525E70" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <line x1="-30" y1="-80" x2="-30" y2="0" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <line x1="30" y1="-80" x2="30" y2="0" stroke={INK_CHARCOAL} strokeWidth="4" />
             </g>
 
-            {/* Left Editorial Card: PLANET EARTH (Oasis) */}
-            <g transform="translate(70, 375)">
-              <rect x="0" y="0" width="450" height="780" rx="18" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="5" />
-              <rect x="25" y="22" width="400" height="55" rx="8" fill={MUTED_BLUE} />
-              <text x="225" y="58" textAnchor="middle" fill={PAPER_CREAM} fontSize="24" fontWeight="900" fontFamily="sans-serif">
-                EARTH (HOME OASIS)
-              </text>
-
-              {/* Handcrafted 2D Illustrated Earth */}
-              <g transform="translate(225, 205)">
-                {/* Ocean Sphere */}
-                <circle cx="0" cy="0" r="95" fill={MUTED_BLUE} stroke={INK_CHARCOAL} strokeWidth="5" />
-                {/* Sage Green Continents */}
-                <path d="M -45 -35 Q -15 -75 35 -45 Q 60 -5 20 20 Q -35 55 -45 -35 Z" fill={SAGE_GREEN} stroke={INK_CHARCOAL} strokeWidth="2.5" />
-                <path d="M 15 25 Q 55 35 35 75 Q -5 65 15 25 Z" fill={SAGE_GREEN} stroke={INK_CHARCOAL} strokeWidth="2.5" />
-                {/* Polar Ice Cap */}
-                <ellipse cx="0" cy="-85" rx="35" ry="10" fill={PAPER_CREAM} />
-                {/* Atmospheric Corona */}
-                <circle cx="0" cy="0" r="102" fill="none" stroke="#7FA3C2" strokeWidth="4" opacity="0.7" />
-              </g>
-
-              {/* Metric Data Rows */}
-              <g transform="translate(35, 360)">
-                <g transform="translate(0, 0)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">GRAVITY</text>
-                  <text x="360" y="32" textAnchor="end" fill={MUTED_BLUE} fontSize="20" fontWeight="900" fontFamily="monospace">1.0g (100%)</text>
-                </g>
-                <g transform="translate(0, 60)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">PRESSURE</text>
-                  <text x="360" y="32" textAnchor="end" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="monospace">1.0 ATM</text>
-                </g>
-                <g transform="translate(0, 120)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">ATMOSPHERE</text>
-                  <text x="360" y="32" textAnchor="end" fill={SAGE_GREEN} fontSize="19" fontWeight="900" fontFamily="monospace">21% OXYGEN</text>
-                </g>
-                <g transform="translate(0, 180)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">AVG TEMP</text>
-                  <text x="360" y="32" textAnchor="end" fill={WARM_GOLD} fontSize="20" fontWeight="900" fontFamily="monospace">+15°C</text>
-                </g>
-                <g transform="translate(0, 240)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">SURVIVAL</text>
-                  <text x="360" y="32" textAnchor="end" fill={SAGE_GREEN} fontSize="18" fontWeight="900" fontFamily="monospace">HABITABLE</text>
-                </g>
-              </g>
+            {/* Billowing Exhaust Smoke Clouds on Launch Pad */}
+            <g fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="4" opacity="0.85">
+              <ellipse cx="460" cy="1480" rx="90" ry="50" />
+              <ellipse cx="620" cy="1475" rx="95" ry="52" />
+              <ellipse cx="540" cy="1460" rx="120" ry="60" />
             </g>
 
-            {/* Right Editorial Card: PLANET MARS (Wasteland) */}
-            <g transform="translate(560, 375)">
-              <rect x="0" y="0" width="450" height="780" rx="18" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="5" />
-              <rect x="25" y="22" width="400" height="55" rx="8" fill={DUSTY_CORAL} />
-              <text x="225" y="58" textAnchor="middle" fill={PAPER_CREAM} fontSize="24" fontWeight="900" fontFamily="sans-serif">
-                MARS (SOL 18)
-              </text>
-
-              {/* Handcrafted 2D Illustrated Mars (53% of Earth diameter) */}
-              <g transform="translate(225, 205)">
-                <circle cx="0" cy="0" r="58" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="5" />
-                {/* Iron oxide maria markings */}
-                <ellipse cx="-12" cy="-8" rx="22" ry="12" fill="#8C3D2B" />
-                <ellipse cx="18" cy="15" rx="18" ry="9" fill="#8C3D2B" />
-                {/* White Dry Ice Polar Cap */}
-                <ellipse cx="0" cy="-52" rx="20" ry="6" fill={PAPER_CREAM} />
-              </g>
-
-              {/* Metric Data Rows */}
-              <g transform="translate(35, 360)">
-                <g transform="translate(0, 0)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">GRAVITY</text>
-                  <text x="360" y="32" textAnchor="end" fill={DUSTY_CORAL} fontSize="20" fontWeight="900" fontFamily="monospace">0.38g (38%)</text>
-                </g>
-                <g transform="translate(0, 60)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">PRESSURE</text>
-                  <text x="360" y="32" textAnchor="end" fill={MUTED_BURGUNDY} fontSize="20" fontWeight="900" fontFamily="monospace">0.006 ATM</text>
-                </g>
-                <g transform="translate(0, 120)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">ATMOSPHERE</text>
-                  <text x="360" y="32" textAnchor="end" fill={MUTED_BURGUNDY} fontSize="19" fontWeight="900" fontFamily="monospace">95% CO2 (LETHAL)</text>
-                </g>
-                <g transform="translate(0, 180)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">AVG TEMP</text>
-                  <text x="360" y="32" textAnchor="end" fill={MUTED_BLUE} fontSize="20" fontWeight="900" fontFamily="monospace">-63°C</text>
-                </g>
-                <g transform="translate(0, 240)">
-                  <rect x="0" y="0" width="380" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="18" y="32" fill={INK_CHARCOAL} fontSize="20" fontWeight="900" fontFamily="sans-serif">SURVIVAL</text>
-                  <text x="360" y="32" textAnchor="end" fill={MUTED_BURGUNDY} fontSize="18" fontWeight="900" fontFamily="monospace">&lt; 15 SECONDS</text>
-                </g>
-              </g>
-            </g>
-
-            {/* Bottom Scientific Insight Callout Plate: THE ARMSTRONG LIMIT */}
-            <g transform="translate(70, 1195)">
-              <rect x="0" y="0" width="940" height="95" rx="14" fill={INK_CHARCOAL} />
-              <text x="470" y="40" textAnchor="middle" fill={WARM_GOLD} fontSize="22" fontWeight="900" letterSpacing="2px" fontFamily="monospace">
-                ! THE ARMSTRONG LIMIT HAZARD !
-              </text>
-              <text x="470" y="74" textAnchor="middle" fill={PAPER_CREAM} fontSize="18" fontWeight="800" fontFamily="sans-serif">
-                At 0.006 ATM, unprotected human blood boils at body temperature in 15 seconds.
-              </text>
-            </g>
-          </>
-        )}
-
-        {/* ========================================================================= */}
-        {/* SCENE 4: BASE ALPHA GEODESIC HABITAT & SOLAR ARRAYS                      */}
-        {/* ========================================================================= */}
-        {environment === "mars_habitat" && (
-          <>
-            {/* Dusk Martian Sky */}
-            <rect x="0" y="0" width="1080" height="1920" fill="url(#mars-sky)" />
-
-            {/* Distant Ridge */}
-            <path d="M -40 1020 Q 300 920 600 960 Q 900 920 1120 1000 L 1120 1350 L -40 1350 Z" fill="#5C2D22" stroke={INK_CHARCOAL} strokeWidth="6" />
-
-            {/* Pressurized Geodesic Habitat Dome (Architectural Cross-Section) */}
-            <g transform="translate(540, 1260)">
-              {/* Outer Protective Dome Shell */}
-              <path
-                d="M -340 0 C -340 -260, 340 -260, 340 0 Z"
-                fill="#202A38"
-                stroke={INK_CHARCOAL}
-                strokeWidth="9"
+            {/* =============================================================== */}
+            {/* THE MARS ASCENT VEHICLE (MAV) ROCKET BLASTING INTO SPACE        */}
+            {/* =============================================================== */}
+            <g transform={`translate(540, ${1100 - rocketLift})`}>
+              {/* Roaring Rocket Fire Plume Exhaust */}
+              <polygon
+                points={`-35,160 0,${380 + flameFlicker} 35,160`}
+                fill="url(#rocket-flame)"
               />
-              {/* Warm Greenhouse Interior Glow */}
-              <path d="M -330 -4 C -330 -250, 330 -250, 330 -4 Z" fill="url(#habitat-glow)" />
-
-              {/* Hand-drawn Geodesic Hexagonal Lattice Struts */}
-              <g stroke={PAPER_CREAM} strokeWidth="3" opacity="0.65">
-                <line x1="-240" y1="-80" x2="-140" y2="-180" />
-                <line x1="-140" y1="-180" x2="0" y2="-230" />
-                <line x1="0" y1="-230" x2="140" y2="-180" />
-                <line x1="140" y1="-180" x2="240" y2="-80" />
-                <line x1="-240" y1="-80" x2="-140" y2="0" />
-                <line x1="-140" y1="0" x2="0" y2="-100" />
-                <line x1="0" y1="-100" x2="140" y2="0" />
-                <line x1="140" y1="0" x2="240" y2="-80" />
-                <line x1="-140" y1="-180" x2="-140" y2="0" />
-                <line x1="140" y1="-180" x2="140" y2="0" />
-              </g>
-
-              {/* Interior Hydroponic Botanical Silhouettes */}
-              <g fill={SAGE_GREEN} opacity="0.85">
-                <ellipse cx="-180" cy="-25" rx="20" ry="40" />
-                <ellipse cx="-205" cy="-20" rx="15" ry="30" />
-                <ellipse cx="180" cy="-25" rx="20" ry="40" />
-                <ellipse cx="205" cy="-20" rx="15" ry="30" />
-              </g>
-
-              {/* Illustrated Airlock Module 01 */}
-              <rect x="-70" y="-130" width="140" height="130" rx="14" fill={PAPER_CREAM} stroke={INK_CHARCOAL} strokeWidth="6" />
-              {/* Circular Sub-Door Hatch */}
-              <circle cx="0" cy="-65" r="32" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="4" />
-              {/* Warm Hatch Window */}
-              <circle cx="0" cy="-65" r="16" fill={WARM_GOLD} />
-              <line x1="0" y1="-80" x2="0" y2="-50" stroke={INK_CHARCOAL} strokeWidth="3" />
-              <line x1="-15" y1="-65" x2="15" y2="-65" stroke={INK_CHARCOAL} strokeWidth="3" />
-              <text x="0" y="-15" textAnchor="middle" fill={INK_CHARCOAL} fontSize="14" fontWeight="900" fontFamily="monospace">AIRLOCK 01</text>
-            </g>
-
-            {/* Hand-drawn Solar Panel Bank */}
-            <g transform="translate(60, 1160)" fill="#2C3D52" stroke={INK_CHARCOAL} strokeWidth="5">
-              <polygon points="0,80 180,35 245,90 65,135" />
-              {/* Grid cell lines */}
-              <line x1="45" y1="68" x2="110" y2="122" stroke={WARM_GOLD} strokeWidth="2.5" />
-              <line x1="90" y1="56" x2="155" y2="110" stroke={WARM_GOLD} strokeWidth="2.5" />
-              <line x1="135" y1="44" x2="200" y2="98" stroke={WARM_GOLD} strokeWidth="2.5" />
-              <line x1="120" y1="90" x2="120" y2="150" stroke={INK_CHARCOAL} strokeWidth="8" />
-            </g>
-
-            {/* Ground Dunes */}
-            <polygon points="-40,1260 1120,1260 1120,1920 -40,1920" fill="url(#dunes-gradient)" />
-            <line x1="-40" y1="1260" x2="1120" y2="1260" stroke={INK_CHARCOAL} strokeWidth="9" />
-          </>
-        )}
-
-        {/* ========================================================================= */}
-        {/* SCENE 5: SOL 18 DUST STORM CRISIS (85% POWER LOSS)                       */}
-        {/* ========================================================================= */}
-        {environment === "mars_dust_storm" && (
-          <>
-            {/* Blotted Out Dark Sky */}
-            <rect x="0" y="0" width="1080" height="1920" fill="#241B1A" />
-
-            {/* Giant Swirling Sandstorm Cloud Fronts */}
-            <g opacity="0.85">
-              <path
-                d="M -50 250 Q 240 180 540 300 Q 840 160 1130 270 L 1130 1400 L -50 1400 Z"
-                fill="#662920"
+              <polygon
+                points={`-18,160 0,${290 + flameFlicker} 18,160`}
+                fill="#FFFFFF"
               />
-              <path
-                d="M -50 480 Q 300 400 600 500 Q 900 430 1130 520 L 1130 1400 L -50 1400 Z"
-                fill="#8C3E30"
-              />
-              <path
-                d="M -50 720 Q 250 640 550 740 Q 850 670 1130 760 L 1130 1400 L -50 1400 Z"
-                fill="#B85942"
-              />
+
+              {/* Rocket Fuselage */}
+              <rect x="-45" y="-140" width="90" height="290" rx="14" fill="#FFFFFF" stroke={INK_CHARCOAL} strokeWidth="7" />
+
+              {/* Aerodynamic Nosecone */}
+              <path d="M -45 -140 Q 0 -240 45 -140 Z" fill="#EAE4D8" stroke={INK_CHARCOAL} strokeWidth="6" />
+
+              {/* Cockpit Visor Window */}
+              <ellipse cx="0" cy="-100" rx="20" ry="12" fill={MUTED_BLUE} stroke={INK_CHARCOAL} strokeWidth="3.5" />
+
+              {/* Staging Seams & Fin Fairings */}
+              <line x1="-45" y1="20" x2="45" y2="20" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <line x1="-45" y1="110" x2="45" y2="110" stroke={INK_CHARCOAL} strokeWidth="4" />
+
+              {/* Left Delta Fin */}
+              <polygon points="-45,70 -95,160 -45,150" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="5" />
+              {/* Right Delta Fin */}
+              <polygon points="45,70 95,160 45,150" fill={DUSTY_CORAL} stroke={INK_CHARCOAL} strokeWidth="5" />
+
+              {/* Rocket Engine Nozzle Bells */}
+              <polygon points="-28,150 -36,175 -8,175 -16,150" fill="#242B35" stroke={INK_CHARCOAL} strokeWidth="3" />
+              <polygon points="16,150 8,175 36,175 28,150" fill="#242B35" stroke={INK_CHARCOAL} strokeWidth="3" />
             </g>
 
-            {/* Rapid Horizontal 100 km/h Wind Motion Streaks */}
-            <g stroke={SAND_BEIGE} opacity="0.75" strokeLinecap="round">
-              {[...Array(28)].map((_, i) => {
-                const wx = ((stormFront + i * 85) % 1500) - 300;
-                const wy = 350 + ((i * 50) % 950);
-                const wLen = 160 + (i % 6) * 45;
-                return (
-                  <line
-                    key={i}
-                    x1={wx}
-                    y1={wy}
-                    x2={wx + wLen}
-                    y2={wy + 18}
-                    strokeWidth={3 + (i % 3)}
-                  />
-                );
-              })}
-            </g>
-
-            {/* Failing Solar Panels Blanketed in Sand */}
-            <g transform="translate(180, 1160)" fill="#4A251C" stroke={INK_CHARCOAL} strokeWidth="5">
-              <polygon points="0,75 180,32 240,82 60,125" />
-              {/* Thick dusty coral sand drifts covering the panel */}
-              <polygon points="12,72 175,34 230,80 55,120" fill={DUSTY_CORAL} opacity="0.9" />
-              {/* Emergency Alert Tag Banner */}
-              <g transform="translate(120, 10)">
-                <rect x="-85" y="-18" width="170" height="36" rx="8" fill={MUTED_BURGUNDY} stroke={PAPER_CREAM} strokeWidth="2.5" />
-                <text x="0" y="6" textAnchor="middle" fill={PAPER_CREAM} fontSize="16" fontWeight="900" fontFamily="sans-serif">
-                  POWER LOSS: -85%
-                </text>
-              </g>
-            </g>
-
-            {/* Ground Dunes */}
-            <polygon points="-40,1260 1120,1260 1120,1920 -40,1920" fill="#3D1812" />
-            <line x1="-40" y1="1260" x2="1120" y2="1260" stroke={INK_CHARCOAL} strokeWidth="9" />
-          </>
-        )}
-
-        {/* ========================================================================= */}
-        {/* SCENE 6: INTERACTIVE SURVIVAL PROTOCOL CLIFFHANGER (A vs B)              */}
-        {/* ========================================================================= */}
-        {environment === "space_cliffhanger" && (
-          <>
-            {/* Paper Cream Editorial Background */}
-            <rect x="0" y="0" width="1080" height="1920" fill={PAPER_CREAM} />
-
-            {/* Inset Double Border */}
-            <rect x="35" y="240" width="1010" height="1140" rx="18" fill="none" stroke={INK_CHARCOAL} strokeWidth="4.5" />
-            <rect x="43" y="248" width="994" height="1124" rx="14" fill="none" stroke={STONE_GREY} strokeWidth="1.5" />
-
-            {/* Main Decision Header Banner */}
-            <g transform="translate(65, 275)">
-              <rect x="0" y="0" width="950" height="75" rx="14" fill={INK_CHARCOAL} />
-              <text x="475" y="48" textAnchor="middle" fill={PAPER_CREAM} fontSize="28" fontWeight="900" letterSpacing="3px" fontFamily="'Outfit', sans-serif">
-                WHAT WOULD YOU DO TO SURVIVE?
+            {/* TRIUMPHANT MISSION COMPLETE BADGE */}
+            <g transform="translate(140, 240)">
+              <rect x="0" y="0" width="800" height="150" rx="20" fill={INK_CHARCOAL} stroke={WARM_GOLD} strokeWidth="4" />
+              <text x="400" y="60" textAnchor="middle" fill={WARM_GOLD} fontSize="34" fontWeight="900" letterSpacing="4px" fontFamily="sans-serif">
+                30 DAYS ON MARS
+              </text>
+              <line x1="100" y1="85" x2="700" y2="85" stroke={STONE_GREY} strokeWidth="2" />
+              <text x="400" y="122" textAnchor="middle" fill={PAPER_CREAM} fontSize="24" fontWeight="800" letterSpacing="2px" fontFamily="sans-serif">
+                MISSION SUCCESSFUL // HUMANITY IS INTERPLANETARY
               </text>
             </g>
-
-            {/* Protocol [ A ]: BRAVE THE STORM */}
-            <g transform="translate(65, 380)">
-              <rect
-                x="0"
-                y="0"
-                width="460"
-                height="560"
-                rx="18"
-                fill="#EAE4D8"
-                stroke={DUSTY_CORAL}
-                strokeWidth="6"
-              />
-              <rect x="22" y="22" width="416" height="60" rx="10" fill={DUSTY_CORAL} />
-              <text x="230" y="62" textAnchor="middle" fill={PAPER_CREAM} fontSize="24" fontWeight="900" fontFamily="sans-serif">
-                [ A ] BRAVE THE STORM
-              </text>
-
-              {/* Handcrafted Tool / Panel Sweep Illustration */}
-              <g transform="translate(145, 120)">
-                <rect x="0" y="0" width="170" height="110" rx="12" fill={PAPER_CREAM} stroke={INK_CHARCOAL} strokeWidth="4" />
-                <polygon points="20,80 150,40 150,70 20,95" fill={DUSTY_CORAL} opacity="0.4" />
-                <line x1="85" y1="20" x2="85" y2="85" stroke={INK_CHARCOAL} strokeWidth="5" strokeLinecap="round" />
-                <line x1="60" y1="85" x2="110" y2="85" stroke={WARM_GOLD} strokeWidth="6" strokeLinecap="round" />
-              </g>
-
-              {/* Outcome Telemetry Rows */}
-              <g transform="translate(30, 265)">
-                <g transform="translate(0, 0)">
-                  <rect x="0" y="0" width="400" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="16" y="32" fill={INK_CHARCOAL} fontSize="19" fontWeight="900" fontFamily="sans-serif">SOLAR POWER</text>
-                  <text x="384" y="32" textAnchor="end" fill={SAGE_GREEN} fontSize="19" fontWeight="900" fontFamily="monospace">RESTORES 100%</text>
-                </g>
-                <g transform="translate(0, 60)">
-                  <rect x="0" y="0" width="400" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="16" y="32" fill={INK_CHARCOAL} fontSize="19" fontWeight="900" fontFamily="sans-serif">BREACH HAZARD</text>
-                  <text x="384" y="32" textAnchor="end" fill={MUTED_BURGUNDY} fontSize="19" fontWeight="900" fontFamily="monospace">80% RISK</text>
-                </g>
-                <g transform="translate(0, 120)">
-                  <rect x="0" y="0" width="400" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="16" y="32" fill={INK_CHARCOAL} fontSize="19" fontWeight="900" fontFamily="sans-serif">CONDITIONS</text>
-                  <text x="384" y="32" textAnchor="end" fill={INK_CHARCOAL} fontSize="18" fontWeight="800" fontFamily="monospace">100 KM/H WIND</text>
-                </g>
-                <g transform="translate(0, 180)">
-                  <rect x="0" y="0" width="400" height="50" rx="8" fill={INK_CHARCOAL} />
-                  <text x="200" y="32" textAnchor="middle" fill={WARM_GOLD} fontSize="18" fontWeight="900" fontFamily="sans-serif">
-                    VOTE A IN COMMENTS
-                  </text>
-                </g>
-              </g>
-            </g>
-
-            {/* Protocol [ B ]: CRYO-HIBERNATION */}
-            <g transform="translate(555, 380)">
-              <rect
-                x="0"
-                y="0"
-                width="460"
-                height="560"
-                rx="18"
-                fill="#EAE4D8"
-                stroke={MUTED_BLUE}
-                strokeWidth="6"
-              />
-              <rect x="22" y="22" width="416" height="60" rx="10" fill={MUTED_BLUE} />
-              <text x="230" y="62" textAnchor="middle" fill={PAPER_CREAM} fontSize="24" fontWeight="900" fontFamily="sans-serif">
-                [ B ] CRYO-HIBERNATE
-              </text>
-
-              {/* Handcrafted Cryo Capsule Pod Illustration */}
-              <g transform="translate(145, 120)">
-                <rect x="0" y="0" width="170" height="110" rx="12" fill={PAPER_CREAM} stroke={INK_CHARCOAL} strokeWidth="4" />
-                <ellipse cx="85" cy="55" rx="60" ry="32" fill="#D0DEEB" stroke={MUTED_BLUE} strokeWidth="3" />
-                <line x1="35" y1="55" x2="135" y2="55" stroke={MUTED_BLUE} strokeWidth="3" strokeDasharray="6 4" />
-              </g>
-
-              {/* Outcome Telemetry Rows */}
-              <g transform="translate(30, 265)">
-                <g transform="translate(0, 0)">
-                  <rect x="0" y="0" width="400" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="16" y="32" fill={INK_CHARCOAL} fontSize="19" fontWeight="900" fontFamily="sans-serif">ENERGY USE</text>
-                  <text x="384" y="32" textAnchor="end" fill={MUTED_BLUE} fontSize="19" fontWeight="900" fontFamily="monospace">-90% CUT</text>
-                </g>
-                <g transform="translate(0, 60)">
-                  <rect x="0" y="0" width="400" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="16" y="32" fill={INK_CHARCOAL} fontSize="19" fontWeight="900" fontFamily="sans-serif">TEMPERATURE</text>
-                  <text x="384" y="32" textAnchor="end" fill={MUTED_BURGUNDY} fontSize="19" fontWeight="900" fontFamily="monospace">-85°C FREEZING</text>
-                </g>
-                <g transform="translate(0, 120)">
-                  <rect x="0" y="0" width="400" height="48" rx="8" fill={PAPER_CREAM} stroke={STONE_GREY} strokeWidth="2" />
-                  <text x="16" y="32" fill={INK_CHARCOAL} fontSize="19" fontWeight="900" fontFamily="sans-serif">SANCTUARY</text>
-                  <text x="384" y="32" textAnchor="end" fill={INK_CHARCOAL} fontSize="18" fontWeight="800" fontFamily="monospace">ROVER POD</text>
-                </g>
-                <g transform="translate(0, 180)">
-                  <rect x="0" y="0" width="400" height="50" rx="8" fill={INK_CHARCOAL} />
-                  <text x="200" y="32" textAnchor="middle" fill={WARM_GOLD} fontSize="18" fontWeight="900" fontFamily="sans-serif">
-                    VOTE B IN COMMENTS
-                  </text>
-                </g>
-              </g>
-            </g>
-
-            {/* Bottom Emergency Countdown Seal */}
-            <g transform="translate(240, 1195)">
-              <rect x="0" y="0" width="600" height="75" rx="14" fill={INK_CHARCOAL} stroke={DUSTY_CORAL} strokeWidth="4" />
-              <text x="300" y="46" textAnchor="middle" fill={PAPER_CREAM} fontSize="22" fontWeight="900" fontFamily="monospace">
-                DECISION TIMER: 00:0{Math.max(1, 4 - Math.floor((frame % 120) / 30))} // VOTE NOW!
-              </text>
-            </g>
-          </>
+          </g>
         )}
       </svg>
     </div>

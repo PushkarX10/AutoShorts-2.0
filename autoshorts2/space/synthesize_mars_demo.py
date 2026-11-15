@@ -12,37 +12,37 @@ PROJECTS_DIR = ROOT_DIR / "projects"
 PROJECT_DIR = PROJECTS_DIR / "mars_demo"
 PUBLIC_DIR = ROOT_DIR / "renderer" / "public"
 
-VOICE = "en-US-ChristopherNeural"
-RATE = "+9%"  # clear, punchy, engaging tempo
+VOICE = "en-US-BrianNeural"
+RATE = "+10%"  # fast, clear, engaging documentary tempo (Target ~50s)
 
 SCENE_DEFS = [
     {
         "scene_id": 1,
-        "beat": "HOOK",
-        "narration": "What if you woke up on Mars tomorrow... with only thirty days of supplies?",
-        "environment": "mars_surface",
+        "beat": "ORBITAL_ARRIVAL",
+        "narration": "What if you were sent to live on Mars for thirty days? From orbit, the red planet floats beneath the blazing Sun, surveyed by silent orbiters.",
+        "environment": "orbital_arrival",
         "camera": "slow_push_in",
-        "character_action": "Looking out across the red Martian horizon",
+        "character_action": "Observing planetary horizon",
         "character_pose": "walk_explore",
         "character_expression": "curious",
         "lighting": "subtle_cinematic",
         "music_state": "mystery",
         "transition": "cut",
         "hud_state": {
-            "label_1": "Mars",
+            "label_1": "Mars Orbit",
             "val_1": "SOL 01",
-            "label_2": "-63°C",
-            "val_2": "-63°C",
-            "label_3": "0.38g",
-            "val_3": "0.38g",
-            "progress_percent": 95,
+            "label_2": "ALTITUDE",
+            "val_2": "400 KM",
+            "label_3": "TARGET",
+            "val_3": "CHRYSE",
+            "progress_percent": 100,
         }
     },
     {
         "scene_id": 2,
-        "beat": "GRAVITY_REVEAL",
-        "narration": "On Mars, gravity is only thirty-eight percent of Earth. Every single jump sends you soaring in slow-motion flight.",
-        "environment": "mars_surface",
+        "beat": "TOUCHDOWN_LANDER_LOW_G",
+        "narration": "Touchdown. Because gravity is thirty-eight percent of Earth, a massive three-story lander towers behind you as each jump sends you soaring.",
+        "environment": "surface_lander",
         "camera": "pan_up",
         "character_action": "Jumping across Martian dunes in buoyant low gravity",
         "character_pose": "low_gravity_jump",
@@ -51,7 +51,7 @@ SCENE_DEFS = [
         "music_state": "wonder",
         "transition": "cut",
         "hud_state": {
-            "label_1": "Mars",
+            "label_1": "Surface",
             "val_1": "SOL 05",
             "label_2": "-55°C",
             "val_2": "-55°C",
@@ -62,11 +62,11 @@ SCENE_DEFS = [
     },
     {
         "scene_id": 3,
-        "beat": "SCIENTIFIC_HAZARD",
-        "narration": "Outside your suit, Mars is lethal. The air is ninety-five percent carbon dioxide, and air pressure is near vacuum. Without this suit, your blood boils in fifteen seconds.",
-        "environment": "planet_comparison",
+        "beat": "ROVER_AND_HAZARD",
+        "narration": "Step outside, and Mars is hostile. The atmosphere is ninety-five percent carbon dioxide at near vacuum. Your pressurized suit is all that stops your blood from boiling.",
+        "environment": "planet_science_rover",
         "camera": "slow_push_in",
-        "character_action": "Scanning planetary telemetry comparison",
+        "character_action": "Inspecting mineral telemetry with scientific rover",
         "character_pose": "check_telemetry",
         "character_expression": "focused",
         "lighting": "infographic_neon",
@@ -84,11 +84,11 @@ SCENE_DEFS = [
     },
     {
         "scene_id": 4,
-        "beat": "HABITAT_SANCTUARY",
-        "narration": "Your only sanctuary is Base Alpha: a geodesic dome with hydroponic crops and solar oxygen scrubbers.",
-        "environment": "mars_habitat",
+        "beat": "BASE_ALPHA_GRID",
+        "narration": "Home is Base Alpha: an airtight geodesic dome powered by vast solar fields, communications towers, and automated greenhouse pods.",
+        "environment": "mars_habitat_grid",
         "camera": "pan_left",
-        "character_action": "Approaching pressurized habitat airlock",
+        "character_action": "Approaching habitat airlock beside docked exploration rover",
         "character_pose": "enter_airlock",
         "character_expression": "relief",
         "lighting": "subtle_cinematic",
@@ -106,11 +106,11 @@ SCENE_DEFS = [
     },
     {
         "scene_id": 5,
-        "beat": "CRISIS_EVENT",
-        "narration": "Sol eighteen. A violent dust storm blots out the Sun. Solar power crashes by eighty-five percent, and oxygen drops to twenty-two percent.",
-        "environment": "mars_dust_storm",
+        "beat": "GLOBAL_DUST_STORM",
+        "narration": "On Day eighteen, a colossal planet-wide dust storm strikes. Choking winds blot out ninety percent of solar power, plunging the base into emergency reserve.",
+        "environment": "global_dust_storm",
         "camera": "shake_subtle",
-        "character_action": "Gasping in panic as suit life-support alarms flash red",
+        "character_action": "Bracing against storm as base switches to emergency power",
         "character_pose": "panic_o2",
         "character_expression": "shock",
         "lighting": "storm_red_alert",
@@ -128,34 +128,33 @@ SCENE_DEFS = [
     },
     {
         "scene_id": 6,
-        "beat": "INTERACTIVE_CLIFFHANGER",
-        "narration": "Two survival protocols remain: Option A: Brave the one hundred kilometer per hour storm to clear the panels. Or Option B: Shut off heaters and cryo-hibernate in the rover. What would you do? Comment A or B!",
-        "environment": "space_cliffhanger",
+        "beat": "ASCENT_LAUNCH_FINALE",
+        "narration": "By sealing life support and burning fuel cells, you survive the thirty-day ordeal. As your ascent rocket roars into space, humanity becomes an interplanetary species.",
+        "environment": "ascent_rocket_launch",
         "camera": "slow_push_in",
-        "character_action": "Presenting urgent survival decision to audience",
+        "character_action": "Ascending into orbit aboard launch vehicle",
         "character_pose": "point_sky",
         "character_expression": "focused",
         "lighting": "high_contrast",
-        "music_state": "decision",
+        "music_state": "triumph",
         "transition": "cut",
         "hud_state": {
-            "label_1": "DECISION",
-            "val_1": "TIME CRITICAL",
-            "label_2": "O2: 19%",
-            "val_2": "O2: 19%",
-            "label_3": "00:03",
-            "val_3": "00:03",
-            "progress_percent": 19,
+            "label_1": "MISSION SUCCESS",
+            "val_1": "SOL 30",
+            "label_2": "STATUS",
+            "val_2": "ORBITAL INSERTION",
+            "label_3": "HUMANITY",
+            "val_3": "INTERPLANETARY",
+            "progress_percent": 100,
         }
     }
 ]
 
 EMPHASIS_KEYWORDS = {
-    "mars", "tomorrow", "thirty", "supplies", "gravity", "thirty-eight", "earth", "soaring",
-    "slow-motion", "lethal", "ninety-five", "carbon", "dioxide", "vacuum", "boils", "fifteen",
-    "base", "alpha", "geodesic", "hydroponic", "oxygen", "eighteen", "storm", "blots",
-    "crashes", "eighty-five", "twenty-two", "protocols", "option", "storm", "clear",
-    "cryo-hibernate", "rover", "survive", "comment", "a", "b"
+    "mars", "thirty", "days", "orbit", "red", "planet", "sun", "satellites", "lander", "gravity",
+    "thirty-eight", "earth", "soaring", "hostile", "carbon", "dioxide", "vacuum", "rovers", "suit",
+    "boils", "base", "alpha", "geodesic", "dome", "solar", "greenhouse", "storm", "blot", "winds",
+    "emergency", "fuel", "cells", "survive", "ascent", "rocket", "roars", "interplanetary", "species"
 }
 
 def get_audio_duration(file_path: Path) -> float:
