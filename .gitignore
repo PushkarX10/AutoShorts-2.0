@@ -34,6 +34,7 @@ projects/**/*.wav
 projects/**/*.mp3
 projects/**/scene_audios/
 renderer/public/*.wav
+autoshorts2/assets/**/*.wav
 
 # External reference repositories & downloaded tools
 Usefull Skills/

@@ -13,13 +13,23 @@ export interface AstronautProps {
     | "enter_airlock";
   expression?: "alert" | "curious" | "shock" | "focused" | "relief";
   x?: number; // 0.0 to 1.0 (horizontal center)
-  y?: number; // 0.0 to 1.0 (vertical center, default ~0.50)
+  y?: number; // 0.0 to 1.0 (vertical center)
   scale?: number;
   facing?: "left" | "right";
-  suitColor?: string; // default white #F5F6F8
-  accentColor?: string; // default Electric Cyan #55D7E8
+  suitColor?: string;
+  outlineColor?: string;
+  visorTint?: string;
 }
 
+/**
+ * Handcrafted 2D Illustrated Astronaut Mascot
+ * Editorial Science-Journal Aesthetic:
+ * - Organic, slightly hand-inked contours with natural variation
+ * - Friendly circular helmet with distinctive vintage exploration bubble
+ * - Expressive eyes and eyebrows visible through the visor
+ * - Tailored off-white spacesuit with charcoal seams, patches, and chest life-support pack
+ * - Flexible, articulate limbs with weighted moon boots
+ */
 export const AstronautStickman: React.FC<AstronautProps> = ({
   pose = "walk_explore",
   expression = "focused",
@@ -27,31 +37,43 @@ export const AstronautStickman: React.FC<AstronautProps> = ({
   y = 0.5,
   scale = 1.0,
   facing = "right",
-  suitColor = "#F5F6F8",
-  accentColor = "#55D7E8",
+  suitColor = "#F4EFE5",     // Paper Cream suit
+  outlineColor = "#242B35",  // Ink Charcoal lines
+  visorTint = "#527A9B",     // Muted Blue visor
 }) => {
   const frame = useCurrentFrame();
 
-  // Low gravity float & breathing animations
-  const breath = Math.sin(frame * 0.12) * 3;
-  const floatY = pose === "idle_float" ? Math.sin(frame * 0.08) * 18 : 0;
-  const floatRot = pose === "idle_float" ? Math.sin(frame * 0.06) * 4 : 0;
+  // Natural breathing & floating oscillations
+  const breath = Math.sin(frame * 0.1) * 3;
+  const floatY = pose === "idle_float" ? Math.sin(frame * 0.07) * 20 : 0;
+  const floatRot = pose === "idle_float" ? Math.sin(frame * 0.05) * 5 : 0;
 
-  // Mars low-gravity jump parabolic cycle (0.38g - slower, buoyant arc)
-  const jumpPhase = (frame * 0.15) % Math.PI;
-  const jumpY = pose === "low_gravity_jump" ? -Math.sin(jumpPhase) * 65 : 0;
+  // Mars low-gravity jump physics (0.38g buoyant arc)
+  const jumpPhase = (frame * 0.12) % Math.PI;
+  const jumpY = pose === "low_gravity_jump" ? -Math.sin(jumpPhase) * 80 : 0;
 
-  // Planetary walking cycle (low gravity bounce)
-  const walkPhase = frame * 0.22;
-  const legFront = Math.sin(walkPhase) * 38;
-  const legBack = -Math.sin(walkPhase) * 38;
-  const armFront = -Math.sin(walkPhase) * 30;
-  const armBack = Math.sin(walkPhase) * 30;
+  // Walking cycle with low-gravity bounce
+  const walkPhase = frame * 0.2;
+  const legFront = pose === "walk_explore" ? Math.sin(walkPhase) * 32 : 0;
+  const legBack = pose === "walk_explore" ? -Math.sin(walkPhase) * 32 : 0;
+  const armFront = pose === "walk_explore" ? -Math.sin(walkPhase) * 26 : 0;
+  const armBack = pose === "walk_explore" ? Math.sin(walkPhase) * 26 : 0;
 
-  // Oxygen warning tremor
-  const tremor = pose === "panic_o2" ? Math.sin(frame * 0.8) * 3 : 0;
+  // Panic tremor for emergency low O2
+  const tremor = pose === "panic_o2" ? Math.sin(frame * 0.9) * 4 : 0;
+
+  // Visor gold reflection shimmer
+  const visorShimmer = Math.sin(frame * 0.08) * 15;
 
   const flipH = facing === "left" ? -1 : 1;
+
+  // Palette from v2.0 spec
+  const PAPER_CREAM = suitColor;
+  const INK_CHARCOAL = outlineColor;
+  const DUSTY_CORAL = "#C86D52";
+  const MUTED_BLUE = visorTint;
+  const WARM_GOLD = "#D5AA62";
+  const SAGE_GREEN = "#768C79";
 
   return (
     <div
@@ -59,299 +81,589 @@ export const AstronautStickman: React.FC<AstronautProps> = ({
         position: "absolute",
         left: `${x * 100}%`,
         top: `${y * 100}%`,
-        transform: `translate(-50%, -50%) translate(0px, ${floatY + jumpY}px) rotate(${floatRot}deg) scale(${scale}) scaleX(${flipH})`,
-        width: 380,
-        height: 560,
+        transform: `translate(-50%, -50%) translate(${tremor}px, ${floatY + jumpY}px) rotate(${floatRot}deg) scale(${scale}) scaleX(${flipH})`,
+        width: 360,
+        height: 540,
         pointerEvents: "none",
         zIndex: 35,
       }}
     >
       <svg
-        viewBox="0 0 380 560"
+        viewBox="0 0 360 540"
         style={{ width: "100%", height: "100%", overflow: "visible" }}
       >
         <defs>
-          {/* Astronaut Visor Gradient (Electric Cyan to Deep Space Navy) */}
-          <linearGradient id="astro-visor-glow" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#55D7E8" stopOpacity="0.9" />
-            <stop offset="45%" stopColor="#182744" stopOpacity="0.95" />
-            <stop offset="100%" stopColor="#080B14" stopOpacity="1" />
-          </linearGradient>
-
-          {/* Golden Solar Visor Reflection */}
-          <linearGradient id="astro-solar-gold" x1="20%" y1="0%" x2="80%" y2="100%">
-            <stop offset="0%" stopColor="#FFD36B" stopOpacity="0.85" />
-            <stop offset="60%" stopColor="#C65B45" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#10182A" stopOpacity="0.95" />
-          </linearGradient>
-
-          {/* Drop shadow */}
-          <filter id="astro-shadow" x="-30%" y="-30%" width="160%" height="160%">
-            <feDropShadow dx="0" dy="12" stdDeviation="10" floodColor="rgba(8,11,20,0.6)" />
+          {/* Subtle hand-drawn drop shadow */}
+          <filter id="hand-drawn-shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="10" stdDeviation="8" floodColor="rgba(36,43,53,0.35)" />
           </filter>
+
+          {/* Visor Gradient: Muted Blue to Deep Ink */}
+          <linearGradient id="editorial-visor" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#7FA3C2" stopOpacity="0.85" />
+            <stop offset="50%" stopColor={MUTED_BLUE} stopOpacity="0.92" />
+            <stop offset="100%" stopColor={INK_CHARCOAL} stopOpacity="0.98" />
+          </linearGradient>
+
+          {/* Golden Sun Glint on Helmet */}
+          <linearGradient id="visor-glint" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.85" />
+            <stop offset="40%" stopColor={WARM_GOLD} stopOpacity="0.5" />
+            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+          </linearGradient>
         </defs>
 
-        {/* --- LIFE SUPPORT BACKPACK (Mounted behind character) --- */}
-        <g transform={`translate(${112 + tremor}, ${205 + breath})`}>
-          {/* Main White PLSS Backpack Unit */}
+        {/* ========================================================================= */}
+        {/* 1. LIFE SUPPORT BACKPACK (Mounted behind character)                       */}
+        {/* ========================================================================= */}
+        <g transform={`translate(100, ${185 + breath})`} filter="url(#hand-drawn-shadow)">
+          {/* Backpack Box with rounded hand-drawn corners */}
           <rect
             x="0"
             y="0"
-            width="52"
-            height="130"
+            width="55"
+            height="115"
             rx="12"
-            fill={suitColor}
-            stroke="#080B14"
-            strokeWidth="6"
+            fill="#E5DDD0"
+            stroke={INK_CHARCOAL}
+            strokeWidth="5"
+            strokeLinejoin="round"
           />
-          {/* Oxygen Cylinder Caps */}
-          <rect x="6" y="-12" width="18" height="15" rx="5" fill="#536780" stroke="#080B14" strokeWidth="4" />
-          <rect x="28" y="-12" width="18" height="15" rx="5" fill="#536780" stroke="#080B14" strokeWidth="4" />
-          {/* Status LED on Backpack */}
-          <circle cx="26" cy="20" r="4" fill={pose === "panic_o2" ? "#C65B45" : "#7BD69A"} />
+          {/* Oxygen Tank Cylinders */}
+          <rect
+            x="8"
+            y="12"
+            width="16"
+            height="90"
+            rx="8"
+            fill="#D0C6B5"
+            stroke={INK_CHARCOAL}
+            strokeWidth="3.5"
+          />
+          <rect
+            x="30"
+            y="12"
+            width="16"
+            height="90"
+            rx="8"
+            fill="#D0C6B5"
+            stroke={INK_CHARCOAL}
+            strokeWidth="3.5"
+          />
+          {/* Tank Pressure Rings */}
+          <line x1="8" y1="45" x2="24" y2="45" stroke={INK_CHARCOAL} strokeWidth="3" />
+          <line x1="30" y1="45" x2="46" y2="45" stroke={INK_CHARCOAL} strokeWidth="3" />
+          {/* Scientific Identification Stripe */}
+          <rect x="0" y="80" width="55" height="12" fill={DUSTY_CORAL} />
 
-          {/* Flexible Oxygen Supply Tubes looping into helmet */}
+          {/* Dual Flexible Oxygen Feed Hoses */}
           <path
-            d="M 12 12 C -8 10, -10 -40, 45 -45"
+            d="M 28 105 Q 40 140 75 145"
             fill="none"
-            stroke="#536780"
+            stroke={INK_CHARCOAL}
             strokeWidth="6"
             strokeLinecap="round"
           />
           <path
-            d="M 38 12 C 60 10, 65 -40, 52 -45"
+            d="M 28 105 Q 40 140 75 145"
             fill="none"
-            stroke="#536780"
-            strokeWidth="6"
-            strokeLinecap="round"
+            stroke={PAPER_CREAM}
+            strokeWidth="2.5"
+            strokeDasharray="4 3"
           />
         </g>
 
-        {/* --- STICKMAN LEGS (Clean Black Lines, strokeWidth 10px) --- */}
-        <g stroke="#080B14" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" fill="none">
-          {pose === "walk_explore" ? (
-            <>
-              {/* Buoyant low-gravity planetary walk */}
-              <path d={`M 175 350 L ${155 + legFront} 425 L ${140 + legFront * 1.2} 490`} />
-              <path d={`M 205 350 L ${225 + legBack} 425 L ${240 + legBack * 1.2} 490`} />
-            </>
-          ) : pose === "low_gravity_jump" ? (
-            <>
-              {/* Tucked legs in mid-jump floating above surface */}
-              <path d="M 175 340 L 140 385 L 175 435" />
-              <path d="M 205 340 L 235 390 L 210 445" />
-            </>
-          ) : pose === "crouch_sample" ? (
-            <>
-              {/* Kneeling to examine Mars regolith */}
-              <path d="M 165 350 L 125 415 L 165 485" />
-              <path d="M 215 350 L 250 410 L 230 485" />
-            </>
-          ) : (
-            <>
-              {/* Balanced standing stance */}
-              <path d="M 175 350 L 160 425 L 150 490" />
-              <path d="M 205 350 L 220 425 L 230 490" />
-            </>
+        {/* ========================================================================= */}
+        {/* 2. BACK ARM (Walking / Gesturing Layer)                                  */}
+        {/* ========================================================================= */}
+        <g transform={`translate(160, ${210 + breath})`}>
+          {pose === "walk_explore" && (
+            <g transform={`rotate(${armBack}, 0, 0)`}>
+              <path
+                d="M 0 0 Q -25 45 -35 85"
+                fill="none"
+                stroke={INK_CHARCOAL}
+                strokeWidth="18"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 0 0 Q -25 45 -35 85"
+                fill="none"
+                stroke={PAPER_CREAM}
+                strokeWidth="11"
+                strokeLinecap="round"
+              />
+              {/* Suit Joint Ribs */}
+              <circle cx="-18" cy="40" r="11" fill="none" stroke={INK_CHARCOAL} strokeWidth="3" />
+              {/* Glove */}
+              <ellipse cx="-35" cy="88" rx="14" ry="12" fill={INK_CHARCOAL} />
+            </g>
+          )}
+
+          {pose === "panic_o2" && (
+            <g transform="rotate(-70, 0, 0)">
+              <path
+                d="M 0 0 Q -20 40 -15 80"
+                fill="none"
+                stroke={INK_CHARCOAL}
+                strokeWidth="18"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 0 0 Q -20 40 -15 80"
+                fill="none"
+                stroke={PAPER_CREAM}
+                strokeWidth="11"
+                strokeLinecap="round"
+              />
+              <ellipse cx="-15" cy="85" rx="14" ry="12" fill={INK_CHARCOAL} />
+            </g>
+          )}
+
+          {pose === "point_sky" && (
+            <g transform="rotate(25, 0, 0)">
+              <path
+                d="M 0 0 Q -20 45 -25 80"
+                fill="none"
+                stroke={INK_CHARCOAL}
+                strokeWidth="18"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 0 0 Q -20 45 -25 80"
+                fill="none"
+                stroke={PAPER_CREAM}
+                strokeWidth="11"
+                strokeLinecap="round"
+              />
+              <ellipse cx="-25" cy="85" rx="14" ry="12" fill={INK_CHARCOAL} />
+            </g>
           )}
         </g>
 
-        {/* --- CHUNKY MOON EXPLORATION BOOTS --- */}
-        <g fill="#080B14">
-          {pose === "walk_explore" ? (
-            <>
-              <ellipse cx={135 + legFront * 1.2} cy={490} rx={18} ry={9} />
-              <ellipse cx={245 + legBack * 1.2} cy={490} rx={18} ry={9} />
-              {/* Boot tread stripes */}
-              <rect x={122 + legFront * 1.2} y="492" width="26" height="5" rx="2" fill="#536780" />
-              <rect x={232 + legBack * 1.2} y="492" width="26" height="5" rx="2" fill="#536780" />
-            </>
-          ) : pose === "low_gravity_jump" ? (
-            <>
-              <ellipse cx={175} cy={435} rx={16} ry={8} />
-              <ellipse cx={210} cy={445} rx={16} ry={8} />
-            </>
-          ) : (
-            <>
-              <ellipse cx={145} cy={490} rx={18} ry={9} />
-              <ellipse cx={235} cy={490} rx={18} ry={9} />
-              <rect x="132" y="492" width="26" height="5" rx="2" fill="#536780" />
-              <rect x="222" y="492" width="26" height="5" rx="2" fill="#536780" />
-            </>
-          )}
+        {/* ========================================================================= */}
+        {/* 3. LEGS & MOON BOOTS (Organic hand-drawn joints)                         */}
+        {/* ========================================================================= */}
+        <g transform="translate(180, 310)">
+          {/* Back Leg */}
+          <g transform={`rotate(${legBack}, 0, 0)`}>
+            {/* Upper Thigh */}
+            <path
+              d="M -15 0 Q -25 55 -28 95"
+              fill="none"
+              stroke={INK_CHARCOAL}
+              strokeWidth="22"
+              strokeLinecap="round"
+            />
+            <path
+              d="M -15 0 Q -25 55 -28 95"
+              fill="none"
+              stroke={PAPER_CREAM}
+              strokeWidth="14"
+              strokeLinecap="round"
+            />
+            {/* Knee Joint Band */}
+            <line x1="-34" y1="52" x2="-18" y2="52" stroke={INK_CHARCOAL} strokeWidth="4" />
+
+            {/* Lower Shin */}
+            <path
+              d="M -28 95 Q -32 135 -35 160"
+              fill="none"
+              stroke={INK_CHARCOAL}
+              strokeWidth="20"
+              strokeLinecap="round"
+            />
+            <path
+              d="M -28 95 Q -32 135 -35 160"
+              fill="none"
+              stroke={PAPER_CREAM}
+              strokeWidth="12"
+              strokeLinecap="round"
+            />
+
+            {/* Chunky Illustrated Moon Boot */}
+            <g transform="translate(-50, 150)">
+              <path
+                d="M 5 10 L 25 10 Q 32 10 32 25 L 32 38 Q 32 45 22 45 L -8 45 Q -14 45 -14 36 L -10 24 Q -6 10 5 10 Z"
+                fill={INK_CHARCOAL}
+              />
+              {/* Boot Sole Tread */}
+              <rect x="-14" y="40" width="46" height="8" rx="3" fill="#3D4552" />
+              <line x1="-8" y1="44" x2="26" y2="44" stroke={WARM_GOLD} strokeWidth="2.5" />
+            </g>
+          </g>
+
+          {/* Front Leg */}
+          <g transform={`rotate(${legFront}, 0, 0)`}>
+            {/* Upper Thigh */}
+            <path
+              d="M 15 0 Q 25 55 28 95"
+              fill="none"
+              stroke={INK_CHARCOAL}
+              strokeWidth="24"
+              strokeLinecap="round"
+            />
+            <path
+              d="M 15 0 Q 25 55 28 95"
+              fill="none"
+              stroke={PAPER_CREAM}
+              strokeWidth="15"
+              strokeLinecap="round"
+            />
+            {/* Knee Joint Band */}
+            <line x1="18" y1="52" x2="34" y2="52" stroke={INK_CHARCOAL} strokeWidth="4" />
+
+            {/* Lower Shin */}
+            <path
+              d="M 28 95 Q 32 135 36 160"
+              fill="none"
+              stroke={INK_CHARCOAL}
+              strokeWidth="22"
+              strokeLinecap="round"
+            />
+            <path
+              d="M 28 95 Q 32 135 36 160"
+              fill="none"
+              stroke={PAPER_CREAM}
+              strokeWidth="13"
+              strokeLinecap="round"
+            />
+
+            {/* Chunky Illustrated Moon Boot */}
+            <g transform="translate(18, 150)">
+              <path
+                d="M 5 10 L 25 10 Q 32 10 32 25 L 32 38 Q 32 45 22 45 L -8 45 Q -14 45 -14 36 L -10 24 Q -6 10 5 10 Z"
+                fill={INK_CHARCOAL}
+              />
+              {/* Boot Sole Tread */}
+              <rect x="-14" y="40" width="46" height="8" rx="3" fill="#3D4552" />
+              <line x1="-8" y1="44" x2="26" y2="44" stroke={WARM_GOLD} strokeWidth="2.5" />
+            </g>
+          </g>
         </g>
 
-        {/* --- SPACESUIT TORSO & LIFE SUPPORT CHEST UNIT --- */}
-        <g transform={`translate(${tremor}, ${breath})`} filter="url(#astro-shadow)">
-          {/* Main White Spacesuit Torso */}
+        {/* ========================================================================= */}
+        {/* 4. TORSO & SUIT DETAILS (Handcrafted Editorial Silhouette)               */}
+        {/* ========================================================================= */}
+        <g transform={`translate(180, ${250 + breath})`} filter="url(#hand-drawn-shadow)">
+          {/* Main Spacesuit Torso Block */}
           <path
-            d="M 155,210 L 225,210 L 235,350 L 145,350 Z"
-            fill={suitColor}
-            stroke="#080B14"
-            strokeWidth="7"
+            d="M -45 -55 Q -52 15 -42 65 Q 0 75 42 65 Q 52 15 45 -55 Q 0 -62 -45 -55 Z"
+            fill={PAPER_CREAM}
+            stroke={INK_CHARCOAL}
+            strokeWidth="5.5"
             strokeLinejoin="round"
           />
 
-          {/* Mission Stripes on shoulders (Electric Cyan #55D7E8) */}
-          <rect x="148" y="218" width="7" height="35" rx="2" fill={accentColor} />
-          <rect x="225" y="218" width="7" height="35" rx="2" fill={accentColor} />
+          {/* Tailored Chest Seams */}
+          <path d="M -30 -35 L 30 -35" stroke="#D0C6B5" strokeWidth="3" />
+          <path d="M -35 10 L 35 10" stroke="#D0C6B5" strokeWidth="3" />
 
-          {/* Chest Life-Support Control Module */}
+          {/* Chest Life-Support Control Pack (Hand-inked module) */}
           <rect
-            x="165"
-            y="240"
-            width="50"
-            height="65"
-            rx="8"
-            fill="#182744"
-            stroke="#080B14"
+            x="-28"
+            y="-22"
+            width="56"
+            height="50"
+            rx="10"
+            fill="#E2D9CC"
+            stroke={INK_CHARCOAL}
             strokeWidth="4"
           />
 
-          {/* Chest Telemetry Screen (O2 Bar & Status) */}
-          <rect x="171" y="247" width="38" height="18" rx="3" fill="#080B14" />
+          {/* Circular Oxygen Level Indicator Needle */}
+          <circle cx="-10" cy="3" r="12" fill={INK_CHARCOAL} />
+          <circle cx="-10" cy="3" r="10" fill="#2C3542" />
+          {/* Dial hand showing oxygen status */}
           <line
-            x1="174"
-            y1="256"
-            x2={pose === "panic_o2" ? "180" : "205"}
-            y2="256"
-            stroke={pose === "panic_o2" ? "#C65B45" : "#7BD69A"}
-            strokeWidth="3.5"
+            x1="-10"
+            y1="3"
+            x2={pose === "panic_o2" ? "-17" : "-6"}
+            y2={pose === "panic_o2" ? "7" : "-4"}
+            stroke={pose === "panic_o2" ? DUSTY_CORAL : SAGE_GREEN}
+            strokeWidth="3"
             strokeLinecap="round"
           />
-          {/* Small status dials */}
-          <circle cx="177" cy="278" r="4" fill="#55D7E8" />
-          <circle cx="190" cy="278" r="4" fill="#FFD36B" />
-          <circle cx="203" cy="278" r="4" fill={pose === "panic_o2" ? "#C65B45" : "#536780"} />
+
+          {/* Emergency Alert LED (Blinks on panic_o2) */}
+          <circle
+            cx="14"
+            cy="-5"
+            r="6"
+            fill={pose === "panic_o2" && frame % 10 < 5 ? DUSTY_CORAL : SAGE_GREEN}
+            stroke={INK_CHARCOAL}
+            strokeWidth="2.5"
+          />
+
+          {/* Expedition Mission Patch (Warm Gold Triangle) */}
+          <polygon
+            points="14,10 8,24 20,24"
+            fill={WARM_GOLD}
+            stroke={INK_CHARCOAL}
+            strokeWidth="2.5"
+          />
         </g>
 
-        {/* --- SPACESUIT ARMS & PROPS DEPENDING ON POSE --- */}
-        <g stroke="#080B14" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" fill="none">
-          {pose === "walk_explore" ? (
-            <>
-              {/* Natural swinging exploration arms */}
-              <path d={`M 155,220 L ${130 + armFront} 275 L ${115 + armFront * 1.3} 325`} />
-              <path d={`M 225,220 L ${250 + armBack} 270 L ${270 + armBack * 1.3} 320`} />
-              {/* Glove cuffs */}
-              <circle cx={115 + armFront * 1.3} cy={325} r="8" fill="#536780" stroke="#080B14" strokeWidth="4" />
-              <circle cx={270 + armBack * 1.3} cy={320} r="8" fill="#536780" stroke="#080B14" strokeWidth="4" />
-            </>
-          ) : pose === "point_sky" ? (
-            <>
-              {/* Left hand relaxed, right hand pointing high to moons/stars */}
-              <path d="M 155,220 L 140,275 L 145,330" />
-              <path d="M 225,220 L 275,170 L 315,115" />
-              {/* Pointing glove */}
-              <circle cx="315" cy="115" r="9" fill={accentColor} stroke="#080B14" strokeWidth="4" />
-            </>
-          ) : pose === "check_telemetry" ? (
-            <>
-              {/* Looking at wrist computer */}
-              <path d="M 155,220 L 145,280 L 155,330" />
-              <path d="M 225,220 L 265,260 L 235,270" />
-              {/* Wrist Telemetry HUD Hologram */}
-              <g transform="translate(240, 250)" strokeWidth="0">
-                <rect x="-10" y="-8" width="26" height="18" rx="3" fill="#182744" stroke="#080B14" strokeWidth="3" />
-                {/* Holographic Projection Beam */}
-                <polygon points="3,-8 40,-35 40,-5 3,-2" fill="#55D7E8" opacity="0.35" />
-                <rect x="40" y="-40" width="70" height="38" rx="4" fill="#080B14" stroke="#55D7E8" strokeWidth="2" />
-                <text x="45" y="-25" fill="#55D7E8" fontSize="9" fontWeight="900" fontFamily="monospace">O2: 78%</text>
-                <text x="45" y="-12" fill="#FFD36B" fontSize="8" fontWeight="800" fontFamily="monospace">-63°C</text>
-              </g>
-            </>
-          ) : pose === "panic_o2" ? (
-            <>
-              {/* Hands grasping helmet / oxygen valves in alarm */}
-              <path d="M 155,220 L 135,180 L 150,145" />
-              <path d="M 225,220 L 245,180 L 230,145" />
-              <circle cx="150" cy="145" r="9" fill="#C65B45" stroke="#080B14" strokeWidth="4" />
-              <circle cx="230" cy="145" r="9" fill="#C65B45" stroke="#080B14" strokeWidth="4" />
-            </>
-          ) : pose === "crouch_sample" ? (
-            <>
-              {/* Hand holding scientific geology rock scanner */}
-              <path d="M 155,220 L 140,270 L 145,320" />
-              <path d="M 225,220 L 255,290 L 275,360" />
-              {/* Geological laser scanner */}
-              <g transform="translate(275, 360)" strokeWidth="0">
-                <rect x="-8" y="-5" width="24" height="12" rx="3" fill="#536780" stroke="#080B14" strokeWidth="2" />
-                {/* Sampling beam down to ground */}
-                <line x1="16" y1="0" x2="35" y2="45" stroke="#55D7E8" strokeWidth="3" strokeDasharray="4 3" />
-              </g>
-            </>
-          ) : pose === "enter_airlock" ? (
-            <>
-              {/* Reaching forward to open the habitat airlock wheel */}
-              <path d="M 155,220 L 175,260 L 220,270" />
-              <path d="M 225,220 L 270,240 L 310,230" />
-            </>
-          ) : (
-            <>
-              {/* Standard idle arms */}
-              <path d="M 155,220 L 140,275 L 145,330" />
-              <path d="M 225,220 L 240,275 L 235,330" />
-            </>
+        {/* ========================================================================= */}
+        {/* 5. FRONT ARM (Dynamic Poses: Telescope, Tablet, Pointing, Panic)         */}
+        {/* ========================================================================= */}
+        <g transform={`translate(205, ${210 + breath})`}>
+          {/* Pose: WALK_EXPLORE */}
+          {pose === "walk_explore" && (
+            <g transform={`rotate(${armFront}, 0, 0)`}>
+              <path
+                d="M 0 0 Q 30 45 42 85"
+                fill="none"
+                stroke={INK_CHARCOAL}
+                strokeWidth="20"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 0 0 Q 30 45 42 85"
+                fill="none"
+                stroke={PAPER_CREAM}
+                strokeWidth="12"
+                strokeLinecap="round"
+              />
+              <circle cx="25" cy="40" r="12" fill="none" stroke={INK_CHARCOAL} strokeWidth="3" />
+              {/* Hand holding portable scientific scanner */}
+              <ellipse cx="44" cy="90" rx="15" ry="13" fill={INK_CHARCOAL} />
+              {/* Mini Antenna */}
+              <line x1="44" y1="90" x2="65" y2="75" stroke={INK_CHARCOAL} strokeWidth="4" />
+              <circle cx="67" cy="73" r="4" fill={WARM_GOLD} />
+            </g>
+          )}
+
+          {/* Pose: LOW_GRAVITY_JUMP (Arms outstretched for buoyant balance) */}
+          {pose === "low_gravity_jump" && (
+            <g transform="rotate(-35, 0, 0)">
+              <path
+                d="M 0 0 Q 40 30 75 35"
+                fill="none"
+                stroke={INK_CHARCOAL}
+                strokeWidth="20"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 0 0 Q 40 30 75 35"
+                fill="none"
+                stroke={PAPER_CREAM}
+                strokeWidth="12"
+                strokeLinecap="round"
+              />
+              <ellipse cx="80" cy="36" rx="14" ry="13" fill={INK_CHARCOAL} />
+            </g>
+          )}
+
+          {/* Pose: CHECK_TELEMETRY (Holding holographic wrist PDA) */}
+          {pose === "check_telemetry" && (
+            <g transform="rotate(45, 0, 0)">
+              <path
+                d="M 0 0 Q 35 25 15 65"
+                fill="none"
+                stroke={INK_CHARCOAL}
+                strokeWidth="20"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 0 0 Q 35 25 15 65"
+                fill="none"
+                stroke={PAPER_CREAM}
+                strokeWidth="12"
+                strokeLinecap="round"
+              />
+              {/* Wrist Instrument Screen */}
+              <rect x="0" y="55" width="30" height="20" rx="4" fill={INK_CHARCOAL} />
+              <rect x="3" y="58" width="24" height="14" rx="2" fill={MUTED_BLUE} />
+              <ellipse cx="15" cy="78" rx="14" ry="13" fill={INK_CHARCOAL} />
+            </g>
+          )}
+
+          {/* Pose: ENTER_AIRLOCK (Reaching out toward habitat airlock door) */}
+          {pose === "enter_airlock" && (
+            <g transform="rotate(-15, 0, 0)">
+              <path
+                d="M 0 0 Q 45 20 85 20"
+                fill="none"
+                stroke={INK_CHARCOAL}
+                strokeWidth="20"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 0 0 Q 45 20 85 20"
+                fill="none"
+                stroke={PAPER_CREAM}
+                strokeWidth="12"
+                strokeLinecap="round"
+              />
+              <ellipse cx="90" cy="20" rx="15" ry="13" fill={INK_CHARCOAL} />
+            </g>
+          )}
+
+          {/* Pose: PANIC_O2 (Both hands clutching chest / throat) */}
+          {pose === "panic_o2" && (
+            <g transform="rotate(40, 0, 0)">
+              <path
+                d="M 0 0 Q 20 30 -15 35"
+                fill="none"
+                stroke={INK_CHARCOAL}
+                strokeWidth="20"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 0 0 Q 20 30 -15 35"
+                fill="none"
+                stroke={PAPER_CREAM}
+                strokeWidth="12"
+                strokeLinecap="round"
+              />
+              <ellipse cx="-18" cy="35" rx="15" ry="13" fill={INK_CHARCOAL} />
+            </g>
+          )}
+
+          {/* Pose: POINT_SKY (Directing viewer attention to Options A vs B) */}
+          {pose === "point_sky" && (
+            <g transform="rotate(-65, 0, 0)">
+              <path
+                d="M 0 0 Q 30 15 75 10"
+                fill="none"
+                stroke={INK_CHARCOAL}
+                strokeWidth="20"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 0 0 Q 30 15 75 10"
+                fill="none"
+                stroke={PAPER_CREAM}
+                strokeWidth="12"
+                strokeLinecap="round"
+              />
+              <ellipse cx="80" cy="10" rx="15" ry="13" fill={INK_CHARCOAL} />
+              {/* Extended pointing finger */}
+              <line x1="85" y1="10" x2="105" y2="5" stroke={INK_CHARCOAL} strokeWidth="6" strokeLinecap="round" />
+            </g>
           )}
         </g>
 
-        {/* --- SPACESUIT HELMET & VISOR --- */}
-        <g transform={`translate(${190 + tremor}, ${145 + breath * 0.5})`} filter="url(#astro-shadow)">
-          {/* Outer Spherical White Helmet */}
+        {/* ========================================================================= */}
+        {/* 6. ASTRONAUT HEAD & DISTINCTIVE HELMET (Handcrafted Mascot Face)         */}
+        {/* ========================================================================= */}
+        <g transform={`translate(180, ${125 + breath})`} filter="url(#hand-drawn-shadow)">
+          {/* Neck Collar Ring */}
+          <ellipse
+            cx="0"
+            cy="52"
+            rx="46"
+            ry="14"
+            fill="#D0C6B5"
+            stroke={INK_CHARCOAL}
+            strokeWidth="5"
+          />
+
+          {/* Outer Helmet Sphere (Friendly, slightly oversized chibi mascot proportions) */}
           <circle
             cx="0"
             cy="0"
-            r="44"
-            fill={suitColor}
-            stroke="#080B14"
-            strokeWidth="7"
+            r="65"
+            fill={PAPER_CREAM}
+            stroke={INK_CHARCOAL}
+            strokeWidth="6"
           />
 
-          {/* Helmet Neck Ring / Lock Collar */}
-          <ellipse cx="0" cy="42" rx="34" ry="9" fill="#536780" stroke="#080B14" strokeWidth="5" />
-
-          {/* Bubble Gold / Electric Cyan Visor */}
+          {/* Distinctive Bubble Visor Window */}
           <ellipse
-            cx="6"
+            cx="14"
             cy="2"
-            rx="32"
-            ry="28"
-            fill="url(#astro-visor-glow)"
-            stroke="#080B14"
-            strokeWidth="4"
+            rx="44"
+            ry="36"
+            fill="url(#editorial-visor)"
+            stroke={INK_CHARCOAL}
+            strokeWidth="4.5"
           />
 
-          {/* Visor Glint & Curved Specular Reflection */}
+          {/* Visor Sunlight Highlight Crescent */}
           <path
-            d="M -16 -16 Q 0 -26 22 -14"
-            fill="none"
-            stroke="#FFFFFF"
-            strokeWidth="4"
-            strokeLinecap="round"
-            opacity="0.75"
+            d="M -15 -20 Q 14 -32 40 -12 Q 18 -22 -15 -20 Z"
+            fill="url(#visor-glint)"
+            transform={`translate(${visorShimmer * 0.4}, 0)`}
           />
 
-          {/* Stickman Eyes visible through transparent visor */}
-          {expression === "shock" ? (
-            <g fill="#F5F6F8">
-              <circle cx="-2" cy="0" r="6" />
-              <circle cx="16" cy="0" r="6" />
-              <circle cx="-1" cy="0" r="2.5" fill="#080B14" />
-              <circle cx="17" cy="0" r="2.5" fill="#080B14" />
-            </g>
-          ) : expression === "curious" ? (
-            <g fill="#F5F6F8">
-              <circle cx="-2" cy="-2" r="4.5" />
-              <circle cx="16" cy="-2" r="4.5" />
-            </g>
-          ) : (
-            <g fill="#F5F6F8">
-              <circle cx="-2" cy="2" r="4" />
-              <circle cx="16" cy="2" r="4" />
-            </g>
-          )}
+          {/* --- EXPRESSIVE MASCOT FACE VISIBLE THROUGH VISOR --- */}
+          <g transform="translate(18, 4)">
+            {/* Expression: FOCUSED / DETERMINED */}
+            {expression === "focused" && (
+              <>
+                {/* Eyebrows angled inward */}
+                <line x1="-16" y1="-14" x2="-2" y2="-10" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
+                <line x1="8" y1="-10" x2="22" y2="-14" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
+                {/* Expressive black dots with white highlight catchlight */}
+                <circle cx="-9" cy="-3" r="5" fill="#FFFFFF" />
+                <circle cx="-8" cy="-4" r="2" fill={INK_CHARCOAL} />
+                <circle cx="15" cy="-3" r="5" fill="#FFFFFF" />
+                <circle cx="16" cy="-4" r="2" fill={INK_CHARCOAL} />
+                {/* Determined smile */}
+                <path d="M -4 14 Q 4 19 12 14" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
+              </>
+            )}
 
-          {/* Helmet Torch Light Cone (Active in dark environments) */}
-          <circle cx="28" cy="-15" r="4" fill="#FFD36B" stroke="#080B14" strokeWidth="2" />
+            {/* Expression: CURIOUS (Scene 1 Martian Horizon) */}
+            {expression === "curious" && (
+              <>
+                {/* Eyebrows raised */}
+                <path d="M -18 -15 Q -10 -22 -2 -15" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
+                <path d="M 6 -15 Q 14 -22 22 -15" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
+                {/* Wide curious eyes */}
+                <circle cx="-10" cy="-4" r="6" fill="#FFFFFF" />
+                <circle cx="-9" cy="-4" r="3" fill={INK_CHARCOAL} />
+                <circle cx="14" cy="-4" r="6" fill="#FFFFFF" />
+                <circle cx="15" cy="-4" r="3" fill={INK_CHARCOAL} />
+                {/* Small curious 'o' mouth */}
+                <ellipse cx="2" cy="15" rx="4" ry="5" fill="#FFFFFF" />
+              </>
+            )}
+
+            {/* Expression: ALERT (Scene 2 Low Gravity Jump) */}
+            {expression === "alert" && (
+              <>
+                <circle cx="-10" cy="-4" r="6.5" fill="#FFFFFF" />
+                <circle cx="-9" cy="-4" r="3.5" fill={INK_CHARCOAL} />
+                <circle cx="14" cy="-4" r="6.5" fill="#FFFFFF" />
+                <circle cx="15" cy="-4" r="3.5" fill={INK_CHARCOAL} />
+                <path d="M -6 12 Q 2 20 10 12" fill="none" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
+              </>
+            )}
+
+            {/* Expression: SHOCK (Scene 5 Dust Storm Panic) */}
+            {expression === "shock" && (
+              <>
+                {/* Angled shock brows */}
+                <line x1="-16" y1="-18" x2="-4" y2="-12" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" />
+                <line x1="6" y1="-12" x2="18" y2="-18" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" />
+                {/* Wide eyes */}
+                <circle cx="-10" cy="-3" r="7" fill="#FFFFFF" />
+                <circle cx="-10" cy="-3" r="3" fill={INK_CHARCOAL} />
+                <circle cx="14" cy="-3" r="7" fill="#FFFFFF" />
+                <circle cx="14" cy="-3" r="3" fill={INK_CHARCOAL} />
+                {/* Open gasping mouth */}
+                <ellipse cx="2" cy="15" rx="6" ry="8" fill={DUSTY_CORAL} stroke="#FFFFFF" strokeWidth="2.5" />
+              </>
+            )}
+
+            {/* Expression: RELIEF (Scene 4 Reaching Base Alpha Airlock) */}
+            {expression === "relief" && (
+              <>
+                {/* Contented curved eyes (happy arcs ^ ^) */}
+                <path d="M -16 -4 Q -10 -12 -4 -4" fill="none" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
+                <path d="M 8 -4 Q 14 -12 20 -4" fill="none" stroke="#FFFFFF" strokeWidth="3.5" strokeLinecap="round" />
+                {/* Warm relaxed smile */}
+                <path d="M -5 12 Q 3 20 11 12" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
+              </>
+            )}
+          </g>
+
+          {/* Helmet Radio Antenna with Brass Warm Gold Tip */}
+          <line x1="-45" y1="-25" x2="-68" y2="-65" stroke={INK_CHARCOAL} strokeWidth="4.5" strokeLinecap="round" />
+          <circle cx="-70" cy="-68" r="5.5" fill={WARM_GOLD} stroke={INK_CHARCOAL} strokeWidth="3" />
         </g>
       </svg>
     </div>

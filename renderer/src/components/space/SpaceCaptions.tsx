@@ -6,6 +6,13 @@ interface SpaceCaptionsProps {
   words: SubtitleWordData[];
 }
 
+/**
+ * Editorial Kinetic Subtitles (v2.0)
+ * - Styled like an editorial journal annotation plate
+ * - Deep Ink Charcoal (#242B35) pill with Stone Grey border and Paper Cream (#F4EFE5) typography
+ * - Keyword highlights in Warm Gold (#D5AA62) and Dusty Coral (#C86D52)
+ * - Strictly anchored at bottom: 110px (y: 1670px - 1810px) with 390px+ vertical clearance
+ */
 export const SpaceCaptions: React.FC<SpaceCaptionsProps> = ({ words }) => {
   const frame = useCurrentFrame();
   const currentTime = frame / 30.0;
@@ -33,16 +40,18 @@ export const SpaceCaptions: React.FC<SpaceCaptionsProps> = ({ words }) => {
 
   if (activeIndex === -1) return null;
 
-  // High-retention short 3-word window
+  // High-retention 3-word window
   const windowSize = 3;
   const chunkStart = Math.max(0, activeIndex - (activeIndex % windowSize));
   const chunkEnd = Math.min(words.length, chunkStart + windowSize);
   const currentChunk = words.slice(chunkStart, chunkEnd);
 
-  const ELECTRIC_CYAN = "#55D7E8";
-  const SOLAR_YELLOW = "#FFD36B";
-  const MARS_RED = "#C65B45";
-  const WHITE = "#F5F6F8";
+  // Palette from v2.0
+  const PAPER_CREAM = "#F4EFE5";
+  const INK_CHARCOAL = "#242B35";
+  const WARM_GOLD = "#D5AA62";
+  const DUSTY_CORAL = "#C86D52";
+  const STONE_GREY = "#A6A18F";
 
   return (
     <div
@@ -64,12 +73,12 @@ export const SpaceCaptions: React.FC<SpaceCaptionsProps> = ({ words }) => {
           gap: 16,
           alignItems: "center",
           justifyContent: "center",
-          background: "rgba(8, 11, 20, 0.88)",
-          backdropFilter: "blur(14px)",
-          border: "2px solid #536780",
+          background: "rgba(36, 43, 53, 0.94)",
+          backdropFilter: "blur(12px)",
+          border: `2.5px solid ${STONE_GREY}`,
           borderRadius: 20,
           padding: "16px 36px",
-          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.8)",
+          boxShadow: "0 12px 32px rgba(0, 0, 0, 0.65)",
           maxWidth: "88%",
         }}
       >
@@ -78,8 +87,8 @@ export const SpaceCaptions: React.FC<SpaceCaptionsProps> = ({ words }) => {
           const isCurrentWord = globalIdx === activeIndex;
 
           const wordColor = isCurrentWord
-            ? w.is_emphasized ? SOLAR_YELLOW : ELECTRIC_CYAN
-            : w.is_emphasized ? SOLAR_YELLOW : WHITE;
+            ? w.is_emphasized ? WARM_GOLD : PAPER_CREAM
+            : w.is_emphasized ? WARM_GOLD : "#D0C6B5";
 
           return (
             <span
@@ -90,12 +99,13 @@ export const SpaceCaptions: React.FC<SpaceCaptionsProps> = ({ words }) => {
                 color: wordColor,
                 textTransform: "uppercase",
                 letterSpacing: "2px",
-                transform: isCurrentWord ? "scale(1.12)" : "scale(1.0)",
+                transform: isCurrentWord ? "scale(1.10)" : "scale(1.0)",
                 transition: "transform 0.1s ease-out, color 0.1s ease-out",
                 textShadow: isCurrentWord
-                  ? `0 0 18px ${w.is_emphasized ? "#FFD36B" : "#55D7E8"}`
-                  : "0 2px 6px rgba(0,0,0,0.8)",
+                  ? `0 0 14px ${w.is_emphasized ? WARM_GOLD : "rgba(244, 239, 229, 0.7)"}`
+                  : "0 2px 4px rgba(0,0,0,0.8)",
                 display: "inline-block",
+                fontFamily: "'Outfit', 'Montserrat', sans-serif",
               }}
             >
               {w.word}

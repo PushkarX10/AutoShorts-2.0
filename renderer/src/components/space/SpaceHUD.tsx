@@ -1,7 +1,7 @@
 import React from "react";
 import { useCurrentFrame } from "remotion";
 
-export interface SpaceHudState {
+export interface SpaceHUDState {
   planet: string;
   solDay: string;
   oxygenPercent: number;
@@ -12,35 +12,45 @@ export interface SpaceHudState {
 }
 
 interface SpaceHUDProps {
-  state?: SpaceHudState;
+  state: SpaceHUDState;
 }
 
+/**
+ * Editorial Mission Field-Log Header Plate (v2.0)
+ * Replaces generic glowing sci-fi HUD with an authentic scientific journal field-log header:
+ * - Ink Charcoal (#242B35) & Paper Cream (#F4EFE5) with Stone Grey & Warm Gold accents
+ * - Tactile analog dial indicator for Oxygen Reserve
+ * - Clean typographic telemetry stamp: "EXPEDITION FIELD LOG // SOL 18"
+ * - Anchored safely at top: 70px
+ */
 export const SpaceHUD: React.FC<SpaceHUDProps> = ({ state }) => {
   const frame = useCurrentFrame();
 
-  if (!state) return null;
+  const {
+    planet = "Mars",
+    solDay = "SOL 18",
+    oxygenPercent = 88,
+    temperature = "-63°C",
+    gravity = "0.38g",
+    alertLevel = "normal",
+  } = state;
 
-  const SPACE_BLACK = "#080B14";
-  const DEEP_SPACE_NAVY = "#10182A";
-  const MIDNIGHT_BLUE = "#182744";
-  const STEEL_BLUE = "#536780";
-  const PLANETARY_ORANGE = "#F18B45";
-  const MARS_RED = "#C65B45";
-  const ELECTRIC_CYAN = "#55D7E8";
-  const SOLAR_YELLOW = "#FFD36B";
-  const OXYGEN_GREEN = "#7BD69A";
-  const WHITE = "#F5F6F8";
+  const isCritical = alertLevel === "critical" || oxygenPercent < 30;
 
-  const isAlert = state.alertLevel === "critical" || state.oxygenPercent < 30;
-  const pulse = Math.sin(frame * 0.3) * 0.5 + 0.5;
+  // Palette from v2.0
+  const PAPER_CREAM = "#F4EFE5";
+  const INK_CHARCOAL = "#242B35";
+  const DUSTY_CORAL = "#C86D52";
+  const WARM_GOLD = "#D5AA62";
+  const STONE_GREY = "#A6A18F";
+  const SAGE_GREEN = "#768C79";
+  const MUTED_BLUE = "#527A9B";
 
-  // Oxygen meter animated sweep
-  const o2Color =
-    state.oxygenPercent > 50 ? OXYGEN_GREEN :
-    state.oxygenPercent > 25 ? SOLAR_YELLOW : MARS_RED;
+  // Alert pulse for critical crisis (Scene 5 & 6)
+  const alertPulse = isCritical && frame % 16 < 8;
 
-  // Radar sweep angle
-  const radarAngle = (frame * 6) % 360;
+  // Oxygen dial needle angle (-90deg to +90deg based on 0-100%)
+  const needleAngle = -90 + (oxygenPercent / 100) * 180;
 
   return (
     <div
@@ -50,158 +60,187 @@ export const SpaceHUD: React.FC<SpaceHUDProps> = ({ state }) => {
         left: 0,
         width: "100%",
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        zIndex: 50,
+        justifyContent: "center",
+        zIndex: 85,
         pointerEvents: "none",
       }}
     >
       <div
         style={{
           width: 960,
-          background: "rgba(16, 24, 42, 0.92)",
-          backdropFilter: "blur(18px)",
-          border: `3px solid ${isAlert ? MARS_RED : STEEL_BLUE}`,
-          borderRadius: 24,
-          padding: "16px 24px",
+          background: isCritical && alertPulse ? DUSTY_CORAL : INK_CHARCOAL,
+          border: `3px solid ${isCritical ? DUSTY_CORAL : STONE_GREY}`,
+          borderRadius: 16,
+          padding: "16px 28px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          boxShadow: isAlert
-            ? `0 0 ${20 + pulse * 14}px rgba(198, 91, 69, 0.75)`
-            : "0 12px 36px rgba(8, 11, 20, 0.65)",
+          boxShadow: "0 10px 25px rgba(36, 43, 53, 0.45)",
+          transition: "background 0.2s ease",
         }}
       >
-        {/* Left: Mission & Planet Identity */}
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          {/* Rotating Planetary Sensor Radar */}
-          <div
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: "50%",
-              backgroundColor: SPACE_BLACK,
-              border: `2px solid ${ELECTRIC_CYAN}`,
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                width: 26,
-                height: 2,
-                backgroundColor: ELECTRIC_CYAN,
-                transformOrigin: "0 0",
-                transform: `rotate(${radarAngle}deg)`,
-                boxShadow: `0 0 6px ${ELECTRIC_CYAN}`,
-              }}
-            />
-            {/* Blips */}
-            <div style={{ position: "absolute", top: 14, left: 28, width: 4, height: 4, borderRadius: "50%", backgroundColor: SOLAR_YELLOW }} />
-            <div style={{ position: "absolute", top: 32, left: 16, width: 4, height: 4, borderRadius: "50%", backgroundColor: o2Color }} />
-          </div>
+        {/* --- LEFT: EXPEDITION LOG STAMP & PLANETARY SEAL --- */}
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <svg width="46" height="46" viewBox="0 0 46 46">
+            {/* Outer Compass / Seal Ring */}
+            <circle cx="23" cy="23" r="21" fill="none" stroke={WARM_GOLD} strokeWidth="2.5" />
+            <circle cx="23" cy="23" r="17" fill="none" stroke={STONE_GREY} strokeWidth="1" strokeDasharray="3 3" />
+            {/* Center Planet Icon */}
+            <circle cx="23" cy="23" r="9" fill={DUSTY_CORAL} stroke={PAPER_CREAM} strokeWidth="2" />
+            {/* Cardinal ticks */}
+            <line x1="23" y1="2" x2="23" y2="7" stroke={WARM_GOLD} strokeWidth="2" />
+            <line x1="23" y1="39" x2="23" y2="44" stroke={WARM_GOLD} strokeWidth="2" />
+            <line x1="2" y1="23" x2="7" y2="23" stroke={WARM_GOLD} strokeWidth="2" />
+            <line x1="39" y1="23" x2="44" y2="23" stroke={WARM_GOLD} strokeWidth="2" />
+          </svg>
 
           <div>
             <div
               style={{
                 fontSize: 13,
                 fontWeight: 900,
-                color: STEEL_BLUE,
-                letterSpacing: "2.5px",
+                letterSpacing: 3,
+                color: WARM_GOLD,
+                textTransform: "uppercase",
                 fontFamily: "monospace",
               }}
             >
-              MISSION CONTROL // {state.planet.toUpperCase()}
+              EXPEDITION FIELD LOG
+            </div>
+            <div
+              style={{
+                fontSize: 26,
+                fontWeight: 900,
+                color: PAPER_CREAM,
+                letterSpacing: 1.5,
+                fontFamily: "'Outfit', sans-serif",
+              }}
+            >
+              {planet.toUpperCase()} // <span style={{ color: WARM_GOLD }}>{solDay}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* --- CENTER: ANALOG OXYGEN GAUGE DIAL --- */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            background: "rgba(244, 239, 229, 0.08)",
+            padding: "8px 20px",
+            borderRadius: 12,
+            border: "1px solid rgba(166, 161, 143, 0.3)",
+          }}
+        >
+          {/* Dial SVG */}
+          <svg width="44" height="44" viewBox="0 0 44 44">
+            {/* Dial Arc */}
+            <circle cx="22" cy="22" r="18" fill="#1C222A" stroke={STONE_GREY} strokeWidth="2.5" />
+            {/* Color Zone: Red for low O2, Sage Green for safe */}
+            <path
+              d="M 10 30 A 15 15 0 0 1 34 30"
+              fill="none"
+              stroke={isCritical ? DUSTY_CORAL : SAGE_GREEN}
+              strokeWidth="3.5"
+            />
+            {/* Dial Pivot */}
+            <circle cx="22" cy="22" r="3" fill={PAPER_CREAM} />
+            {/* Needle */}
+            <line
+              x1="22"
+              y1="22"
+              x2="22"
+              y2="8"
+              stroke={isCritical ? DUSTY_CORAL : WARM_GOLD}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              transform={`rotate(${needleAngle}, 22, 22)`}
+            />
+          </svg>
+
+          <div>
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: 800,
+                color: STONE_GREY,
+                letterSpacing: 2,
+                fontFamily: "monospace",
+              }}
+            >
+              OXYGEN RESERVE
             </div>
             <div
               style={{
                 fontSize: 22,
                 fontWeight: 900,
-                color: WHITE,
-                letterSpacing: "1px",
+                color: isCritical ? DUSTY_CORAL : SAGE_GREEN,
+                fontFamily: "monospace",
               }}
             >
-              {state.solDay}
+              {oxygenPercent}% {isCritical ? "CRITICAL" : "NOMINAL"}
             </div>
           </div>
         </div>
 
-        {/* Center: Live Oxygen Life Support Meter */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: 280,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              marginBottom: 6,
-            }}
-          >
-            <span
-              style={{
-                fontSize: 13,
-                fontWeight: 900,
-                color: o2Color,
-                fontFamily: "monospace",
-                letterSpacing: "1.5px",
-              }}
-            >
-              LIFE SUPPORT // O₂ LEVEL
-            </span>
-            <span
-              style={{
-                fontSize: 18,
-                fontWeight: 900,
-                color: o2Color,
-                fontFamily: "monospace",
-              }}
-            >
-              {state.oxygenPercent}%
-            </span>
-          </div>
-
-          {/* Animated Oxygen Bar */}
-          <div
-            style={{
-              width: "100%",
-              height: 10,
-              backgroundColor: SPACE_BLACK,
-              borderRadius: 6,
-              overflow: "hidden",
-              border: `1.5px solid ${o2Color}`,
-            }}
-          >
+        {/* --- RIGHT: PHYSICAL CONSTANTS (TEMP & GRAVITY) --- */}
+        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+          <div>
             <div
               style={{
-                width: `${state.oxygenPercent}%`,
-                height: "100%",
-                backgroundColor: o2Color,
-                borderRadius: 4,
-                boxShadow: `0 0 10px ${o2Color}`,
-                transition: "width 0.4s ease-out",
+                fontSize: 12,
+                fontWeight: 800,
+                color: STONE_GREY,
+                letterSpacing: 1.5,
+                fontFamily: "monospace",
               }}
-            />
+            >
+              TEMP
+            </div>
+            <div
+              style={{
+                fontSize: 20,
+                fontWeight: 900,
+                color: MUTED_BLUE,
+                fontFamily: "monospace",
+              }}
+            >
+              {temperature}
+            </div>
           </div>
-        </div>
 
-        {/* Right: Environmental Telemetry (Gravity & Temp) */}
-        <div style={{ display: "flex", gap: 20 }}>
-          <div style={{ textAlign: "right" }}>
-            <div style={{ fontSize: 11, fontWeight: 900, color: STEEL_BLUE, fontFamily: "monospace" }}>GRAVITY</div>
-            <div style={{ fontSize: 17, fontWeight: 900, color: ELECTRIC_CYAN, fontFamily: "sans-serif" }}>{state.gravity}</div>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <div style={{ fontSize: 11, fontWeight: 900, color: STEEL_BLUE, fontFamily: "monospace" }}>TEMP</div>
-            <div style={{ fontSize: 17, fontWeight: 900, color: isAlert ? MARS_RED : SOLAR_YELLOW, fontFamily: "sans-serif" }}>{state.temperature}</div>
+          <div
+            style={{
+              width: 1,
+              height: 36,
+              background: STONE_GREY,
+              opacity: 0.4,
+            }}
+          />
+
+          <div>
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: 800,
+                color: STONE_GREY,
+                letterSpacing: 1.5,
+                fontFamily: "monospace",
+              }}
+            >
+              GRAVITY
+            </div>
+            <div
+              style={{
+                fontSize: 20,
+                fontWeight: 900,
+                color: WARM_GOLD,
+                fontFamily: "monospace",
+              }}
+            >
+              {gravity}
+            </div>
           </div>
         </div>
       </div>
