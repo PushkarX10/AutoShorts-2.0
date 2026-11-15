@@ -27,9 +27,8 @@ renderer/build/
 renderer/dist/
 .cache/
 
-# Large Rendered Videos & Generated Audio (reproducible from pipeline)
-output/*.mp4
-output/*.wav
+# Large Rendered Videos & Generated Output
+output/
 projects/**/*.wav
 projects/**/*.mp3
 projects/**/scene_audios/
