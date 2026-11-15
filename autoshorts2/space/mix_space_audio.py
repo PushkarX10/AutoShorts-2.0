@@ -36,46 +36,17 @@ def mix_audio():
     s5_t = scenes[4]["start_time"]
     s6_t = scenes[5]["start_time"]
 
-    # Build ffmpeg complex filter
-    # Inputs:
-    # 0: voice_raw.mp3
-    # 1: bgm (loop)
-    # 2: radio_static.wav (scene 1 comms)
-    # 3: whoosh.wav (scene 2 low-g float)
-    # 4: digital_scan.wav (scene 3 infographic scan)
-    # 5: elevator_ding.wav (scene 4 airlock chime)
-    # 6: tension_pulse.wav (scene 5 storm pulse)
-    # 7: boom.wav (scene 6 cliffhanger hit)
-
-    sfx_static = sfx_dir / "radio_static.wav"
-    sfx_whoosh = sfx_dir / "whoosh.wav"
-    sfx_scan = sfx_dir / "digital_scan.wav"
-    sfx_airlock = sfx_dir / "elevator_ding.wav"
-    sfx_pulse = sfx_dir / "tension_pulse.wav"
-    sfx_boom = sfx_dir / "boom.wav"
-
+    # Clean documentary audio mix: Pure Brian Neural Voice + Subtle Cinematic Tension BGM (No artificial SFX)
     filter_complex = (
         f"[0:a]volume=1.0[voice];"
-        f"[1:a]aloop=loop=-1:size=2e+09,atrim=0:{total_dur:.2f},volume=0.12,afade=t=in:st=0:d=1.5,afade=t=out:st={total_dur-2:.2f}:d=2[bgm];"
-        f"[2:a]adelay={int(s1_t * 1000)}|{int(s1_t * 1000)},volume=0.15[sfx1];"
-        f"[3:a]adelay={int(s2_t * 1000 + 400)}|{int(s2_t * 1000 + 400)},volume=0.25[sfx2];"
-        f"[4:a]adelay={int(s3_t * 1000 + 300)}|{int(s3_t * 1000 + 300)},volume=0.22[sfx3];"
-        f"[5:a]adelay={int(s4_t * 1000 + 200)}|{int(s4_t * 1000 + 200)},volume=0.20[sfx4];"
-        f"[6:a]adelay={int(s5_t * 1000 + 100)}|{int(s5_t * 1000 + 100)},volume=0.28[sfx5];"
-        f"[7:a]adelay={int(s6_t * 1000)}|{int(s6_t * 1000)},volume=0.35[sfx6];"
-        f"[voice][bgm][sfx1][sfx2][sfx3][sfx4][sfx5][sfx6]amix=inputs=8:duration=first:dropout_transition=2[outa]"
+        f"[1:a]aloop=loop=-1:size=2e+09,atrim=0:{total_dur:.2f},volume=0.10,afade=t=in:st=0:d=1.0,afade=t=out:st={total_dur-1.5:.2f}:d=1.5[bgm];"
+        f"[voice][bgm]amix=inputs=2:duration=first:dropout_transition=2[outa]"
     )
 
     cmd = [
         "ffmpeg", "-y",
         "-i", str(VOICE_PATH),
         "-i", str(bgm_path),
-        "-i", str(sfx_static),
-        "-i", str(sfx_whoosh),
-        "-i", str(sfx_scan),
-        "-i", str(sfx_airlock),
-        "-i", str(sfx_pulse),
-        "-i", str(sfx_boom),
         "-filter_complex", filter_complex,
         "-map", "[outa]",
         "-c:a", "pcm_s16le",

@@ -7,11 +7,12 @@ interface SpaceCaptionsProps {
 }
 
 /**
- * Clean Black & White Kinetic Subtitles
- * - High-contrast black & white theme
- * - Elevated position (bottom: 280px) safe from YouTube Shorts bottom overlays
- * - Human-designed typography (clean modern sans-serif, zero AI-tech monospace)
- * - Auto-wrapping dynamic flex container: zero overflow, zero text overlap
+ * Premium White & Black Kinetic YouTube Shorts Captions
+ * - Strict High-Contrast White & Black aesthetic (Pure White fill with Heavy Black Stroke)
+ * - Zero bounding box clipping: No rigid container to overflow or cut off words
+ * - 100% visible across any background (dark space, bright red dunes, white lander, storm)
+ * - High-impact bold typography with active word scale pop
+ * - Elevated position (bottom: 320px) completely clear of Shorts UI overlays
  */
 export const SpaceCaptions: React.FC<SpaceCaptionsProps> = ({ words }) => {
   const frame = useCurrentFrame();
@@ -22,16 +23,16 @@ export const SpaceCaptions: React.FC<SpaceCaptionsProps> = ({ words }) => {
   // Find active word index
   let activeIndex = -1;
   for (let i = 0; i < words.length; i++) {
-    if (currentTime >= words[i].start && currentTime <= words[i].end + 0.12) {
+    if (currentTime >= words[i].start && currentTime <= words[i].end + 0.1) {
       activeIndex = i;
       break;
     }
   }
 
-  // Grace fallback for natural speech pauses
+  // Grace fallback for natural pauses
   if (activeIndex === -1) {
     for (let i = words.length - 1; i >= 0; i--) {
-      if (currentTime >= words[i].start && currentTime <= words[i].end + 0.35) {
+      if (currentTime >= words[i].start && currentTime <= words[i].end + 0.3) {
         activeIndex = i;
         break;
       }
@@ -40,7 +41,7 @@ export const SpaceCaptions: React.FC<SpaceCaptionsProps> = ({ words }) => {
 
   if (activeIndex === -1) return null;
 
-  // Clean 2 to 3 word reading chunks
+  // High-retention 2-3 word window
   const windowSize = 3;
   const chunkStart = Math.max(0, activeIndex - (activeIndex % windowSize));
   const chunkEnd = Math.min(words.length, chunkStart + windowSize);
@@ -50,76 +51,52 @@ export const SpaceCaptions: React.FC<SpaceCaptionsProps> = ({ words }) => {
     <div
       style={{
         position: "absolute",
-        bottom: 280,
+        bottom: 320,
         left: 0,
         width: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        zIndex: 80,
+        zIndex: 85,
         pointerEvents: "none",
-        padding: "0 40px",
+        padding: "0 30px",
         boxSizing: "border-box",
       }}
     >
       <div
         style={{
-          display: "inline-flex",
+          display: "flex",
           flexWrap: "wrap",
-          gap: "10px 14px",
+          gap: "14px 20px",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "rgba(10, 12, 16, 0.92)",
-          border: "2px solid rgba(255, 255, 255, 0.28)",
-          borderRadius: 22,
-          padding: "16px 28px",
-          boxShadow: "0 14px 36px rgba(0, 0, 0, 0.75)",
-          maxWidth: "92%",
-          boxSizing: "border-box",
+          maxWidth: 960,
+          textAlign: "center",
         }}
       >
         {currentChunk.map((w, idx) => {
           const globalIdx = chunkStart + idx;
           const isCurrentWord = globalIdx === activeIndex;
 
-          if (isCurrentWord) {
-            return (
-              <span
-                key={`${globalIdx}-${w.word}`}
-                style={{
-                  display: "inline-block",
-                  backgroundColor: "#FFFFFF",
-                  color: "#000000",
-                  padding: "4px 12px",
-                  borderRadius: 10,
-                  fontSize: 38,
-                  fontWeight: 900,
-                  letterSpacing: "0.5px",
-                  fontFamily:
-                    'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                  transform: "scale(1.05)",
-                  boxShadow: "0 4px 14px rgba(255, 255, 255, 0.35)",
-                  lineHeight: 1.25,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {w.word}
-              </span>
-            );
-          }
-
           return (
             <span
               key={`${globalIdx}-${w.word}`}
               style={{
                 display: "inline-block",
-                color: "rgba(255, 255, 255, 0.85)",
-                fontSize: 36,
-                fontWeight: 700,
-                letterSpacing: "0.5px",
+                color: "#FFFFFF",
+                fontSize: isCurrentWord ? 56 : 46,
+                fontWeight: 900,
+                textTransform: "uppercase",
+                letterSpacing: "1px",
                 fontFamily:
-                  'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                lineHeight: 1.25,
+                  '"Montserrat", "Arial Black", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                WebkitTextStroke: isCurrentWord ? "9px #000000" : "7px #000000",
+                paintOrder: "stroke fill",
+                filter: "drop-shadow(0 6px 14px rgba(0, 0, 0, 0.95))",
+                transform: isCurrentWord ? "scale(1.12)" : "scale(0.96)",
+                opacity: isCurrentWord ? 1.0 : 0.78,
+                transition: "all 0.08s ease-out",
+                lineHeight: 1.2,
                 whiteSpace: "nowrap",
               }}
             >

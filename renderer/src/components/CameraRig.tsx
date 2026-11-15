@@ -46,6 +46,20 @@ export const CameraRig: React.FC<CameraRigProps> = ({
       });
       break;
 
+    case "pan_right":
+      scale = 1.06;
+      translateX = interpolate(frame, [0, durationInFrames], [-60, 60], {
+        extrapolateRight: "clamp",
+      });
+      break;
+
+    case "pan_up":
+      scale = 1.08;
+      translateY = interpolate(frame, [0, durationInFrames], [50, -50], {
+        extrapolateRight: "clamp",
+      });
+      break;
+
     case "tracking_shot":
       scale = 1.08;
       translateX = interpolate(frame, [0, durationInFrames], [-90, 70], {
@@ -54,6 +68,15 @@ export const CameraRig: React.FC<CameraRigProps> = ({
       // subtle organic camera bob
       translateY = Math.sin(frame * 0.18) * 8;
       break;
+
+    case "shake_subtle":
+    case "camera_shake": {
+      scale = 1.06;
+      translateX = Math.sin(frame * 1.4) * 8 + Math.cos(frame * 2.1) * 5;
+      translateY = Math.cos(frame * 1.6) * 7 + Math.sin(frame * 2.5) * 4;
+      rotate = Math.sin(frame * 0.8) * 0.4;
+      break;
+    }
 
     case "snap_zoom": {
       const zoomSpring = spring({
