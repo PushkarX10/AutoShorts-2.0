@@ -1,33 +1,45 @@
-# Byte-compiled / optimized / DLL files
+# Dependencies
+node_modules/
+renderer/node_modules/
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Environments & secrets
-.env
-.env.local
-.venv/
+*.so
+.Python
 env/
 venv/
 ENV/
+.venv/
 
-# AutoShorts 2.0 Temporary & Intermediate Media (Prevents 100MB+ push limits)
-temp/
-logs/
-*.log
+# Environment and sensitive keys
+.env
+.env.*
+client_secrets.json
+token.pickle
+credentials.json
 
-# Video / Audio build caches and generated content
-output/*
-!output/.gitkeep
-input/*.mp4
-!input/.gitkeep
+# Remotion & Build artifacts
+.remotion/
+renderer/.remotion/
+renderer/build/
+renderer/dist/
+.cache/
 
-# External references
+# Large Rendered Videos & Generated Audio (reproducible from pipeline)
+output/*.mp4
+output/*.wav
+projects/**/*.wav
+projects/**/*.mp3
+projects/**/scene_audios/
+renderer/public/*.wav
+
+# External reference repositories & downloaded tools
+Usefull Skills/
 buzz/
-scratch/
 
-# OS / Editor files
+# OS files
 .DS_Store
 Thumbs.db
-.vscode/
-.idea/
+desktop.ini

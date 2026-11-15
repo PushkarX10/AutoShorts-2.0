@@ -1,0 +1,995 @@
+{
+  "project_id": "whatif_mars_30days",
+  "topic": "What If You Lived on Mars for 30 Days?",
+  "total_duration": 56.45,
+  "character_bible": {
+    "character_id": "astronaut_stickman_01",
+    "name": "Astronaut Stickman",
+    "silhouette": "Minimalist 2D vector stickman with pressurized white helmet & cyan life-support backpack",
+    "face_shape": "Circular light head with reflective visor",
+    "face_color": "#F5F6F8",
+    "headwear": "Pressurized EVA Helmet with cyan HUD reflection",
+    "clothing": "White-grey exploration suit with life support chest unit",
+    "legs_and_feet": "Dark stickman legs with heavy lunar/martian boots",
+    "expression_library": [
+      "curious",
+      "alert",
+      "focused",
+      "relief",
+      "shock"
+    ],
+    "body_animations": [
+      "walk_explore",
+      "low_gravity_jump",
+      "check_telemetry",
+      "enter_airlock",
+      "panic_o2",
+      "point_sky"
+    ]
+  },
+  "scenes": [
+    {
+      "scene_id": 1,
+      "beat": "HOOK",
+      "narration": "What if you woke up on Mars tomorrow... with only thirty days of supplies?",
+      "environment": "mars_surface",
+      "camera": "slow_push_in",
+      "character_action": "Looking out across the red Martian horizon",
+      "character_pose": "walk_explore",
+      "character_expression": "curious",
+      "lighting": "subtle_cinematic",
+      "music_state": "mystery",
+      "transition": "cut",
+      "hud_state": {
+        "label_1": "Mars",
+        "val_1": "SOL 01",
+        "label_2": "-63\u00b0C",
+        "val_2": "-63\u00b0C",
+        "label_3": "0.38g",
+        "val_3": "0.38g",
+        "progress_percent": 95
+      },
+      "start_time": 0.0,
+      "end_time": 4.69,
+      "duration": 4.69
+    },
+    {
+      "scene_id": 2,
+      "beat": "GRAVITY_REVEAL",
+      "narration": "On Mars, gravity is only thirty-eight percent of Earth. Every single jump sends you soaring in slow-motion flight.",
+      "environment": "mars_surface",
+      "camera": "pan_up",
+      "character_action": "Jumping across Martian dunes in buoyant low gravity",
+      "character_pose": "low_gravity_jump",
+      "character_expression": "alert",
+      "lighting": "subtle_cinematic",
+      "music_state": "wonder",
+      "transition": "cut",
+      "hud_state": {
+        "label_1": "Mars",
+        "val_1": "SOL 05",
+        "label_2": "-55\u00b0C",
+        "val_2": "-55\u00b0C",
+        "label_3": "0.38g",
+        "val_3": "0.38g (LOW-G)",
+        "progress_percent": 91
+      },
+      "start_time": 4.69,
+      "end_time": 12.38,
+      "duration": 7.69
+    },
+    {
+      "scene_id": 3,
+      "beat": "SCIENTIFIC_HAZARD",
+      "narration": "Outside your suit, Mars is lethal. The air is ninety-five percent carbon dioxide, and air pressure is near vacuum. Without this suit, your blood boils in fifteen seconds.",
+      "environment": "planet_comparison",
+      "camera": "slow_push_in",
+      "character_action": "Scanning planetary telemetry comparison",
+      "character_pose": "check_telemetry",
+      "character_expression": "focused",
+      "lighting": "infographic_neon",
+      "music_state": "tension",
+      "transition": "cut",
+      "hud_state": {
+        "label_1": "Mars",
+        "val_1": "SOL 12",
+        "label_2": "-72\u00b0C",
+        "val_2": "-72\u00b0C",
+        "label_3": "0.006 ATM",
+        "val_3": "0.006 ATM",
+        "progress_percent": 82
+      },
+      "start_time": 12.38,
+      "end_time": 24.63,
+      "duration": 12.25
+    },
+    {
+      "scene_id": 4,
+      "beat": "HABITAT_SANCTUARY",
+      "narration": "Your only sanctuary is Base Alpha: a geodesic dome with hydroponic crops and solar oxygen scrubbers.",
+      "environment": "mars_habitat",
+      "camera": "pan_left",
+      "character_action": "Approaching pressurized habitat airlock",
+      "character_pose": "enter_airlock",
+      "character_expression": "relief",
+      "lighting": "subtle_cinematic",
+      "music_state": "relief",
+      "transition": "cut",
+      "hud_state": {
+        "label_1": "Base Alpha",
+        "val_1": "SOL 15",
+        "label_2": "+21\u00b0C",
+        "val_2": "+21\u00b0C",
+        "label_3": "1.0 ATM",
+        "val_3": "1.0 ATM",
+        "progress_percent": 88
+      },
+      "start_time": 24.63,
+      "end_time": 31.6,
+      "duration": 6.97
+    },
+    {
+      "scene_id": 5,
+      "beat": "CRISIS_EVENT",
+      "narration": "Sol eighteen. A violent dust storm blots out the Sun. Solar power crashes by eighty-five percent, and oxygen drops to twenty-two percent.",
+      "environment": "mars_dust_storm",
+      "camera": "shake_subtle",
+      "character_action": "Gasping in panic as suit life-support alarms flash red",
+      "character_pose": "panic_o2",
+      "character_expression": "shock",
+      "lighting": "storm_red_alert",
+      "music_state": "crisis",
+      "transition": "cut",
+      "hud_state": {
+        "label_1": "CRITICAL",
+        "val_1": "SOL 18",
+        "label_2": "-85\u00b0C",
+        "val_2": "-85\u00b0C",
+        "label_3": "100 KM/H",
+        "val_3": "100 KM/H",
+        "progress_percent": 22
+      },
+      "start_time": 31.6,
+      "end_time": 41.09,
+      "duration": 9.49
+    },
+    {
+      "scene_id": 6,
+      "beat": "INTERACTIVE_CLIFFHANGER",
+      "narration": "Two survival protocols remain: Option A: Brave the one hundred kilometer per hour storm to clear the panels. Or Option B: Shut off heaters and cryo-hibernate in the rover. What would you do? Comment A or B!",
+      "environment": "space_cliffhanger",
+      "camera": "slow_push_in",
+      "character_action": "Presenting urgent survival decision to audience",
+      "character_pose": "point_sky",
+      "character_expression": "focused",
+      "lighting": "high_contrast",
+      "music_state": "decision",
+      "transition": "cut",
+      "hud_state": {
+        "label_1": "DECISION",
+        "val_1": "TIME CRITICAL",
+        "label_2": "O2: 19%",
+        "val_2": "O2: 19%",
+        "label_3": "00:03",
+        "val_3": "00:03",
+        "progress_percent": 19
+      },
+      "start_time": 41.09,
+      "end_time": 56.45,
+      "duration": 15.36
+    }
+  ],
+  "words": [
+    {
+      "word": "What",
+      "start": 0.1,
+      "end": 0.391,
+      "is_emphasized": false
+    },
+    {
+      "word": "if",
+      "start": 0.391,
+      "end": 0.536,
+      "is_emphasized": false
+    },
+    {
+      "word": "you",
+      "start": 0.536,
+      "end": 0.754,
+      "is_emphasized": false
+    },
+    {
+      "word": "woke",
+      "start": 0.754,
+      "end": 1.045,
+      "is_emphasized": false
+    },
+    {
+      "word": "up",
+      "start": 1.045,
+      "end": 1.19,
+      "is_emphasized": false
+    },
+    {
+      "word": "on",
+      "start": 1.19,
+      "end": 1.336,
+      "is_emphasized": false
+    },
+    {
+      "word": "Mars",
+      "start": 1.336,
+      "end": 1.626,
+      "is_emphasized": true
+    },
+    {
+      "word": "tomorrow...",
+      "start": 1.626,
+      "end": 2.426,
+      "is_emphasized": true
+    },
+    {
+      "word": "with",
+      "start": 2.426,
+      "end": 2.717,
+      "is_emphasized": false
+    },
+    {
+      "word": "only",
+      "start": 2.717,
+      "end": 3.008,
+      "is_emphasized": false
+    },
+    {
+      "word": "thirty",
+      "start": 3.008,
+      "end": 3.444,
+      "is_emphasized": true
+    },
+    {
+      "word": "days",
+      "start": 3.444,
+      "end": 3.734,
+      "is_emphasized": false
+    },
+    {
+      "word": "of",
+      "start": 3.734,
+      "end": 3.88,
+      "is_emphasized": false
+    },
+    {
+      "word": "supplies?",
+      "start": 3.88,
+      "end": 4.534,
+      "is_emphasized": true
+    },
+    {
+      "word": "On",
+      "start": 4.79,
+      "end": 4.949,
+      "is_emphasized": false
+    },
+    {
+      "word": "Mars,",
+      "start": 4.949,
+      "end": 5.346,
+      "is_emphasized": true
+    },
+    {
+      "word": "gravity",
+      "start": 5.346,
+      "end": 5.902,
+      "is_emphasized": true
+    },
+    {
+      "word": "is",
+      "start": 5.902,
+      "end": 6.061,
+      "is_emphasized": false
+    },
+    {
+      "word": "only",
+      "start": 6.061,
+      "end": 6.379,
+      "is_emphasized": false
+    },
+    {
+      "word": "thirty-eight",
+      "start": 6.379,
+      "end": 7.332,
+      "is_emphasized": true
+    },
+    {
+      "word": "percent",
+      "start": 7.332,
+      "end": 7.888,
+      "is_emphasized": false
+    },
+    {
+      "word": "of",
+      "start": 7.888,
+      "end": 8.047,
+      "is_emphasized": false
+    },
+    {
+      "word": "Earth.",
+      "start": 8.047,
+      "end": 8.524,
+      "is_emphasized": true
+    },
+    {
+      "word": "Every",
+      "start": 8.474,
+      "end": 8.843,
+      "is_emphasized": false
+    },
+    {
+      "word": "single",
+      "start": 8.843,
+      "end": 9.286,
+      "is_emphasized": false
+    },
+    {
+      "word": "jump",
+      "start": 9.286,
+      "end": 9.582,
+      "is_emphasized": false
+    },
+    {
+      "word": "sends",
+      "start": 9.582,
+      "end": 9.951,
+      "is_emphasized": false
+    },
+    {
+      "word": "you",
+      "start": 9.951,
+      "end": 10.173,
+      "is_emphasized": false
+    },
+    {
+      "word": "soaring",
+      "start": 10.173,
+      "end": 10.69,
+      "is_emphasized": true
+    },
+    {
+      "word": "in",
+      "start": 10.69,
+      "end": 10.838,
+      "is_emphasized": false
+    },
+    {
+      "word": "slow-motion",
+      "start": 10.838,
+      "end": 11.65,
+      "is_emphasized": true
+    },
+    {
+      "word": "flight.",
+      "start": 11.65,
+      "end": 12.167,
+      "is_emphasized": false
+    },
+    {
+      "word": "Outside",
+      "start": 12.48,
+      "end": 13.174,
+      "is_emphasized": false
+    },
+    {
+      "word": "your",
+      "start": 13.174,
+      "end": 13.57,
+      "is_emphasized": false
+    },
+    {
+      "word": "suit,",
+      "start": 13.57,
+      "end": 14.066,
+      "is_emphasized": false
+    },
+    {
+      "word": "Mars",
+      "start": 14.066,
+      "end": 14.462,
+      "is_emphasized": true
+    },
+    {
+      "word": "is",
+      "start": 14.462,
+      "end": 14.66,
+      "is_emphasized": false
+    },
+    {
+      "word": "lethal.",
+      "start": 14.66,
+      "end": 15.354,
+      "is_emphasized": true
+    },
+    {
+      "word": "The",
+      "start": 15.304,
+      "end": 15.538,
+      "is_emphasized": false
+    },
+    {
+      "word": "air",
+      "start": 15.538,
+      "end": 15.772,
+      "is_emphasized": false
+    },
+    {
+      "word": "is",
+      "start": 15.772,
+      "end": 15.928,
+      "is_emphasized": false
+    },
+    {
+      "word": "ninety-five",
+      "start": 15.928,
+      "end": 16.787,
+      "is_emphasized": true
+    },
+    {
+      "word": "percent",
+      "start": 16.787,
+      "end": 17.334,
+      "is_emphasized": false
+    },
+    {
+      "word": "carbon",
+      "start": 17.334,
+      "end": 17.802,
+      "is_emphasized": true
+    },
+    {
+      "word": "dioxide,",
+      "start": 17.802,
+      "end": 18.426,
+      "is_emphasized": true
+    },
+    {
+      "word": "and",
+      "start": 18.426,
+      "end": 18.661,
+      "is_emphasized": false
+    },
+    {
+      "word": "air",
+      "start": 18.661,
+      "end": 18.895,
+      "is_emphasized": false
+    },
+    {
+      "word": "pressure",
+      "start": 18.895,
+      "end": 19.519,
+      "is_emphasized": false
+    },
+    {
+      "word": "is",
+      "start": 19.519,
+      "end": 19.675,
+      "is_emphasized": false
+    },
+    {
+      "word": "near",
+      "start": 19.675,
+      "end": 19.988,
+      "is_emphasized": false
+    },
+    {
+      "word": "vacuum.",
+      "start": 19.988,
+      "end": 20.534,
+      "is_emphasized": true
+    },
+    {
+      "word": "Without",
+      "start": 20.534,
+      "end": 21.113,
+      "is_emphasized": false
+    },
+    {
+      "word": "this",
+      "start": 21.113,
+      "end": 21.444,
+      "is_emphasized": false
+    },
+    {
+      "word": "suit,",
+      "start": 21.444,
+      "end": 21.857,
+      "is_emphasized": false
+    },
+    {
+      "word": "your",
+      "start": 21.857,
+      "end": 22.188,
+      "is_emphasized": false
+    },
+    {
+      "word": "blood",
+      "start": 22.188,
+      "end": 22.602,
+      "is_emphasized": false
+    },
+    {
+      "word": "boils",
+      "start": 22.602,
+      "end": 23.015,
+      "is_emphasized": true
+    },
+    {
+      "word": "in",
+      "start": 23.015,
+      "end": 23.18,
+      "is_emphasized": false
+    },
+    {
+      "word": "fifteen",
+      "start": 23.18,
+      "end": 23.759,
+      "is_emphasized": true
+    },
+    {
+      "word": "seconds.",
+      "start": 23.759,
+      "end": 24.421,
+      "is_emphasized": false
+    },
+    {
+      "word": "Your",
+      "start": 24.73,
+      "end": 25.046,
+      "is_emphasized": false
+    },
+    {
+      "word": "only",
+      "start": 25.046,
+      "end": 25.362,
+      "is_emphasized": false
+    },
+    {
+      "word": "sanctuary",
+      "start": 25.362,
+      "end": 26.073,
+      "is_emphasized": false
+    },
+    {
+      "word": "is",
+      "start": 26.073,
+      "end": 26.231,
+      "is_emphasized": false
+    },
+    {
+      "word": "Base",
+      "start": 26.231,
+      "end": 26.547,
+      "is_emphasized": true
+    },
+    {
+      "word": "Alpha:",
+      "start": 26.547,
+      "end": 27.021,
+      "is_emphasized": true
+    },
+    {
+      "word": "a",
+      "start": 27.021,
+      "end": 27.1,
+      "is_emphasized": true
+    },
+    {
+      "word": "geodesic",
+      "start": 27.1,
+      "end": 27.732,
+      "is_emphasized": true
+    },
+    {
+      "word": "dome",
+      "start": 27.732,
+      "end": 28.048,
+      "is_emphasized": false
+    },
+    {
+      "word": "with",
+      "start": 28.048,
+      "end": 28.365,
+      "is_emphasized": false
+    },
+    {
+      "word": "hydroponic",
+      "start": 28.365,
+      "end": 29.155,
+      "is_emphasized": true
+    },
+    {
+      "word": "crops",
+      "start": 29.155,
+      "end": 29.55,
+      "is_emphasized": false
+    },
+    {
+      "word": "and",
+      "start": 29.55,
+      "end": 29.787,
+      "is_emphasized": false
+    },
+    {
+      "word": "solar",
+      "start": 29.787,
+      "end": 30.182,
+      "is_emphasized": false
+    },
+    {
+      "word": "oxygen",
+      "start": 30.182,
+      "end": 30.656,
+      "is_emphasized": true
+    },
+    {
+      "word": "scrubbers.",
+      "start": 30.656,
+      "end": 31.446,
+      "is_emphasized": false
+    },
+    {
+      "word": "Sol",
+      "start": 31.7,
+      "end": 32.143,
+      "is_emphasized": false
+    },
+    {
+      "word": "eighteen.",
+      "start": 32.143,
+      "end": 33.473,
+      "is_emphasized": true
+    },
+    {
+      "word": "A",
+      "start": 33.423,
+      "end": 33.495,
+      "is_emphasized": true
+    },
+    {
+      "word": "violent",
+      "start": 33.495,
+      "end": 33.996,
+      "is_emphasized": false
+    },
+    {
+      "word": "dust",
+      "start": 33.996,
+      "end": 34.282,
+      "is_emphasized": false
+    },
+    {
+      "word": "storm",
+      "start": 34.282,
+      "end": 34.64,
+      "is_emphasized": true
+    },
+    {
+      "word": "blots",
+      "start": 34.64,
+      "end": 34.997,
+      "is_emphasized": true
+    },
+    {
+      "word": "out",
+      "start": 34.997,
+      "end": 35.212,
+      "is_emphasized": false
+    },
+    {
+      "word": "the",
+      "start": 35.212,
+      "end": 35.427,
+      "is_emphasized": false
+    },
+    {
+      "word": "Sun.",
+      "start": 35.427,
+      "end": 35.713,
+      "is_emphasized": false
+    },
+    {
+      "word": "Solar",
+      "start": 35.713,
+      "end": 36.071,
+      "is_emphasized": false
+    },
+    {
+      "word": "power",
+      "start": 36.071,
+      "end": 36.429,
+      "is_emphasized": false
+    },
+    {
+      "word": "crashes",
+      "start": 36.429,
+      "end": 36.93,
+      "is_emphasized": true
+    },
+    {
+      "word": "by",
+      "start": 36.93,
+      "end": 37.073,
+      "is_emphasized": false
+    },
+    {
+      "word": "eighty-five",
+      "start": 37.073,
+      "end": 37.86,
+      "is_emphasized": true
+    },
+    {
+      "word": "percent,",
+      "start": 37.86,
+      "end": 38.433,
+      "is_emphasized": false
+    },
+    {
+      "word": "and",
+      "start": 38.433,
+      "end": 38.647,
+      "is_emphasized": false
+    },
+    {
+      "word": "oxygen",
+      "start": 38.647,
+      "end": 39.077,
+      "is_emphasized": true
+    },
+    {
+      "word": "drops",
+      "start": 39.077,
+      "end": 39.435,
+      "is_emphasized": false
+    },
+    {
+      "word": "to",
+      "start": 39.435,
+      "end": 39.578,
+      "is_emphasized": false
+    },
+    {
+      "word": "twenty-two",
+      "start": 39.578,
+      "end": 40.293,
+      "is_emphasized": true
+    },
+    {
+      "word": "percent.",
+      "start": 40.293,
+      "end": 40.866,
+      "is_emphasized": false
+    },
+    {
+      "word": "Two",
+      "start": 41.19,
+      "end": 41.415,
+      "is_emphasized": false
+    },
+    {
+      "word": "survival",
+      "start": 41.415,
+      "end": 42.014,
+      "is_emphasized": false
+    },
+    {
+      "word": "protocols",
+      "start": 42.014,
+      "end": 42.689,
+      "is_emphasized": true
+    },
+    {
+      "word": "remain:",
+      "start": 42.689,
+      "end": 43.213,
+      "is_emphasized": false
+    },
+    {
+      "word": "Option",
+      "start": 43.213,
+      "end": 43.663,
+      "is_emphasized": true
+    },
+    {
+      "word": "A:",
+      "start": 43.663,
+      "end": 43.813,
+      "is_emphasized": true
+    },
+    {
+      "word": "Brave",
+      "start": 43.813,
+      "end": 44.187,
+      "is_emphasized": false
+    },
+    {
+      "word": "the",
+      "start": 44.187,
+      "end": 44.412,
+      "is_emphasized": false
+    },
+    {
+      "word": "one",
+      "start": 44.412,
+      "end": 44.637,
+      "is_emphasized": false
+    },
+    {
+      "word": "hundred",
+      "start": 44.637,
+      "end": 45.162,
+      "is_emphasized": false
+    },
+    {
+      "word": "kilometer",
+      "start": 45.162,
+      "end": 45.836,
+      "is_emphasized": false
+    },
+    {
+      "word": "per",
+      "start": 45.836,
+      "end": 46.061,
+      "is_emphasized": false
+    },
+    {
+      "word": "hour",
+      "start": 46.061,
+      "end": 46.36,
+      "is_emphasized": false
+    },
+    {
+      "word": "storm",
+      "start": 46.36,
+      "end": 46.735,
+      "is_emphasized": true
+    },
+    {
+      "word": "to",
+      "start": 46.735,
+      "end": 46.885,
+      "is_emphasized": false
+    },
+    {
+      "word": "clear",
+      "start": 46.885,
+      "end": 47.26,
+      "is_emphasized": true
+    },
+    {
+      "word": "the",
+      "start": 47.26,
+      "end": 47.484,
+      "is_emphasized": false
+    },
+    {
+      "word": "panels.",
+      "start": 47.484,
+      "end": 48.009,
+      "is_emphasized": false
+    },
+    {
+      "word": "Or",
+      "start": 47.959,
+      "end": 48.126,
+      "is_emphasized": false
+    },
+    {
+      "word": "Option",
+      "start": 48.126,
+      "end": 48.626,
+      "is_emphasized": true
+    },
+    {
+      "word": "B:",
+      "start": 48.626,
+      "end": 48.793,
+      "is_emphasized": true
+    },
+    {
+      "word": "Shut",
+      "start": 48.793,
+      "end": 49.126,
+      "is_emphasized": false
+    },
+    {
+      "word": "off",
+      "start": 49.126,
+      "end": 49.376,
+      "is_emphasized": false
+    },
+    {
+      "word": "heaters",
+      "start": 49.376,
+      "end": 49.96,
+      "is_emphasized": false
+    },
+    {
+      "word": "and",
+      "start": 49.96,
+      "end": 50.21,
+      "is_emphasized": false
+    },
+    {
+      "word": "cryo-hibernate",
+      "start": 50.21,
+      "end": 51.377,
+      "is_emphasized": true
+    },
+    {
+      "word": "in",
+      "start": 51.377,
+      "end": 51.544,
+      "is_emphasized": false
+    },
+    {
+      "word": "the",
+      "start": 51.544,
+      "end": 51.794,
+      "is_emphasized": false
+    },
+    {
+      "word": "rover.",
+      "start": 51.794,
+      "end": 52.294,
+      "is_emphasized": true
+    },
+    {
+      "word": "What",
+      "start": 52.294,
+      "end": 52.698,
+      "is_emphasized": false
+    },
+    {
+      "word": "would",
+      "start": 52.698,
+      "end": 53.202,
+      "is_emphasized": false
+    },
+    {
+      "word": "you",
+      "start": 53.202,
+      "end": 53.505,
+      "is_emphasized": false
+    },
+    {
+      "word": "do?",
+      "start": 53.505,
+      "end": 53.808,
+      "is_emphasized": false
+    },
+    {
+      "word": "Comment",
+      "start": 53.808,
+      "end": 55.025,
+      "is_emphasized": true
+    },
+    {
+      "word": "A",
+      "start": 55.025,
+      "end": 55.199,
+      "is_emphasized": true
+    },
+    {
+      "word": "or",
+      "start": 55.199,
+      "end": 55.547,
+      "is_emphasized": false
+    },
+    {
+      "word": "B!",
+      "start": 55.547,
+      "end": 55.895,
+      "is_emphasized": true
+    }
+  ],
+  "audio_url": "space_soundtrack.wav"
+}
